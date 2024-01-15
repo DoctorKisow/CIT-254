@@ -1,0 +1,763 @@
+<!-- LAB HEADER / TOC -->
+<table border="0" style="border-collapse: collapse; width: 99%; border-style: none; height: 300px;">
+  <tbody>
+    <tr style="height: 102px;">
+      <td colspan="2" style="width: 100%; text-align: center; vertical-align: top;"><img src="https://courses.ccac.edu/bbcswebdav/pid-11603983-dt-content-rid-48750046_1/xid-48750046_1" width="311" height="100" style="border: 0px;" alt="ccac logo"/></td>
+    </tr>
+    <tr style="height: 30px;">
+      <td colspan="2" style="width: 100%; text-align: center; vertical-align: top;"><span style="font-size: 24pt;"><strong>LAB 2: SCANNING WITH NMAP</strong></span></td>
+    </tr>
+    
+    <tr style="height: 22.5px;">
+      <td style="width: 72%; height: 22.50px;"><span style="color: #ba372a; font-size: 12pt;"><strong>INSTRUCTIONS</strong></span></td>
+      <td rowspan="4" style="width: 28%; height: 175px;  vertical-align: top;">
+        <table border="0" style="border-collapse: collapse; width: 350px; background-color: #ecf0f1; border-style: none; float: right; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr>
+              <td style="width: 100%; height: 20px;"><strong><span style="font-family: arial, helvetica, sans-serif;">Table of Contents:</span></strong></td>
+            </tr>
+            <tr>
+              <td style="width: 100%; height: 20px;"><span style="font-family: arial, helvetica, sans-serif; color: #ba372a;">&nbsp; &nbsp; &raquo; <a href="##setup" style="color: #ba372a;">Part 1: Setup</a></span></td>
+            </tr>
+            <tr>
+              <td style="width: 100%; height: 20px;"><span style="font-family: arial, helvetica, sans-serif; color: #ba372a;">&nbsp; &nbsp; &raquo; <a href="##hostdis" style="color: #ba372a;">Part 2: Host Discovery</a></span></td>
+            </tr>
+            <tr>
+              <td style="width: 100%; height: 20px;"><span style="font-family: arial, helvetica, sans-serif; color: #ba372a;">&nbsp; &nbsp; &raquo; <a href="##tcpscan" style="color: #ba372a;">Part 3: TCP Port Scanning</a></span></td>
+            </tr>
+            <tr>
+              <td style="width: 100%; height: 20px;"><span style="font-family: arial, helvetica, sans-serif; color: #ba372a;">&nbsp; &nbsp; &raquo; <a href="##udpport" style="color: #ba372a;">Part 4: UDP Port Scanning</a></span></td>
+            </tr>
+            <tr>
+              <td style="width: 100%; height: 20px;"><span style="font-family: arial, helvetica, sans-serif; color: #ba372a;">&nbsp; &nbsp; &raquo; <a href="##os" style="color: #ba372a;">Part 5: OS Detection</a></span></td>
+            </tr>
+            <tr>
+              <td style="width: 100%; height: 20px;"><span style="font-family: arial, helvetica, sans-serif; color: #ba372a;">&nbsp; &nbsp; &raquo; <a href="##scan" style="color: #ba372a;">Part 6: Version and Service Scanning</a></span></td>
+            </tr>
+            <tr>
+              <td style="width: 100%; height: 20px;"><span style="font-family: arial, helvetica, sans-serif; color: #ba372a;">&nbsp; &nbsp; &raquo; <a href="##compscan" style="color: #ba372a;">Part 7: Complete Scanning</a></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 72%; vertical-align: top; height: 75px; text-align: justify;"><span style="font-size: 12pt;">The scanning lab is an immersive and hands-on exploration of offensive security techniques, employing the powerful tools installed on Kali Linux and the intentionally vulnerable Metasploitable2 Linux server. As students delve into the intricacies of network scanning, the primary focus lies on utilizing the versatile capabilities of Nmap. This comprehensive exploration encompasses the scanning of hosts, identification of open TCP/UDP ports, discernment of operating systems, and meticulous examination of version and service attributes. The hands-on nature of this lab ensures that participants acquire theoretical knowledge and develop a practical understanding of the methodologies employed in cybersecurity assessments. Through this immersive experience, students are poised to enhance their proficiency in network reconnaissance and sharpen their abilities to secure and defend against potential threats in the dynamic realm of cybersecurity.<br /></span><br /><p style="font-family: arial, helvetica, sans-serif; color: #ba372a; font-size: 12pt; text-align: center; margin: 0; padding: 0;"><strong><em>Upload your answers to this lab.</em></strong></p></pUpload></td>
+    </tr>
+    <tr>
+      <td style="width: 72%; height: 22.50px; vertical-align: top;"><span style="font-size: 12pt; color: #ba372a;"><strong>OBJECTIVE</strong></span></td>
+    </tr>
+    <tr>
+      <td style="width: 72%; vertical-align: top; height: 75px; text-align: justify;"><span style="font-size: 12pt;">The primary objective of this lab is to empower students with the skills and knowledge required to conduct ethical and responsible penetration testing activities. By utilizing an isolated network virtual machine and Metasploitable2, students will delve into the fascinating realm of network exploration, gaining insights into potential vulnerabilities within the lab environment.</span></td>
+    </tr>
+  </tbody>
+</table>
+<p id="#top"></p>
+
+<!-- STEP 1 -->
+<hr />
+<p id="#setup"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 1: Setup</strong></span></p>
+
+<ol start="1">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Check which version of Nmap you have installed. The Nmap commands have evolved slightly over time. It's important to ensure you are following documentation for the version of the program you are using.</span></p>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"></span><strong>CODE</strong></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ nmap --version</span></strong>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+
+    <!-- DELIVERABLE BLACK -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What is the IP address of your Kali Linux VM?</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What is the IP address of your isolated Metasploitable2 VM?</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What is the IP address of your isolated Metasploitable2 VM?</span></p>
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong><em>You will have two (2) IP addresses on your Kali Linux VM; your isolated network will have an IP address of </em></strong><span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>192.168.x.x</strong></span></span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What version of Nmap do you have installed in Kali? (<em>Answer in the form: <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>x.xx</strong></span></em>)</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>  
+    <p></p>
+  </li>
+</ol>
+
+
+<!-- STEP 2 -->
+<a href="##top" style="color: #ba372a;">[TOP]</a>
+<hr />
+<p id="#setup"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 2: Host Discovery</strong></span></p>
+
+<p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Perform a basic Nmap host discovery scan without port scanning. Normally this would be used to scan an entire subnet (or larger), but for this lab, we're going to target specific IPs of interest.</span></p>
+<ol start="1">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Target just the Metasploitable2 VM by its IP address.</span></p>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"></span><strong>CODE</strong></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ sudo nmap -sn TARGET</span></strong>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+
+    <!-- NOTE BLUE -->
+    <table border="0" style="border-collapse: collapse; width: 75%; background-color: #c2e0f4; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+          <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://courses.ccac.edu/bbcswebdav/xid-48837980_1"  width="22" height="22" style="border: 0px solid #000000;" alt="note"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 14pt;">NOTE</span></strong></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">We are using <em>sudo</em> so that Nmap can generate arbitrary network packets for this scan.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+
+    <!-- TIP GREEN -->
+    <table border="0" style="border-collapse: collapse; width: 75%; background-color: #bfedd2; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #169179;">&nbsp;</td>
+          <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://courses.ccac.edu/bbcswebdav/xid-48837982_1"  width="16" height="22" style="border: 0px solid #000000;" alt="tip"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 14pt;">TIP</span></strong></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #169179;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;"><strong>From the Nmap documentation:</strong></span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #169179;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">"<em>The default host discovery is done with -sn consists of an ICMP echo request, TCP SYN to port 443, TCP ACK to port 80, and an ICMP timestamp request by default. When executed by an unprivileged user, only SYN packets are sent (using a connect call) to ports 80 and 443 on the target. When a privileged user tries to scan targets on a local ethernet network, ARP requests are used unless --send-ip was specified.</em>" -- <a href="https://nmap.org/book/man-host-discovery.html" target="_blank" rel="noopener"><span style="color: #ba372a;">https://nmap.org/book/man-host-discovery.html</span></a></span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+
+    <!-- DELIVERABLE BLACK -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What methods did Nmap use to perform host discovery <strong>when run as the root user</strong> (i.e., via sudo)?</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">To document your answer, run Wireshark in the background and capture just the Nmap network scan with the -sn option, with no (or minimal) extra background network traffic. Save and upload the resulting <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>.pcapng</strong></span> file.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<ol start="2">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Target the IP <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>8.8.8.8</strong></span>, which will map to whatever public Google DNS server happens to be the closest to us geographically (a feature known as "IP Anycast"). Google won't mind a bit more scanning traffic. As before, do a basic Nmap host discovery scan without port scanning.</span></p>
+
+    <!-- DELIVERABLE BLACK -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What command did you enter to run the scan as the root user?</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What methods did Nmap use to perform host discovery when <strong>run as the root user</strong> (i.e., via sudo)?</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">To document your answer, run Wireshark in the background and capture just the Nmap network scan with the -sn option, with no (or minimal) extra background network traffic. Save and upload the resulting <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>.pcapng</strong></span> file.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Not to give away part of the answer to the question above, but what is the response hostname to the reverse DNS query Nmap sent for <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>8.8.8.8.in-addr.arpa</strong></span>? You can obtain this information from the Wireshark trace you just obtained.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">You can type this hostname into your web browser and see a web page that should immediately confirm the correctness of your answer.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">In a short paragraph, explain what replies are received due to the Nmap host discovery. Phrase your answer in the format of:	Nmap sent <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>&lt;request message&gt;</request></strong></span>, and a few packets later, the target host sent <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>&lt;reply message&gt;</strong></span></span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- STEP 3 -->
+<a href="##top" style="color: #ba372a;">[TOP]</a>
+<hr />
+<p id="#tcpscan"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 3: TCP Port Scanning</strong></span></p>
+
+<ol start="1">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">To detect active services, perform a Nmap TCP port scan on the Metasploitable2 VM. A connect scan (<span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>-sT</strong></span>) or a SYN scan (<span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>-sS</strong></span>) is okay.</span></p>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"></span><strong>CODE</strong></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ sudo nmap -sT TARGET</span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ sudo nmap -sS TARGET</span></strong>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+
+    <!-- NOTE BLUE -->
+    <table border="0" style="border-collapse: collapse; width: 75%; background-color: #c2e0f4; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+          <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://courses.ccac.edu/bbcswebdav/xid-48837980_1"  width="22" height="22" style="border: 0px solid #000000;" alt="note"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 14pt;">NOTE</span></strong></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">We are using <em>sudo</em> so that Nmap can generate arbitrary network packets for this scan.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+
+    <!-- DELIVERABLE BLACK -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What specific ports and services does Nmap find open? Copy and paste in the entire <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>PORT | STATE | SERVICE</strong></span> table.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">How many ports did Nmap report as open?</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">How many ports did Nmap report as closed?</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+
+<!-- STEP 4 -->
+<a href="##top" style="color: #ba372a;">[TOP]</a>
+<hr />
+<p id="#udpscan"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 4: UDP Port Scanning</strong></span></p>
+
+<ol start="1">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">To detect active services, perform a Nmap UCP port scan on the Metasploitable2 VM.</span></p>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"></span><strong>CODE</strong></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ sudo nmap -sU TARGET</span></strong>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+
+    <!-- NOTE BLUE -->
+    <table border="0" style="border-collapse: collapse; width: 75%; background-color: #c2e0f4; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+          <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://courses.ccac.edu/bbcswebdav/xid-48837980_1"  width="22" height="22" style="border: 0px solid #000000;" alt="note"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 14pt;">NOTE</span></strong></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">We are using <em>sudo</em> so that Nmap can generate arbitrary network packets for this scan.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+
+    <!-- TIP GREEN -->
+    <table border="0" style="border-collapse: collapse; width: 75%; background-color: #bfedd2; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #169179;">&nbsp;</td>
+          <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://courses.ccac.edu/bbcswebdav/xid-48837982_1"  width="16" height="22" style="border: 0px solid #000000;" alt="tip"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 14pt;">TIP</span></strong></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #169179;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">Unlike TCP, there is no generic way to see if a UDP port is open or not since UDP is connectionless. Thus, you will have much more accurate results (and be able to answer the lab question fully) if you also enable service and version scanning with your UDP scan. The CLI argument is provided below.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #169179;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">If you accept the default options, this scan will take a long time. However, you can make Nmap go faster by specifying a non-default <a href="https://nmap.org/book/performance-timing-templates.html" target="_blank" rel="noopener"><span style="color: #ba372a;"><strong>Timing Template</strong></span></a>. Since the target is a VM on the same computer (even better than on the same local area network!), shorter timeouts should be perfectly safe.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #169179;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">Unlike TCP, there is no generic way to see if a UDP port is open or not since UDP is connectionless. Thus, you will have much more accurate results (and be able to answer the lab question fully) if you also enable service and version scanning with your UDP scan. The CLI argument is provided below.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+
+    <!-- DELIVERABLE BLACK -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What command did you enter to do a faster UDP port scan and also to enable service and version scanning</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What <strong>4</strong> UDP ports did Nmap find as open (<strong>not</strong> open|filtered, just open), and what services are running on those ports?</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">How many ports did Nmap report as closed?</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- STEP 5 -->
+<a href="##top" style="color: #ba372a;">[TOP]</a>
+<hr />
+<p id="#os"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 5: OS Detection</strong></span></p>
+
+<ol start="1">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Perform a Nmap OS Detection scan on the Metasploitable2 VM. Note that implicit with OS detection is port discovery.</span></p>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"></span><strong>CODE</strong></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ sudo nmap -O TARGET</span></strong>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+
+    <!-- NOTE BLUE -->
+    <table border="0" style="border-collapse: collapse; width: 75%; background-color: #c2e0f4; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+          <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://courses.ccac.edu/bbcswebdav/xid-48837980_1"  width="22" height="22" style="border: 0px solid #000000;" alt="note"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 14pt;">NOTE</span></strong></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">We are using <em>sudo</em> so that Nmap can generate arbitrary network packets for this scan.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+
+    <!-- DELIVERABLE BLACK -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What is the device type of the Metasploitable2 VM according to Nmap?</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What is the Common Platform Enumeration (CPE) string of the Metasploitable2 VM?</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What is the OS Details string Nmap provided for the Metasploitable2 VM, showing the range of kernel versions it believes the host is running?</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Check in the Metasploitable2 VM - What kernel version is it actually running? (Provide your answer in the form <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>x.x.x-x-tag</strong></span>).</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- STEP 6 -->
+<a href="##top" style="color: #ba372a;">[TOP]</a>
+<hr />
+<p id="#scan"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 6: Version and Service Scanning</strong></span></p>
+
+<ol start="1">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Perform an Nmap version and service scan on the Metasploitable2 VM.</span></p>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"></span><strong>CODE</strong></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ sudo nmap -O TARGET</span></strong>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+
+    <!-- NOTE BLUE -->
+    <table border="0" style="border-collapse: collapse; width: 75%; background-color: #c2e0f4; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+          <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://courses.ccac.edu/bbcswebdav/xid-48837980_1"  width="22" height="22" style="border: 0px solid #000000;" alt="note"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 14pt;">NOTE</span></strong></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">We are using <em>sudo</em> so that Nmap can generate arbitrary network packets for this scan.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+
+    <!-- DELIVERABLE BLACK -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What version of OpenSSH is running?</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What version of the BIND DNS server is running?</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- STEP 7 -->
+<a href="##top" style="color: #ba372a;">[TOP]</a>
+<hr />
+<p id="#compscan"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 7: Complete Scanning</strong></span></p>
+
+<ol start="1">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Perform an "everything and the kitchen sink" scan against the Metasploitable2 VM using the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>-A</strong></span> (for <strong>all</strong>) option. This is the most time-consuming scan (at least for TCP) and the most verbose. As such, it is best to run against very specific hosts that (a) you know exist and (b) you know have specific services of interest to you.</span></p>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"></span><strong>CODE</strong></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ sudo nmap -A TARGET</span></strong>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+
+    <!-- NOTE BLUE -->
+    <table border="0" style="border-collapse: collapse; width: 75%; background-color: #c2e0f4; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+          <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://courses.ccac.edu/bbcswebdav/xid-48837980_1"  width="22" height="22" style="border: 0px solid #000000;" alt="note"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 14pt;">NOTE</span></strong></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">We are using <em>sudo</em> so that Nmap can generate arbitrary network packets for this scan.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+
+    <!-- DELIVERABLE BLACK -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What is the NetBIOS workgroup of the Samba server on the Metasploitable2 VM?</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What is the 2048-bit long RSA SSH host key that identifies this target?</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+
+<!-- COPYRIGHT -->
+<a href="##top" style="color: #ba372a;">[TOP]</a>
+<hr />
+<p style="text-align: center;">Copyright &copy; 2022-2024 Dr. Matthew Kisow. All Rights Reserved</p>

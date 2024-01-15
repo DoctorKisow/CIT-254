@@ -1,0 +1,179 @@
+<!-- LAB HEADER / TOC -->
+<table border="0" style="border-collapse: collapse; width: 99%; border-style: none; height: 300px;">
+  <tbody>
+    <tr style="height: 102px;">
+      <td colspan="2" style="width: 100%; text-align: center; vertical-align: top;"><img src="https://courses.ccac.edu/bbcswebdav/pid-11603983-dt-content-rid-48750046_1/xid-48750046_1" width="311" height="100" style="border: 0px;" alt="ccac logo"/></td>
+    </tr>
+    <tr style="height: 30px;">
+      <td colspan="2" style="width: 100%; text-align: center; vertical-align: top;"><span style="font-size: 24pt;"><strong>LAB 8: SCRIPTING</strong></span></td>
+    </tr>
+    
+    <tr style="height: 22.5px;">
+      <td style="width: 72%; height: 22.50px;"><span style="color: #ba372a; font-size: 12pt;"><strong>INSTRUCTIONS</strong></span></td>
+      <td rowspan="4" style="width: 28%; height: 175px;  vertical-align: top;">
+        <table border="0" style="border-collapse: collapse; width: 350px; background-color: #ecf0f1; border-style: none; float: right; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr>
+              <td style="width: 100%; height: 20px;"><strong><span style="font-family: arial, helvetica, sans-serif;">Table of Contents:</span></strong></td>
+            </tr>
+            <tr>
+              <td style="width: 100%; height: 20px;"><span style="font-family: arial, helvetica, sans-serif; color: #ba372a;">&nbsp; &nbsp; &raquo; <a href="##install" style="color: #ba372a;">Part 1 - Installing a Scripting Framework</a></span></td>
+            </tr>
+            <tr>
+              <td style="width: 100%; height: 20px;"><span style="font-family: arial, helvetica, sans-serif; color: #ba372a;">&nbsp; &nbsp; &raquo; <a href="##script" style="color: #ba372a;">Part 2 - Writing a Script</a></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 72%; vertical-align: top; height: 75px; text-align: justify;"><span style="font-size: 12pt;">Welcome to the Scripting Lab, an integral component of our comprehensive cybersecurity curriculum. In this lab, students will delve into at least two scripting frameworks. The primary objective of this lab is to familiarize you with two scripting frameworks of your choice. This lab is aligned with Perform Data Analysis, Systems Analysis, and Risk Assessments, where students will gain firsthand experience in leveraging scripting for data and systems analysis, essential components of comprehensive risk assessments within the information security domain, Defend Against Information System Attacks, illustrating how scripting plays a pivotal role in building defensive mechanisms, and Configure and Apply Information Security Tools, which enhances students' proficiency in configuring and applying information security tools.<br /><br />Through this lab, students will develop tools for tasks like network discovery, vulnerability scanning, and more by employing scripting frameworks and acquiring skills to create customized scripts that contribute to a robust defense against information system attacks. By the end of this lab, students will have a deeper understanding of scripting frameworks and a practical skill set that aligns with the demands of the cybersecurity landscape.<br /></span><br /><p style="font-family: arial, helvetica, sans-serif; color: #ba372a; font-size: 12pt; text-align: center; margin: 0; padding: 0;"><strong><em>Upload your answers to this lab.</em></strong></p></td>
+    </tr>
+    <tr>
+      <td style="width: 72%; height: 22.50px; vertical-align: top;"><span style="font-size: 12pt; color: #ba372a;"><strong>OBJECTIVE</strong></span></td>
+    </tr>
+    <tr>
+      <td style="width: 72%; vertical-align: top; height: 75px; text-align: justify;"><span style="font-size: 12pt;">The primary objective of this lab is to empower students with the skills and knowledge required to conduct ethical and responsible penetration testing activities. This lab will teach students how to leverage the Internet to learn how to install different scripting frameworks inside their Kali Linux Lab VM. This is done to enhance students' understanding of Kali Linux and how to use different research strategies to enhance the student's understanding of Kali Linux.</span></td>
+    </tr>
+  </tbody>
+</table>
+<p id="#top"></p>
+
+<!-- STEP 1 -->
+<hr />
+<p id="#install"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 1 - Installing a Scripting Framework</strong></span></p>
+
+<ol start="1">
+  <!-- 1 -->
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Choose <strong><em>two</em></strong> of the scripting languages from the list below:</span></p>
+    <ol style="list-style-type: lower-alpha;" start="a">
+      <!-- A -->
+      <li><span style="font-size: 12pt;">Bash 5.2.21</span></li>
+
+      <!-- B -->
+      <li><span style="font-size: 12pt;">Python 3.11.6</span></li>
+
+      <!-- C -->
+      <li><span style="font-size: 12pt;">Ruby 3.1.2p20</span></li>
+
+      <!-- D -->
+      <li><span style="font-size: 12pt;">PowerShell 7.2.6</span></li>
+
+      <!-- E -->
+      <li><span style="font-size: 12pt;">Perl 5.36</span></li>
+
+      <!-- F-->
+      <li><span style="font-size: 12pt;"><strong><em>JavaScript (nodejs)</em></strong></span></li><br />
+    </ol>
+    <p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><em>**The only scripting language not natively installed in Kali Linux is nodejs.  Installation instructions can be found in the references section (below).</em></span>
+  </li>
+
+  <!-- 2 -->
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Verify that each of the scripting languages are installed by listing their versions:</span></p>
+    <ol style="list-style-type: lower-alpha;" start="a">
+
+      <!-- A -->
+      <li><span style="font-size: 12pt;">bash --version</span></li>
+
+      <!-- B -->
+      <li><span style="font-size: 12pt;">python --version</span></li>
+
+      <!-- C -->
+      <li><span style="font-size: 12pt;">ruby --version</span></li>
+
+      <!-- D -->
+      <li><span style="font-size: 12pt;">pwsh --version</span></li>
+
+      <!-- E -->
+      <li><span style="font-size: 12pt;">perl --version</span></li>
+
+      <!-- F -->
+      <li><span style="font-size: 12pt;"><strong><em>node -v</em></strong></span></li><br />
+    </ol>
+  </li>
+
+  <!-- 3 -->
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Once you have verified that each scripting language has been installed, you can go to Part 2.</span></p></li>
+</ol>
+
+<br />
+<!-- REFERENCES -->
+<p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt; text-decoration: underline;"><strong>REFERENCES</strong></span></p>
+<ul>
+  <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Install JavaScript: <a href="https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-22-04" target="_blank" rel="noopener"><span style="color: #ba372a;">https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-22-04</span></a></span></li>
+</ul>
+<p></p>
+
+<!-- STEP 2 -->
+<a href="##top" style="color: #ba372a;">[TOP]</a>
+<hr />
+<p id="#script"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 2 - Writing a Script</strong></span></p>
+
+<ol start="1">
+  <!-- 1 -->
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Using your book and the Internet as a reference, choose two of the scripting languages from Part 1 and create the following script(s):</span></p>
+    <ol style="list-style-type: lower-alpha;" start="a">
+
+      <!-- A -->
+      <li><span style="font-size: 12pt;">It must ask you for your weight on the earth.</span></li>
+
+      <!-- B -->
+      <li><span style="font-size: 12pt;">It must contain at least one constant: the moon's gravity, 1.625.</span></li>
+
+      <!-- C -->
+      <li><span style="font-size: 12pt;">It must contain at least one variable.</span></li>
+
+      <!-- D -->
+      <li><span style="font-size: 12pt;">It must calculate your weight on the moon based on your entered weight.</span></li>
+
+      <!-- E -->
+      <li><span style="font-size: 12pt;">It must display your weight on the moon, rounding to two decimal places.</span></li>
+      <br />
+    </ol>
+
+    <!-- DELIVERABLE BLACK - SUBS -->
+    <table border="0" style="border-collapse: collapse; width: 99%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="3" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td colspan="2" style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">In a single Word document that provides the following:</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#9675;</span></td>
+          <td style="width: 91%;"><p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">A copy of the script in its final format. (When copied and pasted into Linux, this should run as intended.)</span></p></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#9675;</span></td>
+          <td style="width: 91%;"><p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">A screenshot of the running script shows two output sets, one at your weight and another at 170 pounds.</span></p></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td colspan="2" style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">A paragraph after each script's output explaining why you chose the scripting language you did and what you learned from choosing that language.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- COPYRIGHT -->
+<a href="##top" style="color: #ba372a;">[TOP]</a>
+<hr />
+<p style="text-align: center;">Copyright &copy; 2022-2024 Dr. Matthew Kisow. All Rights Reserved</p>

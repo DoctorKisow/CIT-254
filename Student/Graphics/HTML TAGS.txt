@@ -1,0 +1,222 @@
+<!-- CODE HIGHLIGHT -->
+<!-- MUST BE WRAPPED IN A PARAGRAPH BLOCK -->
+<span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>.
+
+<!-- HREF -->
+<a href="https://nmap.org/book/performance-timing-templates.html" target="_blank" rel="noopener"><span style="color: #ba372a;">Timing Template</span></a>
+
+
+<!-- DELIVERABLE BLACK -->
+<table border="0" style="border-collapse: collapse; width: 99%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+  <tbody>
+    <tr>
+      <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+      <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+        <p style="margin: 0; padding: 0;">
+          <img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1" alt="" style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+          <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></td>
+    </tr>
+    <tr>
+      <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+      <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+      <td style="width: 93%;">
+        <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">TEST</span></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p></p>
+
+
+
+
+<!-- DELIVERABLE BLACK - SUBS -->
+<table border="0" style="border-collapse: collapse; width: 99%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+  <tbody>
+    <tr>
+      <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+      <td colspan="3" style="width: 98%; text-align: left; vertical-align: top;">
+        <p style="margin: 0; padding: 0;">
+          <img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1" alt="" style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+          <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+      <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+      <td colspan="2" style="width: 93%;">
+        <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">TEST</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+      <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#9675;</span></td>
+      <td style="width: 91%;"><p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">   </span></p></td>
+    </tr>
+  </tbody>
+</table>
+<p></p>
+
+
+<!-- CODE -->
+<table border="0" style="border-collapse: collapse; width: 99%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+  <tbody>
+    <tr style="background-color: #ced4e9;">
+      <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+      <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+      <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+      <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"></span><strong>CODE</strong></td>
+    </tr>
+    <tr>
+      <td colspan="4" style="width: 99%;">
+        <p style="margin: 0; padding: 0;">
+          <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ sudo apt update</span></strong><br />
+          <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ sudo apt -y upgrade</span></strong><br />
+        </p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p></p>
+
+<!-- WRAPPING CODE -->
+<table border="0" style="border-collapse: collapse; width: 85.0166%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: rgba(50, 50, 50, 0.75) 5px 5px 1px 0px; overflow: hidden;">
+  <tbody>
+    <tr style="background-color: #ced4e9;">
+      <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+      <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+      <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+      <td colspan="2" style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"></span><strong>CODE</strong></td>
+    </tr>
+    <tr>
+      <td style="width: 2%; text-align: right; vertical-align: middle;"><strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">#</span></strong></td>
+      <td colspan="4" style="width: 98%;">
+        <p style="margin: 0; padding: 0;">
+          <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;COMMENT<br /></span></strong>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 2%; text-align: right; vertical-align: middle;"><strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">$</span></strong></td>
+      <td colspan="4" style="width: 98%;">
+        <p style="margin: 0; padding: 0;">
+          <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;<span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">COMMAND</span> ARGUEMENTS</span></strong></span></strong>
+        </p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p></p>
+
+
+<!-- NOTE BLUE -->
+<table border="0" style="border-collapse: collapse; width: 99%; background-color: #c2e0f4; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+  <tbody>
+    <tr>
+      <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+      <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+        <p style="margin: 0; padding: 0;">
+          <img src="https://courses.ccac.edu/bbcswebdav/xid-48837980_1" alt="" style="border: 0px solid #000000;" height="22" width="22" alt="note"/>
+          <strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 14pt;">NOTE</span></strong></td>
+    </tr>
+    <tr>
+      <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+      <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">&#x25CF;</span></strong></td>
+      <td style="width: 93%;">
+        <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">TEST</span></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p></p>
+
+
+<!-- TIP GREEN -->
+<table border="0" style="border-collapse: collapse; width: 99%; background-color: #bfedd2; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+  <tbody>
+    <tr>
+      <td style="width: 2%; background-color: #169179;">&nbsp;</td>
+      <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+        <p style="margin: 0; padding: 0;">
+          <img src="https://courses.ccac.edu/bbcswebdav/xid-48837982_1" alt="" width="16" height="22" style="border: 0px solid #000000;" alt="tip"/>
+          <strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 14pt;">TIP</span></strong></td>
+    </tr>
+    <tr>
+      <td style="width: 2%; background-color: #169179;">&nbsp;</td>
+      <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">&#x25CF;</span></strong></td>
+      <td style="width: 93%;">
+        <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">TEST</span></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p></p>
+
+
+<!-- IMPORTANT PURPLE -->
+<table border="0" style="border-collapse: collapse; width: 99%; background-color: #eccafa; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+  <tbody>
+    <tr>
+      <td style="width: 2%; background-color: #843fa1;">&nbsp;</td>
+      <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+        <p style="margin: 0; padding: 0;">
+          <img src="https://courses.ccac.edu/bbcswebdav/pid-11629076-dt-content-rid-48837981_1/xid-48837981_1" alt="" style="border: 0px solid #000000;" height="21" width="24" alt="important"/>
+          <strong><span style="font-family: arial, helvetica, sans-serif; color: #843fa1; font-size: 14pt;">IMPORTANT</span></strong></td>
+    </tr>
+    <tr>
+      <td style="width: 2%; background-color: #843fa1;">&nbsp;</td>
+      <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #843fa1; font-size: 12pt;">&#x25CF;</span></strong></td>
+      <td style="width: 93%;">
+        <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #843fa1; font-size: 12pt;">TEST</span></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p></p>
+
+
+<!-- WARNING YELLOW -->
+<table border="0" style="border-collapse: collapse; width: 99%; background-color: #fbeeb8; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+  <tbody>
+    <tr>
+      <td style="width: 2%; background-color: #e67e23;">&nbsp;</td>
+      <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+        <p style="margin: 0; padding: 0;">
+          <img src="https://courses.ccac.edu/bbcswebdav/pid-11629076-dt-content-rid-48837979_1/xid-48837979_1" alt="" style="border: 0px solid #000000;" height="24" width="24" alt="warning"/>
+          <strong><span style="font-family: arial, helvetica, sans-serif; color: #e67e23; font-size: 14pt;">WARNING</span></strong></td>
+    </tr>
+    <tr>
+      <td style="width: 2%; background-color: #e67e23;">&nbsp;</td>
+      <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #e67e23; font-size: 12pt;">&#x25CF;</span></strong></td>
+      <td style="width: 93%;">
+        <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #e67e23; font-size: 12pt;">TEST</span></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p></p>
+
+
+<!-- CAUTION RED -->
+<table border="0" style="border-collapse: collapse; width: 99%; background-color: #F8CAC6; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+  <tbody>
+    <tr>
+      <td style="width: 2%; background-color: #ba372a;">&nbsp;</td>
+      <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+        <p style="margin: 0; padding: 0;">
+          <img src="https://courses.ccac.edu/bbcswebdav/pid-11629076-dt-content-rid-48837978_1/xid-48837978_1" alt="" style="border: 0px solid #000000;" height="24" width="24" alt="caution"/>
+          <strong><span style="font-family: arial, helvetica, sans-serif; color: #ba372a; font-size: 14pt;">CAUTION</span></strong></td>
+    </tr>
+    <tr>
+      <td style="width: 2%; background-color: #ba372a;">&nbsp;</td>
+      <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #ba372a; font-size: 12pt;">&#x25CF;</span></strong></td>
+      <td style="width: 93%;">
+        <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #ba372a; font-size: 12pt;">TEST</span></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p></p>
+
+

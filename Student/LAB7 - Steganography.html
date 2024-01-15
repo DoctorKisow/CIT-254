@@ -1,0 +1,275 @@
+<!-- LAB HEADER / TOC -->
+<table border="0" style="border-collapse: collapse; width: 99%; border-style: none; height: 300px;">
+  <tbody>
+    <tr style="height: 102px;">
+      <td colspan="2" style="width: 100%; text-align: center; vertical-align: top;"><img src="https://courses.ccac.edu/bbcswebdav/pid-11603983-dt-content-rid-48750046_1/xid-48750046_1" width="311" height="100" style="border: 0px;" alt="ccac logo"/></td>
+    </tr>
+    <tr style="height: 30px;">
+      <td colspan="2" style="width: 100%; text-align: center; vertical-align: top;"><span style="font-size: 24pt;"><strong>LAB 7: STEGANOGRAPHY</strong></span></td>
+    </tr>
+    
+    <tr style="height: 22.5px;">
+      <td style="width: 72%; height: 22.50px;"><span style="color: #ba372a; font-size: 12pt;"><strong>INSTRUCTIONS</strong></span></td>
+      <td rowspan="4" style="width: 28%; height: 175px;  vertical-align: top;">
+        <table border="0" style="border-collapse: collapse; width: 350px; background-color: #ecf0f1; border-style: none; float: right; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr>
+              <td style="width: 100%; height: 20px;"><strong><span style="font-family: arial, helvetica, sans-serif;">Table of Contents:</span></strong></td>
+            </tr>
+            <tr>
+              <td style="width: 100%; height: 20px;"><span style="font-family: arial, helvetica, sans-serif; color: #ba372a;">&nbsp; &nbsp; &raquo; <a href="##install" style="color: #ba372a;">Part 1 - Installing Steghide</a></span></td>
+            </tr>
+            <tr>
+              <td style="width: 100%; height: 20px;"><span style="font-family: arial, helvetica, sans-serif; color: #ba372a;">&nbsp; &nbsp; &raquo; <a href="##hideme" style="color: #ba372a;">Part 2 - Writing and Hiding a Message</a></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 72%; vertical-align: top; height: 75px; text-align: justify;"><span style="font-size: 12pt;">Welcome to the Steganography Lab, a captivating exploration of cybersecurity's post-exploitation process, specifically focusing on the art of exfiltration. In this immersive, hands-on experience, you will delve into the intricate world of concealing information within the confines of the provided CCAC logo. The tool at your disposal for this covert endeavor is Steghide, a powerful application that will unlock the secrets of steganography for you. As aspiring cybersecurity professionals, you are about to embark on a journey transcending conventional data security's boundaries. By concealing messages within seemingly innocuous images, you will gain insights into the methodologies employed in the exfiltration process. This practical lab challenges your technical prowess and cultivates a deep understanding of the subtle nuances of securing information. To participate in this engaging endeavor, please ensure you have your Kali Linux Virtual Machine ready, as you must install the Steghide application. As you navigate this lab, you will uncover the significance of steganography in the broader landscape of cybersecurity, sharpening your skills in the art of information concealment. Prepare to unravel the mysteries hidden within the CCAC logo as you apply steganographic techniques to master the art of exfiltration. Let the Steganography Lab guide you as you step further into the dynamic and ever-evolving field of cybersecurity.<br /></span><br /><p style="font-family: arial, helvetica, sans-serif; color: #ba372a; font-size: 12pt; text-align: center; margin: 0; padding: 0;"><strong><em>Upload your answers to this lab.</em></strong></p></td>
+    </tr>
+    <tr>
+      <td style="width: 72%; height: 22.50px; vertical-align: top;"><span style="font-size: 12pt; color: #ba372a;"><strong>OBJECTIVE</strong></span></td>
+    </tr>
+    <tr>
+      <td style="width: 72%; vertical-align: top; height: 75px; text-align: justify;"><span style="font-size: 12pt;">The primary objective of this lab is to empower students with the skills and knowledge required to conduct ethical and responsible penetration testing activities. By utilizing an isolated network virtual machine and Metasploitable2, students will delve into the fascinating realm of network exploration, gaining insights into potential vulnerabilities within the lab environment.</span></td>
+    </tr>
+  </tbody>
+</table>
+<p id="#top"></p>
+
+<!-- STEP 1 -->
+<hr />
+<p id="#install"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 1 - Installing Steghide</strong></span></p>
+
+<p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://en.wikipedia.org/wiki/Steganography" target="_blank" rel="noopener"><span style="color: #ba372a;"><strong>Steganography</strong></span></a> is a way to hide information within another message or physical object. The <em>steghide</em>> program is a steganography application that can hide data in various kinds of image files and audio files. The color sample frequencies are not changed, thus making the embedding resistant against first-order statistical tests.</span></p>
+
+<ol start="1">
+  <!-- 1 -->
+  <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><strong>Install Steghide:</strong></span>
+    <ol style="list-style-type: lower-alpha;" start="a">
+
+      <!-- A -->
+      <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><strong>Update Kali Linux:</strong> Update the Kali Linux operating system to ensure it runs the latest packages.</span></li>
+
+      <!-- B -->
+      <li start="b"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><strong>Install Steghide:</strong> To install steghide, follow the procedure.</span>
+        <!-- CODE -->
+        <br />
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Update Kali Linux<br /></span></strong>
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ sudo <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">apt</span> update</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ sudo <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">apt</span> -y upgrade</span></strong><br />
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Install Steghide<br /></span></strong>
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ sudo <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">apt</span> -y install steghide</span></strong><br />
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+<!-- REFERENCES -->
+<p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt; text-decoration: underline;"><strong>REFERENCES</strong></span></p>
+<p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Please read this article before you try to install <em>steghide</em>.</span></p>
+<ul>
+  <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://www.kali.org/tools/steghide/" target="_blank" rel="noopener"><span style="color: #ba372a;">https://www.kali.org/tools/steghide/</span></a></span></li>
+</ul>
+<p></p>
+
+<!-- STEP 2 -->
+<a href="##top" style="color: #ba372a;">[TOP]</a>
+<hr />
+<p id="#hideme"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 2 - Writing and Hiding a Message</strong></span></p>
+
+<p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Using your book (p. 370-371) and the Internet as a reference, we will read the embedded contents of a file, then create a text file and hide it in the "<em>ccaclogo.jpg</em>" file attached to this lab.</span></p>
+
+<ol start="1">
+
+  <!-- 1 -->
+  <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Reading the contents of the "<em>drkisow-message.jpg</em>" file.</span>
+    <ol style="list-style-type: lower-alpha;" start="a">
+
+      <!-- A -->
+      <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Download the "<em>drkisow-message.jpg</em>" file to your Kali Linux desktop.</span></li>
+
+      <!-- B -->
+      <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Open your command prompt and extract the contents of the "<em>drkisow-message.jpg</em>" file to the "<em>drkisow-message.txt</em>" file.</span></li>
+
+      <!-- C -->
+      <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">The passphrase is CIT254.</span></li>
+
+      <!-- D -->
+      <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Screenshot the contents of this text file; you will need it later.</span>
+        <!-- CODE -->
+        <br />
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Change Directory<br /></span></strong>
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">cd</span> Desktop</span></strong><br /><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Extract Hidden Message<br /></span></strong>
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">steghide</span> extract -sf drkisow-message.jpg -xf drkisow-message.txt</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;Enter passphrase:<br /></span></strong>
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;wrote extracted data to "drkisow-message.txt".<br /></span></strong>
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+    </ol>
+  </li>
+
+  <!-- 2 -->
+  <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Create your own hidden message using the "<em>ccaclogo.jpg</em>" file.</span>
+    <ol style="list-style-type: lower-alpha;" start="a">
+
+      <!-- A -->
+      <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Download the "<em>ccaclogo.jpg</em>" file to your Kali Linux desktop.</span></li>
+
+      <!-- B -->
+      <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Create a new file, "<em>secret.txt,</em>" on your Kali Linux desktop.</span></li>
+
+      <!-- C -->
+      <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Open the "<em>secret.txt</em>" file and write your own favorite quote similar to mine. Ensure you save it, then close the file.</span></li>
+
+      <!-- D -->
+      <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Open your command prompt and embed the contents of the "<em>secret.txt</em>" file to the "<em>ccaclogo.jpg</em>" file.</span></li>
+      
+      <!-- E -->
+      <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Use the passphrase CIT254 to encode it. Capitalization is important; type the passphrase as it is shown.</span>
+
+      <!-- F -->
+      <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Rename the "<em>ccaclogo.jpg</em>" file to "<em>&lt;lastname&gt;-message.jpg</em>".</span>
+        <!-- CODE -->
+        <br />
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Change Directory<br /></span></strong>
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">cd</span> Desktop</span></strong><br /><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Encoding a Hidden Message<br /></span></strong>
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">steghide</span> encode -ef secret.txt -cf ccaclogo.jpg</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;Enter passphrase:<br /></span></strong>
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;Re-Enter passphrase:<br /></span></strong>
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;embedding "secret.txt" in "ccaclogo.jpg" ... done<br /><br /></span></strong>
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Rename File<br /></span></strong>
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">mv</span> ccaclogo.jpg &lt;lastname&gt;-message.jpg</span></strong><br /><br />
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+<!-- DELIVERABLE BLACK - SUBS -->
+<table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+  <tbody>
+    <tr>
+      <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+      <td colspan="3" style="width: 98%; text-align: left; vertical-align: top;">
+        <p style="margin: 0; padding: 0;">
+          <img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+          <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+      <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+      <td colspan="2" style="width: 93%;">
+        <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">In a single Word document, provide the following:</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+      <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#9675;</span></td>
+      <td style="width: 91%;"><p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">A screenshot of my message that was hidden in the "<em>drkisow-message.jpg</em>" file.</span></p></td>
+    </tr>
+    <tr>
+      <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+      <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#9675;</span></td>
+      <td style="width: 91%;"><p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">A screenshot of the command you ran to extract the hidden message.</span></p></td>
+    </tr>
+    <tr>
+      <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+      <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#9675;</span></td>
+      <td style="width: 91%;"><p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">A screenshot of the command you ran to encode your hidden message.</span></p></td>
+    </tr>
+    <tr>
+      <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+      <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#9675;</span></td>
+      <td style="width: 91%;"><p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">A paragraph that outlines your findings and how you can find this tool useful in penetration testing.</span></p></td>
+    </tr>
+    <tr>
+      <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+      <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+      <td colspan="2" style="width: 93%;">
+        <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Upload both the report and your renamed encoded file to this lab.</span></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p></p>
+
+
+<!-- COPYRIGHT -->
+<a href="##top" style="color: #ba372a;">[TOP]</a>
+<hr />
+<p style="text-align: center;">Copyright &copy; 2022-2024 Dr. Matthew Kisow. All Rights Reserved</p>
