@@ -387,8 +387,8 @@ function update ()
     chmod +x updater.sh
     chmod 770 "$l_TMP_FILE"
 
-    if [ $(getent group labusers1) ]; then
-      chown root:labusers1 "$l_TMP_FILE"
+    if [ $(getent group labusers) ]; then
+      chown root:labusers "$l_TMP_FILE"
     else
       chown root:root "$l_TMP_FILE"
     fi
