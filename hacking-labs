@@ -417,15 +417,13 @@ function update_notice ()
   l_VERSION=$(grep "^g_VERSION" "$l_TMP_FILE" | awk -F'[="]' '{print $3}')
 
   # Compare the script versions and notify if newer.
-  if ! ((g_ARG_FINISH_INSTALL==1)); then
-    if [ "$g_VERSION" \< "$l_VERSION" ]; then
-      info "There is a new version v$l_VERSION of the $g_PROGRAM_NAME script available.\n         To upgrade please type \"$g_PROGRAM_NAME -u\" at the command prompt.\n\n"
-    else
-      info "You are running the current version of this script.\n\n"
+  if [ "$g_VERSION" \< "$l_VERSION" ]; then
+    info "There is a new version v$l_VERSION of the $g_PROGRAM_NAME script available.\n         To upgrade please type \"$g_PROGRAM_NAME -u\" at the command prompt.\n\n"
+  else
+    info "You are running the current version of this script.\n\n"
 
-      if [[ -f "${g_SCRIPT_PATH}/updater.sh" ]]; then
-          rm "${g_SCRIPT_PATH}/updater.sh"
-      fi
+    if [[ -f "${g_SCRIPT_PATH}/updater.sh" ]]; then
+        rm "${g_SCRIPT_PATH}/updater.sh"
     fi
   fi
 
