@@ -61,7 +61,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.9"
+g_VERSION="0.0.10"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://github.com/DoctorKisow/CIT-254/raw/main/hacking-labs"
@@ -546,12 +546,12 @@ function settcpip ()
 
   ## NEW IP ADDRESSES FOR LAB ENVIORNMENT
   local l_KALI_NEWIP=$(increment_ip $g_CALC_NETNUM 1)
-  local l_WIN2K8_NEWIP=$(increment_ip $g_CALC_NETNUM 2)
+  #local l_WIN2K8_NEWIP=$(increment_ip $g_CALC_NETNUM 2)
   local l_LIN1404_NEWIP=$(increment_ip $g_CALC_NETNUM 3)
   local l_LIN0804_NEWIP=$(increment_ip $g_CALC_NETNUM 4)
 
   local l_KALI_RESP=""
-  local l_WIN2K8_RESP=""
+  #local l_WIN2K8_RESP=""
   local l_LIN1404_RESP=""
   local l_LIN0804_RESP=""
 
@@ -584,13 +584,13 @@ function settcpip ()
 
     info "  Ensuring each lab host is up and running."
     if [[ "$l_KALI_ETH1" == "$g_KALI_DEFIP" ]]; then
-      # Check WIN2K8 is available.
-      l_WIN2K8_RESP=$(ping_and_report $g_WIN2K8_DEFIP)
-      if [[ $l_WIN2K8_RESP -ne 0 ]]; then
-        warning "    The Metasploitable3 (Microsoft Windows) VM is not responding."
-      else
-        info "   The Metasploitable3 (Microsoft Windows) VM is responding."
-      fi
+      # # Check WIN2K8 is available.
+      # l_WIN2K8_RESP=$(ping_and_report $g_WIN2K8_DEFIP)
+      # if [[ $l_WIN2K8_RESP -ne 0 ]]; then
+      #   warning "    The Metasploitable3 (Microsoft Windows) VM is not responding."
+      # else
+      #   info "   The Metasploitable3 (Microsoft Windows) VM is responding."
+      # fi
 
       # Check Metasploitable3 (Linux) is available.
       l_LIN1404_RESP=$(ping_and_report $g_LIN1404_DEFIP)
@@ -609,21 +609,22 @@ function settcpip ()
       fi
 
       # Any host that is unavailable will cause script to fail, exit with error.
-      if [[ $l_WIN2K8_RESP -ne 0 ]] || [[ $l_LIN1404_RESP -ne 0 ]] || [[ $l_LIN0804_RESP -ne 0 ]]; then
-        error "    One or more of the josts in the lab enviornment are unresponsive. Please ensure each host is up prior to running this script."
+      if [[ $l_LIN1404_RESP -ne 0 ]] || [[ $l_LIN0804_RESP -ne 0 ]]; then
+      #if [[ $l_WIN2K8_RESP -ne 0 ]] || [[ $l_LIN1404_RESP -ne 0 ]] || [[ $l_LIN0804_RESP -ne 0 ]]; then
+        error "    One or more of the hosts in the lab enviornment are unresponsive. Please ensure each host is up prior to running this script."
       else
         info "    The lab host enviornment is up and ready to configure."
       fi
     fi
   ## PRE-ENVIORNMENT CHECK
 
-  ## Metasploitable3 (Microsoft Windows)
-    info "  Updating the Metasploitable3 (Microsoft Windows) VM networking."
-    sleep 5s
+  # ## Metasploitable3 (Microsoft Windows)
+  #   info "  Updating the Metasploitable3 (Microsoft Windows) VM networking."
+  #   sleep 5s
 
-    info "    Running TCPIP update script on Metasploitable3 (Microsoft Windows)."
-    sshpass -pvagrant ssh -f -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" vagrant@$g_WIN2K8_DEFIP 'netsh interface ip set address name="Attack_Network" static '"$l_WIN2K8_NEWIP"' 255.255.255.248'
-  ## Metasploitable3 (Microsoft Windows)
+  #   info "    Running TCPIP update script on Metasploitable3 (Microsoft Windows)."
+  #   sshpass -pvagrant ssh -f -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" vagrant@$g_WIN2K8_DEFIP 'netsh interface ip set address name="Attack_Network" static '"$l_WIN2K8_NEWIP"' 255.255.255.248'
+  # ## Metasploitable3 (Microsoft Windows)
 
   ## Metasploitable3 (Linux)
     info "  Updating the Metasploitable3 (Linux) VM networking."
@@ -751,13 +752,13 @@ function settcpip ()
       info "    The Kali Linux VM is responding to its new IP address."
     fi
 
-    # Check WIN2K8 is available.
-    l_WIN2K8_RESP=$(ping_and_report $l_WIN2K8_NEWIP)
-    if [[ $l_WIN2K8_RESP -ne 0 ]]; then
-      warning "    The Metasploitable3 (Microsoft Windows) is not responding to its new IP address."
-    else
-      info "    The Metasploitable3 (Microsoft Windows) is responding  to its new IP address."
-    fi
+    # # Check WIN2K8 is available.
+    # l_WIN2K8_RESP=$(ping_and_report $l_WIN2K8_NEWIP)
+    # if [[ $l_WIN2K8_RESP -ne 0 ]]; then
+    #   warning "    The Metasploitable3 (Microsoft Windows) is not responding to its new IP address."
+    # else
+    #   info "    The Metasploitable3 (Microsoft Windows) is responding  to its new IP address."
+    # fi
 
     # Check Metasploitable3 (Linux) is available.
     l_LIN1404_RESP=$(ping_and_report $l_LIN1404_NEWIP)
@@ -787,7 +788,7 @@ function settcpip ()
     printf "This is Kali Linux (2023.4)\n\nThis virtual machine (VM) is part of a lab environment that includes three isolated virtual machines that are vulnerable and designed to teach you the tools used to attack and defend networks. Using this VM, you can conduct security training, test security tools, and practice standard penetration testing techniques.\n\n" >> /home/labuser/Desktop/Lab-Readme.txt
     printf "This lab enviornment is setup with the following IP addresses:\n" >> /home/labuser/Desktop/Lab-Readme.txt
     printf "Kali Linux v2023.4 (This VM)\n  eth0: DHCP\n  eth1: $l_KALI_NEWIP/29\n\n" >> /home/labuser/Desktop/Lab-Readme.txt
-    printf "Metasploitable 3 (W2K8R2)\n  nic0: $l_WIN2K8_NEWIP/29\n\n" >> /home/labuser/Desktop/Lab-Readme.txt
+    #printf "Metasploitable 3 (W2K8R2)\n  nic0: $l_WIN2K8_NEWIP/29\n\n" >> /home/labuser/Desktop/Lab-Readme.txt
     printf "Metasploitable 3 (Linux)\n  eth0: $l_LIN1404_NEWIP/29\n\n"  >> /home/labuser/Desktop/Lab-Readme.txt
     printf "Metasploitable 2 (Linux)\n  eth0: $l_LIN0804_NEWIP/29\n\n" >> /home/labuser/Desktop/Lab-Readme.txt
   ## WRITE LAB FILE
