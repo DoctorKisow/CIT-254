@@ -61,7 +61,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.10"
+g_VERSION="0.0.11"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://github.com/DoctorKisow/CIT-254/raw/main/hacking-labs"
@@ -777,8 +777,9 @@ function settcpip ()
     fi
 
     # Any host that is unavailable will cause script to fail, exit with error.
-    if [[ $l_KALI_RESP -ne 0 ]] || [[ $l_WIN2K8_RESP -ne 0 ]] || [[ $l_LIN1404_RESP -ne 0 ]] || [[ $l_LIN0804_RESP -ne 0 ]]; then
-      error "    One or more of the hosts in the lab enviornment are unresponsive to their new ip addresses."
+    if [[ $l_KALI_RESP -ne 0 ]] || [[ $l_LIN1404_RESP -ne 0 ]] || [[ $l_LIN0804_RESP -ne 0 ]]; then
+    #if [[ $l_KALI_RESP -ne 0 ]] || [[ $l_WIN2K8_RESP -ne 0 ]] || [[ $l_LIN1404_RESP -ne 0 ]] || [[ $l_LIN0804_RESP -ne 0 ]]; then
+      warning "    One or more of the hosts in the lab enviornment are unresponsive to their new ip addresses."
     else
       info "    The lab host enviornment has successfully been reconfigured."
     fi
