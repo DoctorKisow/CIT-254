@@ -66,7 +66,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.15"
+g_VERSION="0.0.14"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://github.com/DoctorKisow/CIT-254/raw/main/hacking-labs"
@@ -570,123 +570,29 @@ function settcpip ()
 
   info "SETTING: Setting the TCPIP addresses for the private network lab enviornment."
 
-  # ## PRE-ENVIORNMENT CHECK
-  #   #  Bring up and test DHCP IP for the public network.
-  #   info "  Checking connectivity on Kali Linux (Public Network)."
-  #   l_KALI_ETH0=$(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
-  #   if [[ -z "$l_KALI_ETH0" ]]; then
-  #     info "    KALI: Attempting to bring up the eth0 on Kali Linux."
+  ## PRE-ENVIORNMENT CHECK
+    #  Bring up and test DHCP IP for the public network.
+    info "  Checking connectivity on Kali Linux (Public Network)."
+    l_KALI_ETH0=$(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
+    if [[ -z "$l_KALI_ETH0" ]]; then
+      info "    KALI: Attempting to bring up the eth0 on Kali Linux."
 
-  #     nmcli conn up id "Public Network"
-  #     if [ "$?" -ne 0]; then
-  #       error "    KALI: Interface eth0 is not receiving a DHCP address from the host network."
-  #     fi
-  #   fi
-
-  #   # Bring ip and test default IP for attack network.
-  #   info "  Checking connectivity on Kali Linux (Attack_Network)."
-  #   l_KALI_ETH1=$(ip addr show eth1 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
-  #   if [[ -z "$l_KALI_ETH1" ]]; then
-  #     info "    KALI: Attempting to bring up the eth1 on Kali Linux."
-
-  #     nmcli conn up id "Attack_Network"
-  #     if [ "$?" -ne 0]; then
-  #       error "    KALI: Interface eth1 is not properly connected to the attack network."
-  #     fi
-  #   fi
-
-  #   info "  Ensuring each lab host is up and running."
-  #   if [[ "$l_KALI_ETH1" == "$g_KALI_DEFIP" ]]; then
-  #     # Check WIN2K8 is available.
-  #     l_WIN2K8_RESP=$(ping_and_report $g_WIN2K8_DEFIP)
-  #     if [[ $l_WIN2K8_RESP -ne 0 ]]; then
-  #       warning "    The Metasploitable3 (Microsoft Windows) VM is not responding."
-  #     else
-  #       info "   The Metasploitable3 (Microsoft Windows) VM is responding."
-  #     fi
-
-  #     # Check Metasploitable3 (Linux) is available.
-  #     l_LIN1404_RESP=$(ping_and_report $g_LIN1404_DEFIP)
-  #     if [[ $l_LIN1404_RESP -ne 0 ]]; then
-  #       warning "    The Metasploitable3 (Linux) VM is not responding."
-  #     else
-  #       info "    The Metasploitable3 (Linux) VM is responding."
-  #     fi
-
-  #     # Check Metaspliotable2 (Linux) is available.
-  #     l_LIN0804_RESP=$(ping_and_report $g_LIN0804_DEFIP)
-  #     if [[ $l_LIN0804_RESP -ne 0 ]]; then
-  #       warning "    The Metasploitable2 (Linux) VM is not responding."
-  #     else
-  #       info "    The Metasploitable2 (Linux) VM is responding."
-  #     fi
-
-  #     # Any host that is unavailable will cause script to fail, exit with error.
-  #     if [[ $l_WIN2K8_RESP -ne 0 ]] || [[ $l_LIN1404_RESP -ne 0 ]] || [[ $l_LIN0804_RESP -ne 0 ]]; then
-  #       error "    One or more of the hosts in the lab enviornment are unresponsive. Please ensure each host is up prior to running this script."
-  #     else
-  #       info "    The lab host enviornment is up and ready to configure."
-  #     fi
-  #   fi
-  # ## PRE-ENVIORNMENT CHECK
-
-  # #  Bring up and test DHCP IP for the public network.
-  # info "  Checking connectivity on Kali Linux (Public Network)."
-  # l_KALI_ETH0=$(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
-  # if [[ -z "$l_KALI_ETH0" ]]; then
-  #   info "    KALI: Attempting to bring up the eth0 on Kali Linux."
-
-  #   nmcli conn up id "Public Network"
-  #   if [ "$?" -ne 0]; then
-  #     error "    KALI: Interface eth0 is not receiving a DHCP address from the host network."
-  #   fi
-  # fi
-
-  # # Bring ip and test default IP for attack network.
-  # info "  Checking connectivity on Kali Linux (Attack_Network)."
-  # l_KALI_ETH1=$(ip addr show eth1 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
-  # if [[ -z "$l_KALI_ETH1" ]]; then
-  #   info "    KALI: Attempting to bring up the eth1 on Kali Linux."
-
-  #   nmcli conn up id "Attack_Network"
-  #   if [ "$?" -ne 0]; then
-  #     error "    KALI: Interface eth1 is not properly connected to the attack network."
-  #   fi
-  # fi
-
-  ## PRE-ENVIRONMENT CHECK
-    # Cleanup cloned environment.
-    info "  Cleaning up from the cloned environment..."
-    nmcli connection | grep -q 'Wired connection 1'
-    if [ $? == 0 ]; then
-      info "    Removing cloned eth0 network adapter..."
-      nmcli connection delete "Wired connection 1"
+      nmcli conn up id "Public Network"
+      if [ "$?" -ne 0]; then
+        error "    KALI: Interface eth0 is not receiving a DHCP address from the host network."
+      fi
     fi
 
-    nmcli connection | grep -q 'Wired connection 2'
-    if [ $? == 0 ]; then
-      info "    Removing cloned eth1 network adapter..."
-      nmcli connection delete "Wired connection 2"
-    fi
+    # Bring ip and test default IP for attack network.
+    info "  Checking connectivity on Kali Linux (Attack_Network)."
+    l_KALI_ETH1=$(ip addr show eth1 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
+    if [[ -z "$l_KALI_ETH1" ]]; then
+      info "    KALI: Attempting to bring up the eth1 on Kali Linux."
 
-    nmcli connection | grep -q 'Public Network'
-    if [ $? == 0 ]; then
-      info "    Removing the orphaned eth0 network adapter..."
-      nmcli connection delete "Public Network"
-
-      info "    Creating new 'Public Network' adapter on eth0..."
-      nmcli connection add con-name "Public Network" type ethernet ifname eth0 ipv4.method auto
-      nmcli connection up id "Public Network"
-    fi
-
-    nmcli connection | grep -q 'CIT-254-ISOLATED'
-    if [ $? == 0 ]; then
-      info "    Removing the orphaned eth1 network adapter..."
-      nmcli connection delete "CIT-254-ISOLATED"
-
-      info "    Creating new 'Public Network' adapter on eth0..."
-      nmcli con add con-name "CIT-254-ISOLATED" type ethernet ifname eth1 ipv4.method manual ipv4.address 192.168.1.1/29
-      nmcli connection up id "CIT-254-ISOLATED"
+      nmcli conn up id "Attack_Network"
+      if [ "$?" -ne 0]; then
+        error "    KALI: Interface eth1 is not properly connected to the attack network."
+      fi
     fi
 
     info "  Ensuring each lab host is up and running."
@@ -694,30 +600,30 @@ function settcpip ()
       # Check WIN2K8 is available.
       l_WIN2K8_RESP=$(ping_and_report $g_WIN2K8_DEFIP)
       if [[ $l_WIN2K8_RESP -ne 0 ]]; then
-        warning "    The Metasploitable3 (Windows 2008R2) VM is not responding."
+        warning "    The Metasploitable3 (Microsoft Windows) VM is not responding."
       else
-        info "   The Metasploitable3 (Windows 2008R2) VM is responding."
+        info "   The Metasploitable3 (Microsoft Windows) VM is responding."
       fi
 
       # Check Metasploitable3 (Linux) is available.
       l_LIN1404_RESP=$(ping_and_report $g_LIN1404_DEFIP)
       if [[ $l_LIN1404_RESP -ne 0 ]]; then
-        warning "    The Metasploitable3 (Ubuntu 14.04) VM is not responding."
+        warning "    The Metasploitable3 (Linux) VM is not responding."
       else
-        info "    The Metasploitable3 (Ubuntu 14.04) VM is responding."
+        info "    The Metasploitable3 (Linux) VM is responding."
       fi
 
       # Check Metaspliotable2 (Linux) is available.
       l_LIN0804_RESP=$(ping_and_report $g_LIN0804_DEFIP)
       if [[ $l_LIN0804_RESP -ne 0 ]]; then
-        warning "    The Metasploitable2 (Ubuntu 08.04) VM is not responding."
+        warning "    The Metasploitable2 (Linux) VM is not responding."
       else
-        info "    The Metasploitable2 (Ubuntu 08.04) VM is responding."
+        info "    The Metasploitable2 (Linux) VM is responding."
       fi
 
       # Any host that is unavailable will cause script to fail, exit with error.
       if [[ $l_WIN2K8_RESP -ne 0 ]] || [[ $l_LIN1404_RESP -ne 0 ]] || [[ $l_LIN0804_RESP -ne 0 ]]; then
-        error "    One or more of the josts in the lab enviornment are unresponsive. Please ensure each host is up prior to running this script."
+        error "    One or more of the hosts in the lab enviornment are unresponsive. Please ensure each host is up prior to running this script."
       else
         info "    The lab host enviornment is up and ready to configure."
       fi
