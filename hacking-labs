@@ -3,6 +3,7 @@
 # hacking-labs - A script used to change the TCP/IP addresses in the CIT-254 lab enviornment for my CIT-254 Ethical Hacking classes.
 # Copyright (c) 2022-2024 Dr. Matthew Kisow. All rights reserved.
 # Dr. Matthew Kisow <mkisow@ccac.edu>
+#
 
 # License (CC-BY-ND)
 # ------------------
@@ -16,38 +17,32 @@
 
 # ##############################################################################
 # CIT-254 Ethical Hacking Lab Enviornment
-# Copyright (c) 2022-2024 Dr. Matthew Kisow. All rights reserved.
-#
-# The usage of Metasploit and the Metasploitable framework is governed by the copyrights held by Rapid7.
-#
-# Microsoft Server is a copyrighted product of Microsoft Corporation. All rights reserved.
-#
 #
 #  CIT-254 Lab vAPP
-#  ├─Kali (2023.4)
-#  ├─metasploitable2 (Ubuntu 08.04)
-#  ├─metasploitable3 (Ubuntu 14.04)
-#  ├─metasploitable3 (Windows 2008R2)
+#  ├─Kali 2023.4
+#  ├─metasploitable-ub0804
+#  ├─metasploitable3-ub1404
+#  ├─metasploitable3-win2k8
 #
-#  Kali (2023.4)
+#  Kali 2023.4
 #  - hostname: comptia
 #  - eth0:     dhcp
 #  - eth1:     192.168.1.1/29
 #  - admin:    mkisowa/Ch354vk!0010
 #  - labuser:  labuser/P@$$w0rd!
 #
-#  metasploitable3 (Windows 2008R2)
+#  metasploitable-win2k8
 #  - hostname: vagrant-2008R2
 #  - eth0:     192.168.1.2/29
 #  - user:     vagrant/vagrant
 #              administrator/vagrant
 #
-#  metasploitable3 (Ubuntu 14.04)
+#  metasploitable-ub1404
 #  - hostname: ubuntu
 #  - eth0:     192.168.1.3/29
 #  - user:     vagrant/vagrant
 #
-#  metasploitable2 (Ubuntu 08.04)
+#  metasploitable-ub0804
 #  - hostname: metasploitable
 #  - eth0:     192.168.1.4/29
 #  - user:     msfadmin/msfadmin
@@ -66,7 +61,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.14"
+g_VERSION="0.0.10"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://github.com/DoctorKisow/CIT-254/raw/main/hacking-labs"
@@ -361,18 +356,6 @@ function trap_cleanup ()
 }
 trap trap_cleanup SIGHUP SIGQUIT SIGINT SIGTERM SIGKILL EXIT
 
-# (ver_comp) - Function used to compare the versions of the script update. Passed arguements ($1) old version, ($2) operand (\< \>), ($3) new version.
-function ver_comp ()
-{
-  local x y IFS=. -; set -f
-  local l_OLDVER=$1
-  local l_OPER=$2
-  local l_NEWVER=$3
-
-  printf -v x %08d $l_OLDVER; printf -v y %08d $l_NEWVER
-  test $x "$l_OPER" $y
-}
-
 # (update) - Function used to check for and update this script from the repository.
 function update ()
 {
@@ -391,7 +374,7 @@ function update ()
   l_VERSION=$(grep "^g_VERSION" "$l_TMP_FILE" | awk -F'[="]' '{print $3}')
 
   # Compare the script versions and update if newer.
-  if ver_comp $g_VERSION \< $l_VERSION; then
+  if [ "$g_VERSION" \< "$l_VERSION" ]; then
     info "Updating the $g_PROGRAM_NAME script."
 
     # Create updater script.
@@ -404,8 +387,8 @@ function update ()
     chmod +x updater.sh
     chmod 770 "$l_TMP_FILE"
 
-    if [ $(getent group labuser) ]; then
-      chown root:labuser "$l_TMP_FILE"
+    if [ $(getent group labusers) ]; then
+      chown root:labusers "$l_TMP_FILE"
     else
       chown root:root "$l_TMP_FILE"
     fi
@@ -434,10 +417,14 @@ function update_notice ()
   l_VERSION=$(grep "^g_VERSION" "$l_TMP_FILE" | awk -F'[="]' '{print $3}')
 
   # Compare the script versions and notify if newer.
-  if ver_comp $g_VERSION \< $l_VERSION; then
+  if [ "$g_VERSION" \< "$l_VERSION" ]; then
     info "There is a new version v$l_VERSION of the $g_PROGRAM_NAME script available.\n         To upgrade please type \"$g_PROGRAM_NAME -u\" at the command prompt.\n\n"
   else
     info "You are running the current version of this script.\n\n"
+
+    if [[ -f "${g_SCRIPT_PATH}/updater.sh" ]]; then
+        rm "${g_SCRIPT_PATH}/updater.sh"
+    fi
   fi
 
   rm -f $l_TMP_FILE
@@ -571,6 +558,32 @@ function settcpip ()
   info "SETTING: Setting the TCPIP addresses for the private network lab enviornment."
 
   ## PRE-ENVIORNMENT CHECK
+    # Cleanup cloned enviornment.
+    info "  Cleaning up from the cloned enviornment..."
+    nmcli connection | grep -q 'Wired connection 1'
+    if [ $? == 0 ]; then
+      nmcli connection delete "Wired connection 1"
+    fi
+
+    nmcli connection | grep -q 'Wired connection 2'
+    if [ $? == 0 ]; then
+      nmcli connection delete "Wired connection 2"
+    fi
+
+    nmcli connection | grep -q 'Public Network'
+    if [ $? == 0 ]; then
+      nmcli connection delete "Public Network"
+      nmcli connection add con-name "Public Network" type ethernet ifname eth0 ipv4.method auto
+      nmcli connection up id "Public Network"
+    fi
+
+    nmcli connection | grep -q 'CIT-254-ISOLATED'
+    if [ $? == 0 ]; then
+      nmcli connection delete "CIT-254-ISOLATED"
+      nmcli con add con-name "CIT-254-ISOLATED" type ethernet ifname eth1 ipv4.method manual ipv4.address 192.168.1.1/29
+      nmcli connection up id "CIT-254-ISOLATED"
+    fi
+
     #  Bring up and test DHCP IP for the public network.
     info "  Checking connectivity on Kali Linux (Public Network)."
     l_KALI_ETH0=$(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
@@ -623,7 +636,7 @@ function settcpip ()
 
       # Any host that is unavailable will cause script to fail, exit with error.
       if [[ $l_WIN2K8_RESP -ne 0 ]] || [[ $l_LIN1404_RESP -ne 0 ]] || [[ $l_LIN0804_RESP -ne 0 ]]; then
-        error "    One or more of the hosts in the lab enviornment are unresponsive. Please ensure each host is up prior to running this script."
+        error "    One or more of the josts in the lab enviornment are unresponsive. Please ensure each host is up prior to running this script."
       else
         info "    The lab host enviornment is up and ready to configure."
       fi
@@ -635,7 +648,7 @@ function settcpip ()
     sleep 5s
 
     info "    Running TCPIP update script on Metasploitable3 (Microsoft Windows)."
-    sshpass -pvagrant ssh -f -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" vagrant@$g_WIN2K8_DEFIP 'netsh interface ip set address name="CIT-254-ISOLATED" static '"$l_WIN2K8_NEWIP"' 255.255.255.248'
+    sshpass -pvagrant ssh -f -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" vagrant@$g_WIN2K8_DEFIP 'netsh interface ip set address name="Attack_Network" static '"$l_WIN2K8_NEWIP"' 255.255.255.248'
   ## Metasploitable3 (Microsoft Windows)
 
   ## Metasploitable3 (Linux)
@@ -790,7 +803,7 @@ function settcpip ()
 
     # Any host that is unavailable will cause script to fail, exit with error.
     if [[ $l_KALI_RESP -ne 0 ]] || [[ $l_WIN2K8_RESP -ne 0 ]] || [[ $l_LIN1404_RESP -ne 0 ]] || [[ $l_LIN0804_RESP -ne 0 ]]; then
-      warning "    One or more of the hosts in the lab enviornment are unresponsive to their new ip addresses."
+      error "    One or more of the hosts in the lab enviornment are unresponsive to their new ip addresses."
     else
       info "    The lab host enviornment has successfully been reconfigured."
     fi
