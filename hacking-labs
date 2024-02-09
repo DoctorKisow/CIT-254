@@ -66,7 +66,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.28"
+g_VERSION="0.0.29"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://github.com/DoctorKisow/CIT-254/raw/main/hacking-labs"
@@ -120,37 +120,6 @@ declare g_ARG_IPRNG=""
 declare g_ARG_IPTST=""
 
 # **************************** basic script functions **************************
-# (check_and_install_required) - Function used to check for and install missing packages.
-check_and_install_required()
-{
-  local l_PACKAGE
-    # Check if ipcalc command is available
-    if command -v ipcalc &>/dev/null; then
-        info "required package is already installed."
-    else
-        # Attempt to install ipcalc
-        info "Attempting to install missing package"
-
-        if command -v apt-get &>/dev/null; then
-            sudo apt-get update
-            sudo apt-get install -y ipcalc
-        elif command -v yum &>/dev/null; then
-            sudo yum install -y ipcalc
-        else
-            echo "Unsupported package manager. Please install ipcalc manually."
-            return 1
-        fi
-
-        # Verify installation
-        if command -v ipcalc &>/dev/null; then
-            echo "ipcalc has been successfully installed."
-        else
-            echo "Installation of ipcalc failed. Please install it manually."
-            return 1
-        fi
-    fi
-}
-
 # (cleanup_and_exit_with_code) - Function used to properly cleanup the enviornment after an error; the passed value are 1 (error) or 0 (normal).
 function cleanup_and_exit_with_code ()
 {
@@ -756,7 +725,7 @@ function settcpip ()
   ## POST-ENVIORNMENT CHECK
     # Check KALI is available.
     l_KALI_RESP=$(ping_and_report $l_KALI_NEWIP)
-    if [ $l_KALI_RESP == 0 ]; then
+    if [[ $l_KALI_RESP -eq 1 ]]; then
       info "    The Kali Linux VM is responding to its new IP address."
     else
       warning "    The Kali Linux VM is not responding to its new IP address."
@@ -764,7 +733,7 @@ function settcpip ()
 
     # Check Metasploitable3 (Windows 2008R2) is available.
     l_WIN2K8_RESP=$(ping_and_report $l_WIN2K8_NEWIP)
-    if [ $l_WIN2K8_RESP == 0 ]; then
+    if [[ $l_WIN2K8_RESP -eq 1 ]]; then
       info "    The Metasploitable3 (Windows 2008R2) is responding to its new IP address."
     else
       warning "    The Metasploitable3 (Windows 2008R2) is not responding to its new IP address."
@@ -772,7 +741,7 @@ function settcpip ()
 
     # Check Metasploitable3 (Ubuntu 14.04) is available.
     l_LIN1404_RESP=$(ping_and_report $l_LIN1404_NEWIP)
-    if [ $l_LIN1404_RESP == 0 ]; then
+    if [[ $l_LIN1404_RESP -eq 1 ]]; then
       info "    The Metasploitable3 (Ubuntu 14.04) is responding to its new IP address."
     else
       warning "    The Metasploitable3 (Ubuntu 14.04) is not responding to its new IP address."
@@ -780,7 +749,7 @@ function settcpip ()
 
     # Check Metaspliotable2 (Linux) is available.
     l_LIN0804_RESP=$(ping_and_report $l_LIN0804_NEWIP)
-    if [ $l_LIN0804_RESP == 0 ]; then
+    if [[ $l_LIN0804_RESP -eq 1 ]]; then
       info "    The Metasploitable2 (Ubuntu 08.04) is responding to its new IP address."
     else
       warning "    The Metasploitable2 (Ubuntu 08.04) is not responding to its new IP address."
