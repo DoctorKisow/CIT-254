@@ -1,0 +1,173 @@
+#!/bin/bash
+
+# (g_<color>_TEXT) - Variables used to control how output is displayed to the screen during script execution.
+g_RED_TEXT="" g_GREEN_TEXT="" g_YELLOW_TEXT="" g_BLUE_TEXT="" g_MAGENTA_TEXT="" g_CYAN_TEXT="" g_WHITE_TEXT="" g_RESET_ATTS=""  g_ALERT_TEXT=""
+if [[ -v TERM && -n "${TERM}" && "${TERM}" != "dumb" ]]; then
+  g_RD_TEXT="$(tput setaf 1)$(tput bold)"
+  g_GREEN_TEXT="$(tput setaf 2)$(tput bold)"
+  g_YELLOW_TEXT="$(tput setaf 3)$(tput bold)"
+  g_BLUE_TEXT="$(tput setaf 4)$(tput bold)"
+  g_MAGENTA_TEXT="$(tput setaf 5)$(tput bold)"
+  g_CYAN_TEXT="$(tput setaf 6)$(tput bold)"
+  g_WHITE_TEXT="$(tput setaf 7)$(tput bold)"
+  g_RESET_ATTS="$(tput sgr0)"
+  g_ALERT_TEXT="$(tput bel)"
+fi
+
+# (g_PREFIXSTRING) - String value used to indicate what is appended to the output at the beginning of screen output during script execution.
+g_PREFIXSTRING="*  "
+
+# (g_SCRIPT_PATH) - String value used to hold the execution path of the script.
+g_SCRIPT_PATH="`dirname \"$0\"`"
+g_SCRIPT_PATH="`( cd \"$g_SCRIPT_PATH\" && pwd )`"
+
+# (info) - Function for formatted informational messages.
+function info ()
+{
+  echo -e "${g_CYAN_TEXT}${g_PREFIXSTRING}${g_RESET_ATTS}   INFO: ${1}" >&2
+}
+
+# Script location where it was run from.
+g_SCRIPT_LOCATION="${BASH_SOURCE[@]}"
+
+declare g_KALI_DEFIP="192.168.1.9"
+declare g_WIN2K8_DEFIP="192.168.1.10"
+declare g_LIN1404_DEFIP="192.168.1.11"
+declare g_LIN0804_DEFIP="192.168.1.12"
+
+declare l_KALI_NEWIP="192.168.1.1"
+declare l_WIN2K8_NEWIP="192.168.1.2"
+declare l_LIN1404_NEWIP="192.168.1.3"
+declare l_LIN0804_NEWIP="192.168.1.4"
+
+
+  ## Metasploitable3 (Microsoft Windows)
+    info "  Updating the Metasploitable3 (Microsoft Windows) VM networking."
+    sleep 5s
+
+    info "    Running TCPIP update script on Metasploitable3 (Microsoft Windows)."
+    sshpass -pvagrant ssh -f -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" vagrant@$g_WIN2K8_DEFIP 'netsh interface ip set address name="CIT-254-ISOLATED" static '"$l_WIN2K8_NEWIP"' 255.255.255.248'
+  ## Metasploitable3 (Microsoft Windows)
+
+  ## Metasploitable3 (Linux)
+    info "  Updating the Metasploitable3 (Linux) VM networking."
+    sleep 5s
+
+    # Cleanup incase of a borked run.
+    if [[ -f "${g_SCRIPT_PATH}/bootstrap_lin1404.sh" ]]; then
+      info "    Cleaning up messy environment, removing bootstrap_lin1404.sh script."
+      rm "${g_SCRIPT_PATH}/bootstrap_lin1404.sh"
+    fi
+
+    # Cleanup incase of a borked run.
+    if [[ -f "${g_SCRIPT_PATH}/updater_lin1404.sh" ]]; then
+      info "    Cleaning up messy environment, removing updater_lin1404.sh script."
+      rm "${g_SCRIPT_PATH}/updater_lin1404.sh"
+    fi
+
+    # Create bootstrap script that will call the updater script.
+    info "    Creating bootstrap script."
+    printf '#!/bin/bash\n\n' >> bootstrap_lin1404.sh
+    printf "echo vagrant | sudo -S nohup /home/vagrant/updater.sh &\n" >> bootstrap_lin1404.sh
+    printf "rm /home/vagrant/bootstrap.sh\n" >> bootstrap_lin1404.sh
+    chmod +x bootstrap_lin1404.sh
+
+    # Create the updater script based on default ip address and new onr entered.
+    info "    Creating TCPIP address updater script."
+    printf '#!/bin/bash\n\n' >> updater_lin1404.sh
+    printf "sleep 10s\n\n" >> updater_lin1404.sh
+    printf "sed -i -e 's/$g_LIN1404_DEFIP/$l_LIN1404_NEWIP/' /etc/network/interfaces\n" >> updater_lin1404.sh
+    printf "ifdown eth0 && ifup eth0\n" >> updater_lin1404.sh
+    printf "rm /home/vagrant/updater.sh\n" >> updater_lin1404.sh
+    chmod +x updater_lin1404.sh
+
+    # Copy scripts to the Metasploitable3 (Linux) VM.
+    sshpass -pvagrant scp -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" updater_lin1404.sh vagrant@$g_LIN1404_DEFIP:/home/vagrant/updater.sh
+    sshpass -pvagrant scp -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" bootstrap_lin1404.sh vagrant@$g_LIN1404_DEFIP:/home/vagrant/bootstrap.sh
+
+    # Run the SSH script
+    info "    Running TCPIP update script on Metasploitable3 (Linux)."
+    sshpass -pvagrant ssh -f -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" vagrant@$g_LIN1404_DEFIP '/bin/bash /home/vagrant/bootstrap.sh'
+    if [ $? -eq 0 ]; then
+      info "    TCPIP address updater script ran successfully."
+    fi
+
+    # Cleanup after run.
+    if [[ -f "${g_SCRIPT_PATH}/bootstrap_lin1404.sh" ]]; then
+      info "    Cleaning up removing bootstrap_lin1404.sh script."
+      rm "${g_SCRIPT_PATH}/bootstrap_lin1404.sh"
+    fi
+
+    if [[ -f "${g_SCRIPT_PATH}/updater_lin1404.sh" ]]; then
+      info "    Cleaning up removing updater_lin1404.sh script."
+      rm "${g_SCRIPT_PATH}/updater_lin1404.sh"
+    fi
+  ## Metasploitable3 (Linux)
+
+  ## Metasploitable2 (Linux)
+    info "  Updating the Metasploitable2 VM networking."
+    sleep 5s
+
+    # Cleanup incase of a borked run.
+    if [[ -f "${g_SCRIPT_PATH}/bootstrap_lin0804.sh" ]]; then
+      info "    Cleaning up messy environment, removing bootstrap_lin0804.sh script."
+      rm "${g_SCRIPT_PATH}/bootstrap_lin0804.sh"
+    fi
+
+    # Cleanup incase of a borked run.
+    if [[ -f "${g_SCRIPT_PATH}/updater_lin0804.sh" ]]; then
+      info "    Cleaning up messy environment, removing updater_lin0804.sh script."
+      rm "${g_SCRIPT_PATH}/updater_lin0804.sh"
+    fi
+
+    # Create bootstrap script that will call the updater script.
+    info "    Creating bootstrap script."
+    printf '#!/bin/bash\n\n' >> bootstrap_lin0804.sh
+    printf "echo msfadmin | sudo -S nohup /home/msfadmin/updater.sh &\n" >> bootstrap_lin0804.sh
+    printf "rm /home/msfadmin/bootstrap.sh\n" >> bootstrap_lin0804.sh
+    chmod +x bootstrap_lin0804.sh
+
+    # Create the updater script based on default ip address and new onr entered.
+    info "    Creating TCPIP address updater script."
+    printf '#!/bin/bash\n\n' >> updater_lin0804.sh
+    printf "sleep 10s\n\n" >> updater_lin0804.sh
+    printf "sed -i -e 's/$g_LIN0804_DEFIP/$l_LIN0804_NEWIP/' /etc/network/interfaces\n" >> updater_lin0804.sh
+    printf "ifdown eth0 && ifup eth0\n" >> updater_lin0804.sh
+    printf "rm /home/msfadmin/updater.sh\n" >> updater_lin0804.sh
+    chmod +x updater_lin0804.sh
+
+    # Copy scripts to the Metasploitable2 VM.
+    sshpass -pmsfadmin scp -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" updater_lin0804.sh msfadmin@$g_LIN0804_DEFIP:/home/msfadmin/updater.sh
+    sshpass -pmsfadmin scp -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" bootstrap_lin0804.sh msfadmin@$g_LIN0804_DEFIP:/home/msfadmin/bootstrap.sh
+
+    # Run the SSH script
+    info "    Running TCPIP update script on Metasploitable2."
+    sshpass -pmsfadmin ssh -f -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" msfadmin@$g_LIN0804_DEFIP '/bin/bash /home/msfadmin/bootstrap.sh'
+    if [ $? -eq 0 ]; then
+      info "    TCPIP address updater script ran successfully."
+    fi
+
+    # Cleanup after run.
+    if [[ -f "${g_SCRIPT_PATH}/bootstrap_lin0804.sh" ]]; then
+      info "    Cleaning up removing bootstrap_lin0804.sh script."
+      rm "${g_SCRIPT_PATH}/bootstrap_lin0804.sh"
+    fi
+
+    if [[ -f "${g_SCRIPT_PATH}/updater_lin0804.sh" ]]; then
+      info "    Cleaning up removing updater_lin0804.sh script."
+      rm "${g_SCRIPT_PATH}/updater_lin0804.sh"
+    fi
+  ## Metasploitable2 (Linux)
+
+  ## KALI
+    info "  Updating Kali Linux (eth1) VM networking."
+    nmcli connection down "CIT-254-ISOLATED" > /dev/nul
+    nmcli connection modify "CIT-254-ISOLATED" ipv4.addresses $l_KALI_NEWIP/29
+    nmcli connection up "CIT-254-ISOLATED" > /dev/nul
+  ## KALI
+
+  # Cleanup incase of a borked run.
+  if [[ -f ~/.ssh ]]; then
+    info "    Cleaning up saved ssh information."
+    rm -R ~/.ssh
+  fi
