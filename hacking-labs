@@ -55,8 +55,8 @@
 
 
 ## Set how the script will behave when certain conditions are encountered.
-# Enable exiting immediately if a command exits with a non-zero status.
-set -e
+# Disable exiting immediately if a command exits with a non-zero status.
+set +e
 
 # Enable erroring on un-bound (undefined) variables.
 set -u
@@ -66,7 +66,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.21"
+g_VERSION="0.0.23"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://github.com/DoctorKisow/CIT-254/raw/main/hacking-labs"
@@ -560,43 +560,37 @@ function settcpip ()
     # Cleanup cloned environment.
     info "  Cleaning up from the cloned environment..."
 
-    # Disable exiting immediately if a command exits with a non-zero status.
-    set +e
-
     nmcli connection | grep -q 'Wired connection 1'
     if [ $? == 0 ]; then
       info "    Removing cloned eth0 network adapter..."
-      nmcli connection delete "Wired connection 1"
+      nmcli connection delete "Wired connection 1" &>/dev/null
     fi
 
     nmcli connection | grep -q 'Wired connection 2'
     if [ $? == 0 ]; then
       info "    Removing cloned eth1 network adapter..."
-      nmcli connection delete "Wired connection 2"
+      nmcli connection delete "Wired connection 2" &>/dev/null
     fi
 
     nmcli connection | grep -q 'Public Network'
     if [ $? == 0 ]; then
       info "    Removing the orphaned eth0 network adapter..."
-      nmcli connection delete "Public Network"
+      nmcli connection delete "Public Network" &>/dev/null
 
       info "    Creating new 'Public Network' adapter on eth0..."
-      nmcli connection add con-name "Public Network" type ethernet ifname eth0 ipv4.method auto
-      nmcli connection up id "Public Network"
+      nmcli connection add con-name "Public Network" type ethernet ifname eth0 ipv4.method auto &>/dev/null
+      nmcli connection up id "Public Network" &>/dev/null
     fi
 
     nmcli connection | grep -q 'CIT-254-ISOLATED'
     if [ $? == 0 ]; then
       info "    Removing the orphaned eth1 network adapter..."
-      nmcli connection delete "CIT-254-ISOLATED"
+      nmcli connection delete "CIT-254-ISOLATED" &>/dev/null
 
       info "    Creating new 'Public Network' adapter on eth0..."
-      nmcli con add con-name "CIT-254-ISOLATED" type ethernet ifname eth1 ipv4.method manual ipv4.address 192.168.1.1/29
-      nmcli connection up id "CIT-254-ISOLATED"
+      nmcli con add con-name "CIT-254-ISOLATED" type ethernet ifname eth1 ipv4.method manual ipv4.address 192.168.1.1/29 &>/dev/null
+      nmcli connection up id "CIT-254-ISOLATED" &>/dev/null
     fi
-
-    # Enable exiting immediately if a command exits with a non-zero status.
-    set -e
 
     info "  Ensuring each lab host is up and running."
     if [[ "$l_KALI_ETH1" == "$g_KALI_DEFIP" ]]; then
@@ -770,25 +764,25 @@ function settcpip ()
     # Check WIN2K8 is available.
     l_WIN2K8_RESP=$(ping_and_report $l_WIN2K8_NEWIP)
     if [[ $l_WIN2K8_RESP -ne 0 ]]; then
-      warning "    The Metasploitable3 (Microsoft Windows) is not responding to its new IP address."
+      warning "    The Metasploitable3 (Windows 2008R2) is not responding to its new IP address."
     else
-      info "    The Metasploitable3 (Microsoft Windows) is responding  to its new IP address."
+      info "    The Metasploitable3 (Windows 2008R2) is responding  to its new IP address."
     fi
 
     # Check Metasploitable3 (Linux) is available.
     l_LIN1404_RESP=$(ping_and_report $l_LIN1404_NEWIP)
     if [[ $l_LIN1404_RESP -ne 0 ]]; then
-      warning "    The Metasploitable3 (Linux) is not responding to its new IP address."
+      warning "    The Metasploitable3 (Ubuntu 14.04) is not responding to its new IP address."
     else
-      info "    The Metasploitable3 (Linux) is responding to its new IP address."
+      info "    The Metasploitable3 (Ubuntu 14.04) is responding to its new IP address."
     fi
 
     # Check Metaspliotable2 (Linux) is available.
     l_LIN0804_RESP=$(ping_and_report $l_LIN0804_NEWIP)
     if [[ $l_LIN0804_RESP -ne 0 ]]; then
-      warning "    The Metasploitable2 (Linux) is not responding to its new IP address."
+      warning "    The Metasploitable2 (Ubuntu 08.04) is not responding to its new IP address."
     else
-      info "    The Metasploitable2 (Linux) is responding to its new IP address."
+      info "    The Metasploitable2 (Ubuntu 08.04) is responding to its new IP address."
     fi
 
     # Any host that is unavailable will cause script to fail, exit with error.
