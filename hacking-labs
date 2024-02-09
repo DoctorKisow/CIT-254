@@ -66,7 +66,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.15"
+g_VERSION="0.0.16"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://github.com/DoctorKisow/CIT-254/raw/main/hacking-labs"
@@ -312,9 +312,7 @@ function script_banner ()
   printf "${g_CYAN_TEXT}${g_AUTHOR_TEXT} <${g_AUTHOR_EMAIL}>${g_RESET_ATTS}\n"
   printf -- "--------------------------------------------------------------------------------\n\n"
 
-  if ((g_ARG_UPDATE==0)); then
-    update_notice
-  fi
+  update
 }
 
 # (set_error_trapping) - Function used to enable and disable error handeling, unbound variables and filename pattern matching; the passed value is 1 for enabled or 0 for disabled.
@@ -392,55 +390,36 @@ function update ()
 
   # Compare the script versions and update if newer.
   if ver_comp $g_VERSION \< $l_VERSION; then
-    info "Updating the $g_PROGRAM_NAME script."
+    if ((g_ARG_UPDATE==1)); then
+      info "Updating the $g_PROGRAM_NAME script."
 
-    # Create updater script.
-    l_ABS_PATH=$(readlink -f "$g_SCRIPT_LOCATION")
+      # Create updater script.
+      l_ABS_PATH=$(readlink -f "$g_SCRIPT_LOCATION")
 
-    printf '#!/bin/bash\n\n' >> updater.sh
-    printf "cp \"$l_TMP_FILE\" \"$l_ABS_PATH\"\n" >> updater.sh
-    printf "rm $g_SCRIPT_PATH/updater.sh" >> updater.sh
+      printf '#!/bin/bash\n\n' >> updater.sh
+      printf "cp \"$l_TMP_FILE\" \"$l_ABS_PATH\"\n" >> updater.sh
+      printf "rm $g_SCRIPT_PATH/updater.sh" >> updater.sh
 
-    chmod +x updater.sh
-    chmod 770 "$l_TMP_FILE"
+      chmod +x updater.sh
+      chmod 770 "$l_TMP_FILE"
 
-    if [ $(getent group labuser) ]; then
-      chown root:labuser "$l_TMP_FILE"
-    else
-      chown root:root "$l_TMP_FILE"
+      if [ $(getent group labuser) ]; then
+        chown root:labuser "$l_TMP_FILE"
+      else
+        chown root:root "$l_TMP_FILE"
+      fi
+
+      exec /bin/bash "$g_SCRIPT_PATH/updater.sh"
     fi
 
-    exec /bin/bash "$g_SCRIPT_PATH/updater.sh"
-  else
-    rm -f "$l_TMP_FILE"
+    if ((g_ARG_UPDATE==0)); then
+      info "There is a new version v$l_VERSION of the $g_PROGRAM_NAME script available.\n         To upgrade please type \"$g_PROGRAM_NAME -u\" at the command prompt.\n\n"
+    else
+      info "You are running the current version of this script.\n\n"
+    fi
   fi
 
-  cleanup_and_exit_with_code 0
-}
-
-# (update_notice) - Function used to notify the user of a new script available in the repository.
-function update_notice ()
-{
-  local l_TMP_FILE
-  local l_ABS_PATH
-  local l_VERSION
-
-  cd "${g_SCRIPT_PATH}"
-
-  # Get a new version of the script.
-  l_TMP_FILE=$(mktemp -p "" "XXXXX.sh")
-  curl -s -L "$g_SCRIPT_URL" > "$l_TMP_FILE"
-
-  l_VERSION=$(grep "^g_VERSION" "$l_TMP_FILE" | awk -F'[="]' '{print $3}')
-
-  # Compare the script versions and notify if newer.
-  if ver_comp $g_VERSION \< $l_VERSION; then
-    info "There is a new version v$l_VERSION of the $g_PROGRAM_NAME script available.\n         To upgrade please type \"$g_PROGRAM_NAME -u\" at the command prompt.\n\n"
-  else
-    info "You are running the current version of this script.\n\n"
-  fi
-
-  rm -f $l_TMP_FILE
+  rm -f "$l_TMP_FILE"
 }
 
 # (warning) - Function for formatted warning messages.
@@ -569,90 +548,6 @@ function settcpip ()
   local l_LIN0804_RESP=""
 
   info "SETTING: Setting the TCPIP addresses for the private network lab enviornment."
-
-  # ## PRE-ENVIORNMENT CHECK
-  #   #  Bring up and test DHCP IP for the public network.
-  #   info "  Checking connectivity on Kali Linux (Public Network)."
-  #   l_KALI_ETH0=$(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
-  #   if [[ -z "$l_KALI_ETH0" ]]; then
-  #     info "    KALI: Attempting to bring up the eth0 on Kali Linux."
-
-  #     nmcli conn up id "Public Network"
-  #     if [ "$?" -ne 0]; then
-  #       error "    KALI: Interface eth0 is not receiving a DHCP address from the host network."
-  #     fi
-  #   fi
-
-  #   # Bring ip and test default IP for attack network.
-  #   info "  Checking connectivity on Kali Linux (Attack_Network)."
-  #   l_KALI_ETH1=$(ip addr show eth1 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
-  #   if [[ -z "$l_KALI_ETH1" ]]; then
-  #     info "    KALI: Attempting to bring up the eth1 on Kali Linux."
-
-  #     nmcli conn up id "Attack_Network"
-  #     if [ "$?" -ne 0]; then
-  #       error "    KALI: Interface eth1 is not properly connected to the attack network."
-  #     fi
-  #   fi
-
-  #   info "  Ensuring each lab host is up and running."
-  #   if [[ "$l_KALI_ETH1" == "$g_KALI_DEFIP" ]]; then
-  #     # Check WIN2K8 is available.
-  #     l_WIN2K8_RESP=$(ping_and_report $g_WIN2K8_DEFIP)
-  #     if [[ $l_WIN2K8_RESP -ne 0 ]]; then
-  #       warning "    The Metasploitable3 (Microsoft Windows) VM is not responding."
-  #     else
-  #       info "   The Metasploitable3 (Microsoft Windows) VM is responding."
-  #     fi
-
-  #     # Check Metasploitable3 (Linux) is available.
-  #     l_LIN1404_RESP=$(ping_and_report $g_LIN1404_DEFIP)
-  #     if [[ $l_LIN1404_RESP -ne 0 ]]; then
-  #       warning "    The Metasploitable3 (Linux) VM is not responding."
-  #     else
-  #       info "    The Metasploitable3 (Linux) VM is responding."
-  #     fi
-
-  #     # Check Metaspliotable2 (Linux) is available.
-  #     l_LIN0804_RESP=$(ping_and_report $g_LIN0804_DEFIP)
-  #     if [[ $l_LIN0804_RESP -ne 0 ]]; then
-  #       warning "    The Metasploitable2 (Linux) VM is not responding."
-  #     else
-  #       info "    The Metasploitable2 (Linux) VM is responding."
-  #     fi
-
-  #     # Any host that is unavailable will cause script to fail, exit with error.
-  #     if [[ $l_WIN2K8_RESP -ne 0 ]] || [[ $l_LIN1404_RESP -ne 0 ]] || [[ $l_LIN0804_RESP -ne 0 ]]; then
-  #       error "    One or more of the hosts in the lab enviornment are unresponsive. Please ensure each host is up prior to running this script."
-  #     else
-  #       info "    The lab host enviornment is up and ready to configure."
-  #     fi
-  #   fi
-  # ## PRE-ENVIORNMENT CHECK
-
-  # #  Bring up and test DHCP IP for the public network.
-  # info "  Checking connectivity on Kali Linux (Public Network)."
-  # l_KALI_ETH0=$(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
-  # if [[ -z "$l_KALI_ETH0" ]]; then
-  #   info "    KALI: Attempting to bring up the eth0 on Kali Linux."
-
-  #   nmcli conn up id "Public Network"
-  #   if [ "$?" -ne 0]; then
-  #     error "    KALI: Interface eth0 is not receiving a DHCP address from the host network."
-  #   fi
-  # fi
-
-  # # Bring ip and test default IP for attack network.
-  # info "  Checking connectivity on Kali Linux (Attack_Network)."
-  # l_KALI_ETH1=$(ip addr show eth1 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
-  # if [[ -z "$l_KALI_ETH1" ]]; then
-  #   info "    KALI: Attempting to bring up the eth1 on Kali Linux."
-
-  #   nmcli conn up id "Attack_Network"
-  #   if [ "$?" -ne 0]; then
-  #     error "    KALI: Interface eth1 is not properly connected to the attack network."
-  #   fi
-  # fi
 
   ## PRE-ENVIRONMENT CHECK
     # Cleanup cloned environment.
@@ -893,10 +788,11 @@ function settcpip ()
   ## WRITE LAB FILE
     printf "This is Kali Linux (2023.4)\n\nThis virtual machine (VM) is part of a lab environment that includes three isolated virtual machines that are vulnerable and designed to teach you the tools used to attack and defend networks. Using this VM, you can conduct security training, test security tools, and practice standard penetration testing techniques.\n\n" >> /home/labuser/Desktop/Lab-Readme.txt
     printf "This lab enviornment is setup with the following IP addresses:\n" >> /home/labuser/Desktop/Lab-Readme.txt
-    printf "Kali Linux v2023.4 (This VM)\n  eth0: DHCP\n  eth1: $l_KALI_NEWIP/29\n\n" >> /home/labuser/Desktop/Lab-Readme.txt
-    printf "Metasploitable 3 (W2K8R2)\n  nic0: $l_WIN2K8_NEWIP/29\n\n" >> /home/labuser/Desktop/Lab-Readme.txt
-    printf "Metasploitable 3 (Linux)\n  eth0: $l_LIN1404_NEWIP/29\n\n"  >> /home/labuser/Desktop/Lab-Readme.txt
-    printf "Metasploitable 2 (Linux)\n  eth0: $l_LIN0804_NEWIP/29\n\n" >> /home/labuser/Desktop/Lab-Readme.txt
+    printf "  Kali Linux (2023.4) (This VM)      eth0: DHCP\n"                >> /home/labuser/Desktop/Lab-Readme.txt
+    printf "                                     eth1: $l_KALI_NEWIP/29\n\n"  >> /home/labuser/Desktop/Lab-Readme.txt
+    printf "  Metasploitable 3 (Windows 2008R2)  nic0: $l_WIN2K8_NEWIP/29\n"  >> /home/labuser/Desktop/Lab-Readme.txt
+    printf "  Metasploitable 3 (Ubuntu 14.04)    eth0: $l_LIN1404_NEWIP/29\n" >> /home/labuser/Desktop/Lab-Readme.txt
+    printf "  Metasploitable 2 (Ubuntu 08.04)    eth0: $l_LIN0804_NEWIP/29\n" >> /home/labuser/Desktop/Lab-Readme.txt
   ## WRITE LAB FILE
 }
 # ************************* end script specific functions **********************
