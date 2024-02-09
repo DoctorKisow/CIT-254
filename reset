@@ -166,8 +166,13 @@ declare l_LIN0804_NEWIP="192.168.1.4"
     nmcli connection up "CIT-254-ISOLATED" > /dev/nul
   ## KALI
 
-  # Cleanup incase of a borked run.
+  # Cleanup ssh hashes.
   if [[ -f ~/.ssh ]]; then
     info "    Cleaning up saved ssh information."
     rm -R ~/.ssh
+  fi
+
+  if [[ -f /home/labuser/Desktop/Lab-Readme.txt ]]; then
+    info "    Cleaning up saved lab readme file."
+    rm /home/labuser/Desktop/Lab-Readme.txt
   fi

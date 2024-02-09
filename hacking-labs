@@ -66,7 +66,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.26"
+g_VERSION="0.0.28"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://github.com/DoctorKisow/CIT-254/raw/main/hacking-labs"
@@ -560,6 +560,7 @@ function settcpip ()
     # Cleanup cloned environment.
     info "  Cleaning up from the cloned environment..."
 
+    set +e
     nmcli connection | grep -q 'Wired connection 1'
     if [ $? == 0 ]; then
       info "    Removing cloned eth0 network adapter..."
@@ -755,34 +756,34 @@ function settcpip ()
   ## POST-ENVIORNMENT CHECK
     # Check KALI is available.
     l_KALI_RESP=$(ping_and_report $l_KALI_NEWIP)
-    if [[ $l_KALI_RESP -ne 0 ]]; then
-      warning "    The Kali Linux VM is not responding to its new IP address."
-    else
+    if [ $l_KALI_RESP == 0 ]; then
       info "    The Kali Linux VM is responding to its new IP address."
+    else
+      warning "    The Kali Linux VM is not responding to its new IP address."
     fi
 
-    # Check WIN2K8 is available.
+    # Check Metasploitable3 (Windows 2008R2) is available.
     l_WIN2K8_RESP=$(ping_and_report $l_WIN2K8_NEWIP)
-    if [[ $l_WIN2K8_RESP -ne 0 ]]; then
-      warning "    The Metasploitable3 (Windows 2008R2) is not responding to its new IP address."
+    if [ $l_WIN2K8_RESP == 0 ]; then
+      info "    The Metasploitable3 (Windows 2008R2) is responding to its new IP address."
     else
-      info "    The Metasploitable3 (Windows 2008R2) is responding  to its new IP address."
+      warning "    The Metasploitable3 (Windows 2008R2) is not responding to its new IP address."
     fi
 
-    # Check Metasploitable3 (Linux) is available.
+    # Check Metasploitable3 (Ubuntu 14.04) is available.
     l_LIN1404_RESP=$(ping_and_report $l_LIN1404_NEWIP)
-    if [[ $l_LIN1404_RESP -ne 0 ]]; then
-      warning "    The Metasploitable3 (Ubuntu 14.04) is not responding to its new IP address."
-    else
+    if [ $l_LIN1404_RESP == 0 ]; then
       info "    The Metasploitable3 (Ubuntu 14.04) is responding to its new IP address."
+    else
+      warning "    The Metasploitable3 (Ubuntu 14.04) is not responding to its new IP address."
     fi
 
     # Check Metaspliotable2 (Linux) is available.
     l_LIN0804_RESP=$(ping_and_report $l_LIN0804_NEWIP)
-    if [[ $l_LIN0804_RESP -ne 0 ]]; then
-      warning "    The Metasploitable2 (Ubuntu 08.04) is not responding to its new IP address."
-    else
+    if [ $l_LIN0804_RESP == 0 ]; then
       info "    The Metasploitable2 (Ubuntu 08.04) is responding to its new IP address."
+    else
+      warning "    The Metasploitable2 (Ubuntu 08.04) is not responding to its new IP address."
     fi
 
     # Any host that is unavailable will cause script to fail, exit with error.
