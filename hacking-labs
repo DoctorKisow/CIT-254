@@ -66,7 +66,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.19"
+g_VERSION="0.0.20"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://github.com/DoctorKisow/CIT-254/raw/main/hacking-labs"
@@ -381,6 +381,13 @@ function update ()
   info "Checking for updates to the $g_PROGRAM_NAME script."
 
   cd "${g_SCRIPT_PATH}"
+
+  # Test internet access.
+  ping -q -c1 8.8.8.8 &>/dev/null
+  if [ $? -eq 1 ]; then
+    warning "This script does not have a required network connection to update itself."
+    return
+  fi
 
   # Get a new version of the script.
   l_TMP_FILE=$(mktemp -p "" "XXXXX.sh")
@@ -739,9 +746,9 @@ function settcpip ()
 
   ## KALI
    info "  Updating Kali Linux (eth1) VM networking."
-   nmcli connection down Attack_Network > /dev/nul
-   nmcli connection modify Attack_Network ipv4.addresses $l_KALI_NEWIP/29
-   nmcli connection up Attack_Network > /dev/nul
+   nmcli connection down "CIT-254-ISOLATED" > /dev/nul
+   nmcli connection modify "CIT-254-ISOLATED" ipv4.addresses $l_KALI_NEWIP/29
+   nmcli connection up "CIT-254-ISOLATED" > /dev/nul
   ## KALI
 
   ## POST-ENVIORNMENT CHECK
