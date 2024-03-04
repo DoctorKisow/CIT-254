@@ -29,7 +29,6 @@
 
 
 
-
 <!-- DELIVERABLE BLACK - SUBS -->
 <table border="0" style="border-collapse: collapse; width: 99%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
   <tbody>
