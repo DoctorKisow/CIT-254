@@ -66,7 +66,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.33"
+g_VERSION="0.0.35"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://github.com/DoctorKisow/CIT-254/raw/main/hacking-labs"
@@ -406,6 +406,15 @@ function warning ()
 # **************************** basic script functions **************************
 
 # ************************ begin script specific functions *********************
+# (create_labuser) - A Function to setup the labuser account for this lab environment.
+function create_labuser ()
+{
+  gorupadd -g 1001 labuser
+
+  useradd --comment "Lab User" --uid 1001 --create-home --no-user-group --gid 1001 --groups adm,dialout,cdrom,floppy,sudo,audio,dip,video,plugdev,users,netdev,wireshark,bluetooth,scanner,kaboxer,labuser --shell /usr/bin/zsh labuser
+  echo 'labuser:P@$$w0rd' | chpasswd
+}
+
 # (increment_ip) - A function that will increment the network number passed ($1) by the second arguement ($2).
 function increment_ip ()
 {
@@ -808,6 +817,9 @@ else
 
   # SET TCP/IP OF LAB ENVIORNMENT
   if ((g_ARG_SETIP==1)); then
+    if id -u labuser >/dev/null 2>&1; then
+      create_labuser
+    fi
     settcpip
   fi
 
