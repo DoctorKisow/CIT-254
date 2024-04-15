@@ -2,7 +2,7 @@
 <table border="0" style="border-collapse: collapse; width: 99%; border-style: none; height: 300px;">
   <tbody>
     <tr style="height: 102px;">
-      <td colspan="2" style="width: 100%; text-align: center; vertical-align: top;"><img src="https://courses.ccac.edu/bbcswebdav/pid-11603983-dt-content-rid-48750046_1/xid-48750046_1" width="311" height="100" style="border: 0px;" alt="ccac logo"/></td>
+      <td colspan="2" style="width: 100%; text-align: center; vertical-align: top;"><img src="https://courses.ccac.edu/bbcswebdav/pid-11603983-dt-content-rid-48750046_1/xid-48750046_1" width="311" height="100" style="border: 0px;" alt="ccac logo" title="ccac logo"/></td>
     </tr>
     <tr style="height: 30px;">
       <td colspan="2" style="width: 100%; text-align: center; vertical-align: top;"><span style="font-size: 24pt;"><strong>LAB 1: RECONNAISSANCE</strong></span></td>
@@ -10,7 +10,7 @@
     
     <tr style="height: 22.5px;">
       <td style="width: 72%; height: 22.50px;"><span style="color: #ba372a; font-size: 12pt;"><strong>INSTRUCTIONS</strong></span></td>
-      <td rowspan="4" style="width: 28%; height: 175px;  vertical-align: top;">
+      <td rowspan="6" style="width: 28%; height: 175px;  vertical-align: top;">
         <table border="0" style="border-collapse: collapse; width: 350px; background-color: #ecf0f1; border-style: none; float: right; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
           <tbody>
             <tr>
@@ -44,35 +44,43 @@
     <tr>
       <td style="width: 72%; vertical-align: top; height: 75px; text-align: justify;"><span style="font-size: 12pt;">The primary objective of this lab is to empower students with the skills and knowledge required to conduct ethical and responsible reconnaissance activities. By utilizing publicly available websites and open-source software tools, students will explore the fascinating realm of network exploration, gaining insights into potential vulnerabilities within the college network and systems.</span></td>
     </tr>
+    <tr>
+      <td style="width: 72%; height: 22.50px; vertical-align: top;"><span style="font-size: 12pt; color: #ba372a;"><strong>RESOURCES USED AND CREDENTIALS</strong></span></td>
+    </tr>
+    <tr>
+      <td style="width: 72%; vertical-align: top; height: 75px; text-align: justify;">
+        <p><span style="font-size: 12pt;">Begin by logging into the Academic vSphere Portal using your student credentials. Once logged in, navigate to your assigned Virtual Application (VApp) within the portal. This lab will use the following VM's within your VApp with the following credentials.</span></p>
+        <blockquote>
+          <p style="margin: 0; padding: 0;"><span style="font-size: 12pt;"><strong>Kali Linux</strong></span></p>
+          <p style="margin: 0; padding: 0;"><span style="font-size: 12pt;">&emsp;<strong>Username</strong>: labuser</span></p>
+          <p style="margin: 0; padding: 0;"><span style="font-size: 12pt;">&emsp;<strong>Password</strong>: P@$$w0rd</span></p>
+        </blockquote>
+      </td>
+    </tr>
   </tbody>
 </table>
 
 <!-- VERSION/REVISION -->
-<p style="text-align: center; margin: 0; padding: 0;">VERSION 1</p>
-<p style="text-align: center; margin: 0; padding: 0;">REVISED 08-APR-2024</p>
-<hr />
-<p id="#top"></p>
-
-<!-- LOGIN INSTRUCTIONS -->
+<p style="text-align: center; margin: 0; padding: 0; color: #ced4d9">VERSION 2</p>
 <br />
-<li>
-  <p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Log into your Kali Linux VM using the username <strong>labuser</strong> and the <strong>P@$$w0rd</strong> password. Once logged in, start with Part 1 of the lab.</span></p>
-</li>
-<br />
+<p style="text-align: center; margin: 0; padding: 0; color: #ced4d9">REVISED 09-APR-2024</p>
+<p style="text-align: center; margin: 0; padding: 0; color: #ced4d9">VALIDATED 09-APR-2024</p>
+<p id="#top1"></p>
 
 <!-- PART 1 -->
 <hr />
 <p id="#as"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 1: Autonomous Systems (AS)</strong></span></p>
 
-<span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://www.cloudflare.com/learning/network-layer/what-is-an-autonomous-system/" target="_blank" rel="noopener"><span style="color: #ba372a;"><strong>Autonomous Systems (AS)</strong></span></a> are networks of connected IP routing prefixes under the control of a single, clearly defined entity that presents a common routing policy to the Internet. Each Autonomous System is assigned a unique Autonomous System Number (ASN), a 16-bit identifier, or, in some cases, a 32-bit identifier, which facilitates the efficient exchange of routing information among interconnected networks on the Internet.</span>
-<ol start="1">
+<blockquote>
+  <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://www.cloudflare.com/learning/network-layer/what-is-an-autonomous-system/" target="_blank" rel="noopener"><span style="color: #ba372a;"><strong>Autonomous Systems (AS)</strong></span></a> are networks of connected IP routing prefixes under the control of a single, clearly defined entity that presents a common routing policy to the Internet. Each Autonomous System is assigned a unique Autonomous System Number (ASN), a 16-bit identifier, or, in some cases, a 32-bit identifier, which facilitates the efficient exchange of routing information among interconnected networks on the Internet.</span>
+</blockquote>
 
-  <!-- 1 -->
+<!-- 1.1 -->
+<ol start="1">
   <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">The Community College of Allegheny County (CCAC) is no different; they use Autonomous System Numbers to route traffic between different services.</span></p>
     <ol style="list-style-type: lower-alpha;" start="a">
-
       <!-- A -->
-      <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Many online tools allow you to look up Autonomous System information for a given organization name or domain name, such as:</span>
+      <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Many online tools allow you to look up Autonomous System Numbers (ASN) information for a given organization name or domain name, such as:</span>
         <ul>
           <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">MXToolbox - <a href="https://mxtoolbox.com/asn.aspx" target="_blank" rel="noopener"><span style="color: #ba372a;">https://mxtoolbox.com/asn.aspx</span></a></span></p>
             <!-- TIP GREEN -->
@@ -89,30 +97,7 @@
                   <td style="width: 2%; background-color: #169179;">&nbsp;</td>
                   <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">&#x25CF;</span></strong></td>
                   <td style="width: 93%;">
-                    <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">Search for an IP address.</span></p>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <p></p>
-          </li>
-
-          <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">HackerTarget - <a href="https://hackertarget.com/as-ip-lookup/" target="_blank" rel="noopener"><span style="color: #ba372a;">https://hackertarget.com/as-ip-lookup/</span></a></span></p>
-            <!-- TIP GREEN -->
-            <table border="0" style="border-collapse: collapse; width: 75%; background-color: #bfedd2; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
-              <tbody>
-                <tr>
-                  <td style="width: 2%; background-color: #169179;">&nbsp;</td>
-                  <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
-                    <p style="margin: 0; padding: 0;">
-                      <img src="https://courses.ccac.edu/bbcswebdav/xid-48837982_1"  width="16" height="22" style="border: 0px solid #000000;" alt="tip"/>
-                      <strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 14pt;">TIP</span></strong></td>
-                </tr>
-                <tr>
-                  <td style="width: 2%; background-color: #169179;">&nbsp;</td>
-                  <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">&#x25CF;</span></strong></td>
-                  <td style="width: 93%;">
-                    <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">Search for an IP address.</span></p>
+                    <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">Search for "162.51.74.111." Here, you can search by an IP Address used by the entity to identify the associated CIDR range for the ASN.</span></p>
                   </td>
                 </tr>
               </tbody>
@@ -135,7 +120,7 @@
                   <td style="width: 2%; background-color: #169179;">&nbsp;</td>
                   <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">&#x25CF;</span></strong></td>
                   <td style="width: 93%;">
-                    <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">Search for "CCAC"</span></p>
+                    <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">Search for "CCAC." Here, you can search by the registered entity name to identify the associated CIDR range for the ASN.</span></p>
                   </td>
                 </tr>
               </tbody>
@@ -143,74 +128,62 @@
             <p></p>
           </li>
         </ul>
+
+        <!-- 1.1 DELIVERABLE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr>
+              <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+              <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+                <p style="margin: 0; padding: 0;">
+                  <img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+                  <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></td>
+            </tr>
+            <tr>
+              <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+              <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">1.1</span></strong></td>
+              <td style="width: 93%;">
+                <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What is the ASN for the Community College of Allegheny County?</span></p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
       </li>
     </ol>
-
-    <!-- DELIVERABLE BLACK -->
-    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
-      <tbody>
-        <tr>
-          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-          <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
-            <p style="margin: 0; padding: 0;">
-              <img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
-              <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></td>
-        </tr>
-        <tr>
-          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
-          <td style="width: 93%;">
-            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What is the Autonomous System number for the Community College of Allegheny County?</span></p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <p></p>
   </li>
 </ol>
 
-<span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing" target="_blank" rel="noopener"><span style="color: #ba372a;"><strong>Classless Inter-Domain Routing</strong></a> (CIDR) is a method for allocating IP addresses and IP routing. CIDR notation is a compact representation of an IP address and its associated routing prefix. The notation is constructed from an IP address, a slash (<span style="color: #e03e2d;">/</span>) character, and an integer.</span>
-<ol>
+<blockquote>
+  <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing" target="_blank" rel="noopener"><span style="color: #ba372a;"><strong>Classless Inter-Domain Routing</strong></a> (CIDR) is a method for allocating IP addresses and IP routing. CIDR notation is a compact representation of an IP address and its associated routing prefix. The notation is constructed from an IP address, a slash (<span style="color: #e03e2d;">/</span>) character, and an integer.</span>
+</blockquote>
 
-  <!-- 2 -->
+<!-- 1.2 -->
+<ol start="2">
   <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">The CIDR entry <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>18.5.27.0/24</strong></span> means that the upper 24 bits of the address (<span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>18.5.27</strong></span>) stay constant, and the lower 8 bits are variable and represent computers within the subnet. <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>18.5.27.0</strong></span> is the first address, and <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>18.5.27.255</strong></span> is the last address for 256 possible addresses in that range.</span></p>
+    <!-- NOTE BLUE -->
+    <blockquote>
+      <table border="0" style="border-collapse: collapse; width: 75%; background-color: #c2e0f4; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+        <tbody>
+          <tr>
+            <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+            <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+              <p style="margin: 0; padding: 0;">
+                <img src="https://courses.ccac.edu/bbcswebdav/xid-48837980_1"  width="22" height="22" style="border: 0px solid #000000;" alt="note"/>
+                <strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 14pt;">NOTE</span></strong></td>
+          </tr>
+          <tr>
+            <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+            <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">&nbsp;</span></strong></td>
+            <td style="width: 93%;">
+              <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">If you are on campus while doing this lab, <strong>be careful</strong>! Your local system will see a private IP address for the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>sso.ccac.edu</strong></span> system of the form 10.x.x.x. For your ASN lookup, you want the <em>public</em> IP address of the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>ccac.edu</strong></span> system. Use an off-campus tool like MXToolbox to obtain that IP address.</span></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
 
-    <!-- TIP GREEN -->
-    <table border="0" style="border-collapse: collapse; width: 75%; background-color: #bfedd2; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
-      <tbody>
-        <tr>
-          <td style="width: 2%; background-color: #169179;">&nbsp;</td>
-          <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
-            <p style="margin: 0; padding: 0;">
-              <img src="https://courses.ccac.edu/bbcswebdav/xid-48837982_1"  width="16" height="22" style="border: 0px solid #000000;" alt="tip"/>
-              <strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 14pt;">TIP</span></strong></td>
-        </tr>
-        <tr>
-          <td style="width: 2%; background-color: #169179;">&nbsp;</td>
-          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">&#x25CF;</span></strong></td>
-          <td style="width: 93%;">
-            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">It's easy to make a mistake here:<br />For <strong>MXToolbox</strong> and <strong>HackerTarget</strong>, you must search for an IP address within the ASN.<br />What's a good IP address?<br />Find the IP address for some system you know is hosted locally and not in a cloud provider like Amazon Web Services or CCAC.</span></p>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 2%; background-color: #169179;">&nbsp;</td>
-          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">&#x25CF;</span></strong></td>
-          <td style="width: 93%;">
-            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">If you are on campus while doing this lab, <strong>be careful</strong>! Your local system will see a private IP address for the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>sso.ccac.edu</strong></span> system of the form 10.x.x.x.x. For your ASN lookup, you want the <em>public</em> IP address of the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>ccac.edu</strong></span> system. Use an off-campus tool like MXToolbox to obtain that IP address.</span></p>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 2%; background-color: #169179;">&nbsp;</td>
-          <td style="width: 5%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">&#x25CF;</span></td>
-          <td style="width: 93%;">
-            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;"><strong>MXToolbox</strong> and <strong>HackerTarget</strong> can search by AS number and show the associated CIDR ranges.</span></p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <p></p>
-
-    <!-- DELIVERABLE BLACK -->
+    <!-- 1.2 DELIVERABLE -->
     <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
       <tbody>
         <tr>
@@ -222,7 +195,7 @@
         </tr>
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">1.2</span></strong></td>
           <td style="width: 93%;">
             <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What is the CIDR-format subnet associated with CCAC's Autonomous System number? Provide your answer in the format a.b.c.d/n</span></p>
           </td>
@@ -234,25 +207,28 @@
 </ol>
 
 <!-- REFERENCES -->
-<p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt; text-decoration: underline;"><strong>REFERENCES</strong></span></p>
-<ul>
-  <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://www.arin.net/resources/guide/asn/" target="_blank" rel="noopener"><span style="color: #ba372a;">ARIN - Autonomous System Numbers</span></a></span></li>
-  <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing" target="_blank" rel="noopener"><span style="color: #ba372a;">Classless Inter-Domain Routing (CIDR)</span></a></span></li>
-</ul>
+<blockquote>
+  <p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt; text-decoration: underline;"><strong>REFERENCES</strong></span></p>
+  <ul>
+    <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://www.arin.net/resources/guide/asn/" target="_blank" rel="noopener"><span style="color: #ba372a;">ARIN - Autonomous System Numbers</span></a></span></li>
+    <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing" target="_blank" rel="noopener"><span style="color: #ba372a;">Classless Inter-Domain Routing (CIDR)</span></a></span></li>
+  </ul>
+</blockquote>
 
 
 <!-- PART 2 -->
-<a href="##top" style="color: #ba372a;">[TOP]</a>
+<a href="##top1" style="color: #ba372a;">[TOP]</a>
 <hr />
 <p id="#shodan"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 2: Shodan</strong></span></p>
 
-<span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://www.shodan.io/" target="_blank" rel="noopener"><span style="color: #ba372a;"><strong>Shodan</strong></span></a> is a search engine for finding specific devices and device types online. The most popular searches are for webcam, linksys, cisco, Netgear, SCADA, etc. It works by scanning the entire Internet and parsing the banners returned by various devices. Using that information, Shodan can tell you what web server (and version) is the most popular, how many anonymous FTP servers exist in a particular location, and what make and model the device may be.</span>
-<ol start="1">
+<blockquote>
+  <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://www.shodan.io/" target="_blank" rel="noopener"><span style="color: #ba372a;"><strong>Shodan</strong></span></a> is a search engine for finding specific devices and device types online. The most popular searches are for webcam, linksys, cisco, Netgear, SCADA, etc. It works by scanning the entire Internet and parsing the banners returned by various devices. Using that information, Shodan can tell you what web server (and version) is the most popular, how many anonymous FTP servers exist in a particular location, and what make and model the device may be.</span>
+</blockquote>
 
-  <!-- 1 -->
+<!-- 2.1 -->
+<ol start="1">
   <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://www.shodan.io/dashboard" target="_blank" rel="noopener"><span style="color: #ba372a;"><strong>Create a Shodan Login</strong></span></a> (required to use most site features), then answer the deliverable questions for part two. To get the most out of Shodan, please refer to the references section at the end of part two.</span></p>
- 
-    <!-- DELIVERABLE BLACK - SUBS -->
+    <!-- 2.1 DELIVERABLE -->
     <table border="0" style="border-collapse: collapse; width: 85%;background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
       <tbody>
         <tr>
@@ -266,108 +242,245 @@
         </tr>
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">2.1</span></strong></td>
           <td colspan="2" style="width: 93%;">
             <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Start a <strong>new</strong> Shodan search:</span></p>
           </td>
         </tr>
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#9675;</span></td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>A.</strong></span></td>
           <td style="width: 91%;">
             <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Search for hosts with the domain name <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>ccac.edu</strong></span>. How many did Shodan find?</span></p>
-            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong><em>Use the</em> <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>hostname:</strong></span> <em>filter for your query.</em></strong></span></p>
           </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- TIP GREEN -->
+    <blockquote>
+      <table border="0" style="border-collapse: collapse; width: 75%; background-color: #bfedd2; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+        <tbody>
+          <tr>
+            <td style="width: 2%; background-color: #169179;">&nbsp;</td>
+            <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+              <p style="margin: 0; padding: 0;">
+                <img src="https://courses.ccac.edu/bbcswebdav/xid-48837982_1"  width="16" height="22" style="border: 0px solid #000000;" alt="tip"/>
+                <strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 14pt;">TIP</span></strong></td>
+              </p>
+          </tr>
+          <tr>
+            <td style="width: 2%; background-color: #169179;">&nbsp;</td>
+            <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">A.</span></strong></td>
+            <td style="width: 93%;">
+              <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">Use the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>hostname</strong></span> filter for your query.</strong></span></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+    <p></p>
+
+    <!-- 2.2 DELIVERABLE -->
+    <table border="0" style="border-collapse: collapse; width: 85%;background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td colspan="3" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">2.2</span></strong></td>
           <td colspan="2" style="width: 93%;">
-            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Start a <strong>new</strong> Shodan search, and answer these questions in <strong>sequence</strong> (they get increasingly specific):</span></p>
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Start a <strong>new</strong> Shodan search, and answer these questions in <strong>sequence</strong>:</span></p>
           </td>
         </tr>
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#9675;</span></td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>A.</strong></span></td>
           <td style="width: 91%;">
-            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Search for hosts within CCAC's CIDR subnet. How many did Shodan find?</span></p>
-            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong><em>Use the</em> <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>net</strong></span><em> filter for your query. Also, If you find less than 10 here, give-or-take, double-check your CIDR subnet above.</em></strong></span></p>
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Search for hosts within CCAC's CIDR subnet; how many did Shodan find?</span></p>
           </td>
         </tr>
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#9675;</span></td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>B.</strong></span></td>
           <td style="width: 91%;">
-            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Of the hosts found in the previous question, how many of them are running <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>Microsoft IIS httpd</strong></span> as their web server?</span></p>
-            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong><em>You can drill down in the left panel or append the</em> <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>product:"xxx"</strong></span> <em>filter to your query.</em></strong></span></p>
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Of the hosts found in question 2.2 A; how many of them are running <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>Microsoft IIS httpd</strong></span> as their web server?</span></p>
           </td>
         </tr>
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#9675;</span></td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>C.</strong></span></td>
           <td style="width: 91%;">
             <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Of the hosts found in the previous question, how many of those are running <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>version 10.0</strong></span><span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>Microsoft IIS httpd</strong></span>?</span></p>
-            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong><em>You can drill down in the left panel or append the</em> <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>version:"nn.n"</strong></span> <em>filter to your query.</em></strong></span></p>
           </td>
         </tr>
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#9675;</span></td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>D.</strong></span></td>
           <td style="width: 91%;">
             <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Several hosts in the previous question have SSL certificates (for HTTPS). What are the common names (i.e., domain names) for which those certificates are issued?</span></p>
           </td>
         </tr>
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#9675;</span></td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>E.</strong></span></td>
           <td style="width: 91%;">
-            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><em>What was the Shodan search query you entered for the previous SSL certificate question?</em></span></p>
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What was the Shodan search query you entered for the previous SSL certificate question?</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- TIP GREEN -->
+    <blockquote>
+      <table border="0" style="border-collapse: collapse; width: 75%; background-color: #bfedd2; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+        <tbody>
+          <tr>
+            <td style="width: 2%; background-color: #169179;">&nbsp;</td>
+            <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+              <p style="margin: 0; padding: 0;">
+                <img src="https://courses.ccac.edu/bbcswebdav/xid-48837982_1"  width="16" height="22" style="border: 0px solid #000000;" alt="tip"/>
+                <strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 14pt;">TIP</span></strong></td>
+              </p>
+          </tr>
+          <tr>
+            <td style="width: 2%; background-color: #169179;">&nbsp;</td>
+            <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">A.</span></strong></td>
+            <td style="width: 93%;">
+              <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">Use the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>net</strong></span> filter for your query.</span></p>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 2%; background-color: #169179;">&nbsp;</td>
+            <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">B.</span></strong></td>
+            <td style="width: 93%;">
+              <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">You can drill down in the left panel or append the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>product:"xxx"</strong></span> filter to your query.</span></p>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 2%; background-color: #169179;">&nbsp;</td>
+            <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">C.</span></strong></td>
+            <td style="width: 93%;">
+              <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">You can drill down in the left panel or append the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>version:"nn.n"</strong></span> filter to your query.</strong></span></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+
+    <!-- NOTE BLUE -->
+    <blockquote>
+      <table border="0" style="border-collapse: collapse; width: 75%; background-color: #c2e0f4; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+        <tbody>
+          <tr>
+            <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+            <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+              <p style="margin: 0; padding: 0;">
+                <img src="https://courses.ccac.edu/bbcswebdav/xid-48837980_1"  width="22" height="22" style="border: 0px solid #000000;" alt="note"/>
+                <strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 14pt;">NOTE</span></strong></td>
+          </tr>
+          <tr>
+            <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+            <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">A.</span></strong></td>
+            <td style="width: 93%;">
+              <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">If you find less than 10 here, give-or-take, double-check your CIDR subnet above.</span></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+    <p></p>
+
+    <!-- 2.3 DELIVERABLE -->
+    <table border="0" style="border-collapse: collapse; width: 85%;background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="3" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong>
+            </p>
           </td>
         </tr>
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">2.3</span></strong></td>
           <td colspan="2" style="width: 93%;">
             <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Start a <strong>new</strong> Shodan search:</span></p>
           </td>
         </tr>
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#9675;</span></td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>A.</strong></span></td>
           <td style="width: 91%;">
-            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What is the IP address of one of CCAC's mail servers? There are a few; any valid IP will be accepted.</span></p>
-            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong><em>You can specify </em><span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>smtp</strong></span> <em>in your query or add </em><span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>port:25</strong></span> <em>to specify the port that SMTP servers commonly use.</em></strong></span></p>
-            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong><em>These SMTP servers do not have identifiable hostnames, so you must search within CCAC's CIDR subnet to find them.</em></strong></span></p>
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What is the IP address of one of CCAC's mail servers? There are a few; any valid IP will be accepted as your answer.</span></p>
           </td>
         </tr>
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#9675;</span></td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>B.</strong></span></td>
           <td style="width: 91%;">
-            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><em>What was the Shodan search query you entered for the previous SMTP question?</em></span></p>
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What was the Shodan search query you entered for the previous SMTP question?</span></p>
           </td>
         </tr>
       </tbody>
     </table>
+
+    <!-- TIP GREEN -->
+    <blockquote>
+      <table border="0" style="border-collapse: collapse; width: 75%; background-color: #bfedd2; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+        <tbody>
+          <tr>
+            <td style="width: 2%; background-color: #169179;">&nbsp;</td>
+            <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+              <p style="margin: 0; padding: 0;">
+                <img src="https://courses.ccac.edu/bbcswebdav/xid-48837982_1"  width="16" height="22" style="border: 0px solid #000000;" alt="tip"/>
+                <strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 14pt;">TIP</span></strong></td>
+              </p>
+          </tr>
+          <tr>
+            <td style="width: 2%; background-color: #169179;">&nbsp;</td>
+            <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">A.</span></strong></td>
+            <td style="width: 93%;">
+              <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">Use the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>smtp</strong></span> or <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>port:25</strong></span> filters for your query.</span></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
     <p></p>
   </li>
-</ol>
 
-<!-- REFERENCES -->
-<p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt; text-decoration: underline;"><strong>REFERENCES</strong></span></p>
-<ul>
-  <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Awesome Shodan Search Queries: <span style="color: #ba372a;"><a href="https://github.com/jakejarvis/awesome-shodan-queries" style="color: #ba372a;">https://github.com/jakejarvis/awesome-shodan-queries</a></span></span></li>
-  <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Getting the Most Out of Shodan Searches (SANS Penetration Testing blog): <a href="https://www.sans.org/blog/getting-the-most-out-of-shodan-searches/"><span style="color: #ba372a;">https://www.sans.org/blog/getting-the-most-out-of-shodan-searches/</span></a></span></li>
-</ul>
+  <!-- REFERENCES -->
+  <blockquote>
+    <p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt; text-decoration: underline;"><strong>REFERENCES</strong></span></p>
+    <ul>
+      <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Awesome Shodan Search Queries: <span style="color: #ba372a;"><a href="https://github.com/jakejarvis/awesome-shodan-queries" style="color: #ba372a;">https://github.com/jakejarvis/awesome-shodan-queries</a></span></span></li>
+      <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Getting the Most Out of Shodan Searches (SANS Penetration Testing blog): <a href="https://www.sans.org/blog/getting-the-most-out-of-shodan-searches/"><span style="color: #ba372a;">https://www.sans.org/blog/getting-the-most-out-of-shodan-searches/</span></a></span></li>
+    </ul>
+  </blockquote>
+</ol>
 
 
 <!-- PART 3 -->
-<a href="##top" style="color: #ba372a;">[TOP]</a>
+<a href="##top1" style="color: #ba372a;">[TOP]</a>
 <hr />
 <p id="#whois"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 3: Whois</strong></span></p>
 
-<p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://en.wikipedia.org/wiki/WHOIS" target="_blank" rel="noopener"><span style="color: #ba372a;"><strong>WHOIS</strong></span></a> allows access to the directory information stored by domain name registrars.</span></p>
+<blockquote>
+  <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://en.wikipedia.org/wiki/WHOIS" target="_blank" rel="noopener"><span style="color: #ba372a;"><strong>WHOIS</strong></span></a> allows access to the directory information stored by domain name registrars.</span></p>
+</blockquote>
+
+<!-- 3.1 -->
 <ol start="1">
-  <!-- 1 -->
   <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Using whois (in your Kali Linux VM), find information on the domain name "ccac.edu."</span></p>
     <!-- CODE -->
     <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
@@ -388,29 +501,84 @@
       </tbody>
     </table>
     <p></p>
-  
-    <!-- DELIVERABLE BLACK -->
-    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+
+    <!-- 3.1 DELIVERABLE -->
+    <table border="0" style="border-collapse: collapse; width: 85%;background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
       <tbody>
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-          <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+          <td colspan="3" style="width: 98%; text-align: left; vertical-align: top;">
             <p style="margin: 0; padding: 0;">
               <img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
-              <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></td>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong>
+            </p>
+          </td>
         </tr>
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
-          <td style="width: 93%;">
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">3.1</span></strong></td>
+          <td colspan="2" style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Start a <strong>new</strong> Shodan search:</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>A.</strong></span></td>
+          <td style="width: 91%;">
             <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What email address is associated with the technical contact for the domain name ccac.edu?</span></p>
           </td>
         </tr>
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
-          <td style="width: 93%;">
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>B.</strong></span></td>
+          <td style="width: 91%;">
             <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What are the authoritative name servers for the domain ccac.edu? <em>(These are the name servers that provide the final official translation between the domain name ccac.edu and its IP address)</em></span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ol>
+
+
+<!-- PART 4 -->
+<a href="##top1" style="color: #ba372a;">[TOP]</a>
+<hr />
+<p id="#dns"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 4: DNS</strong></span></p>
+
+<blockquote>
+  <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://github.com/aboul3la/Sublist3r" target="_blank" rel="noopener"><span style="color: #ba372a;"><strong>sublist3r</strong></span></a> is a DNS enumeration tool. It uses a combination of Internet search engines and (optionally) brute force guessing to provide a list of subdomains given a starting domain.</span>
+</blockquote>
+
+<!-- 4.1 -->
+<ol start="1">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Sign up for a <span style="color: #ba372a;"><a href="https://www.virustotal.com/gui/join-us" target="_blank" rel="noopener" style="color: #ba372a;"><strong>free account at VirusTotal</strong></a></span>. After registering and logging in, copy the <strong>API key</strong> from your profile.</span></p></li>
+</ol>
+
+<!-- 4.2 -->
+<ol start="2">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Install sublist3r on your Kali Linux VM; and as of <strong>2023</strong> the code patch to fix integration with VirusTotal.</span></p>
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"></span><strong>CODE</strong></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+              <p style="margin: 0; padding: 0;">
+                <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Install Sublist3r</span></strong><br />
+                <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ sudo <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">apt</span> install sublist3r</span></strong><br /><br />
+                <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Patch Sublist3r: Follow the instructions on this repository.</span></strong><br />
+                <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# <a href="https://github.com/aboul3la/Sublist3r/issues/194" style="color: #2dc26b;">https://github.com/aboul3la/Sublist3r/issues/194</a></span></strong><br />
+                <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">wget</span> <a href="https://raw.githubusercontent.com/aboul3la/Sublist3r/3cb826c2f36f4972dfd286c704efc07de3a7f94c/sublist3r.py" style="color: #ced4d9;">https://raw.githubusercontent.com/aboul3la/Sublist3r/3cb826c2f36f4972dfd286c704efc07de3a7f94c/sublist3r.py</a></span></strong><br />
+                <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ sudo <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">mv</span> sublist3r.py /usr/lib/python3/dist-packages/sublist3r.py</span></strong><br /><br />
+                <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Configure your VirusTotal API key, which will be used to Sublist3r</span></strong><br />
+                <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="color: #ba372a;">export</span> VT_APIKEY="<span style="color: #2dc26b;">&lt;your-api-key-copied-from-virustotal&gt;</span>"</span></strong>
+              </p>
           </td>
         </tr>
       </tbody>
@@ -419,77 +587,31 @@
   </li>
 </ol>
 
+<!-- 4.3 -->
+<ol start="3">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Using sublist3r, obtain an incomplete but lengthy list of subdomains for the domain name "ccac.edu."</span></p>
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"></span><strong>CODE</strong></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+              <p style="margin: 0; padding: 0;">
+                <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Run the enumeration</span></strong><br />
+                <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">sublist3r</span> --domain ccac.edu</span></strong>
+              </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
 
-<!-- PART 4 -->
-<a href="##top" style="color: #ba372a;">[TOP]</a>
-<hr />
-<p id="#dns"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 4: DNS</strong></span></p>
-
-<ol start="1">
-
-  <!-- 1 -->
-  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://github.com/aboul3la/Sublist3r" target="_blank" rel="noopener"><span style="color: #ba372a;"><strong>sublist3r</strong></span></a> is a DNS enumeration tool. It uses a combination of Internet search engines and (optionally) brute force guessing to provide a list of subdomains given a starting domain.</span></p>
-    <ol style="list-style-type: lower-alpha;" start="a">
-
-      <!-- A -->
-      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Sign up for a <span style="color: #ba372a;"><a href="https://www.virustotal.com/gui/join-us" target="_blank" rel="noopener" style="color: #ba372a;"><strong>free account at VirusTotal</strong></a></span>. After registering and logging in, copy the <strong>API key</strong> from your profile.</span></p></li>
-
-      <!-- B -->
-      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Install sublist3r (in your Kali VM) and (as of <strong>2023</strong>) the code patch to fix integration with VirusTotal.</span></p>
-        <!-- CODE -->
-        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
-          <tbody>
-            <tr style="background-color: #ced4e9;">
-              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
-              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
-              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
-              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"></span><strong>CODE</strong></td>
-            </tr>
-            <tr>
-              <td colspan="4" style="width: 99%;">
-                  <p style="margin: 0; padding: 0;">
-                    <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Install Sublist3r</span></strong><br />
-                    <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ sudo <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">apt</span> install sublist3r</span></strong><br /><br />
-                    <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Patch Sublist3r: Follow the instructions on this repository.</span></strong><br />
-                    <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# <a href="https://github.com/aboul3la/Sublist3r/issues/194" style="color: #2dc26b;">https://github.com/aboul3la/Sublist3r/issues/194</a></span></strong><br />
-                    <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">wget</span> <a href="https://raw.githubusercontent.com/aboul3la/Sublist3r/3cb826c2f36f4972dfd286c704efc07de3a7f94c/sublist3r.py" style="color: #ced4d9;">https://raw.githubusercontent.com/aboul3la/Sublist3r/3cb826c2f36f4972dfd286c704efc07de3a7f94c/sublist3r.py</a></span></strong><br />
-                    <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ sudo <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">mv</span> sublist3r.py /usr/lib/python3/dist-packages/sublist3r.py</span></strong><br /><br />
-                    <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Configure your VirusTotal API key, which will be used to Sublist3r</span></strong><br />
-                    <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="color: #ba372a;">export</span> VT_APIKEY="<span style="color: #2dc26b;">&lt;your-api-key-copied-from-virustotal&gt;</span>"</span></strong>
-                  </p>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <p></p>
-      </li>
-
-      <!-- C -->
-      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Using sublist3r, obtain an incomplete but lengthy list of subdomains for the domain name "ccac.edu."</span></p>
-        <!-- CODE -->
-        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
-          <tbody>
-            <tr style="background-color: #ced4e9;">
-              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
-              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
-              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
-              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"></span><strong>CODE</strong></td>
-            </tr>
-            <tr>
-              <td colspan="4" style="width: 99%;">
-                  <p style="margin: 0; padding: 0;">
-                    <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Run the enumeration</span></strong><br />
-                    <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">sublist3r</span> --domain ccac.edu</span></strong>
-                  </p>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <p></p>
-      </li>
-    </ol>
-
-    <!-- DELIVERABLE BLACK -->
+    <!-- 4.3 DELIVERABLE -->
     <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
       <tbody>
         <tr>
@@ -501,7 +623,7 @@
         </tr>
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">4.3</span></strong></td>
           <td style="width: 93%;">
             <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Provide a list of 5 subdomains to <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>ccac.edu</strong></span> that are particularly "interesting" and that you didn't know existed before running the scan. (No wrong answers here!)</span></p>
           </td>
@@ -509,16 +631,19 @@
       </tbody>
     </table>
     <p></p>
+  </li>
+</ol>
 
-  <!-- 2 -->
-  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://dnsdumpster.com/" target="_blank" rel="noopener"><span style="color: #ba372a;"><strong>DNS Dumpster</strong></span></a> is a tool similar to sublist3r except with a web interface.</span></p>
-    <ol style="list-style-type: lower-alpha;" start="a">
-      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Use the DNS Dumpster to obtain a list of subdomains for the domain name <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>ccac.edu</strong></span>.</span></p>
-        <p><img src="https://courses.ccac.edu/bbcswebdav/pid-11603983-dt-content-rid-48734220_1/xid-48734220_1"  style="border: 0px solid #000000;" /><br />&nbsp;</p>
-      </li>
-    </ol>
+<blockquote>
+  <p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://dnsdumpster.com/" target="_blank" rel="noopener"><span style="color: #ba372a;"><strong>DNS Dumpster</strong></span></a> is a tool similar to sublist3r except with a web interface.</span></p>
+</blockquote>
 
-    <!-- DELIVERABLE BLACK -->
+<!-- 4.4 -->
+<ol start="4">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Use the DNS Dumpster to obtain a list of subdomains for the domain name <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>ccac.edu</strong></span>.</span></p>
+    <p><img src="https://courses.ccac.edu/bbcswebdav/pid-11603983-dt-content-rid-48734220_1/xid-48734220_1"  style="border: 0px solid #000000;" /><br />&nbsp;</p>
+
+    <!-- 4.4 DELIVERABLE -->
     <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
       <tbody>
         <tr>
@@ -530,7 +655,7 @@
         </tr>
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">4.4</span></strong></td>
           <td style="width: 93%;">
             <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Upload the "Domain Map" image from DNS Dumpster that summarizes the search results for <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>ccac.edu</strong></span>.</span></p>
           </td>
@@ -538,36 +663,37 @@
       </tbody>
     </table>
     <p></p>
+  </li>
+</ol>
 
-  <!-- 3 -->
-  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://tools.kali.org/information-gathering/fierce" target="_blank" rel="noopener"><span style="color: #ba372a;"><strong>Fierce</strong></span></a> is a domain name scanner to help locate non-contiguous IP space and hostnames against specified domains. In other words, given a domain name, it will find subdomains and locate nearby servers ("nearby" based on IP address) that may or may not share the same domain name. This tool does not perform exploitation and does not scan the whole Internet indiscriminately. It is meant to locate likely targets inside and outside a corporate network. Because it uses DNS primarily, you will often find misconfigured networks that leak internal address space.</span></p>
-    <ol style="list-style-type: lower-alpha;" start="a">
+<blockquote>
+  <p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://tools.kali.org/information-gathering/fierce" target="_blank" rel="noopener"><span style="color: #ba372a;"><strong>Fierce</strong></span></a> is a domain name scanner to help locate non-contiguous IP space and hostnames against specified domains. In other words, given a domain name, it will find subdomains and locate nearby servers ("nearby" based on IP address) that may or may not share the same domain name. This tool does not perform exploitation and does not scan the whole Internet indiscriminately. It is meant to locate likely targets inside and outside a corporate network. Because it uses DNS primarily, you will often find misconfigured networks that leak internal address space.</span></p>
+</blockquote>
 
-      <!-- A -->
-      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Use Fierce (in your Kali VM) to do a DNS scan:</span></p>
-        <!-- CODE -->
-        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
-          <tbody>
-            <tr style="background-color: #ced4e9;">
-              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
-              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
-              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
-              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"></span><strong>CODE</strong></td>
-            </tr>
-            <tr>
-              <td colspan="4" style="width: 99%;">
-                  <p style="margin: 0; padding: 0;">
-                    <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ fierce --domain ccac.edu</span></strong>
-                  </p>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <p></p>
-      </li>
-    </ol>
+<!-- 4.5 -->
+<ol start="5">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Use Fierce (in your Kali VM) to do a DNS scan:</span></p>
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"></span><strong>CODE</strong></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+              <p style="margin: 0; padding: 0;">
+                <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ fierce --domain ccac.edu</span></strong>
+              </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
 
-    <!-- DELIVERABLE BLACK -->
+    <!-- 4.5 DELIVERABLE BLACK -->
     <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
       <tbody>
         <tr>
@@ -579,9 +705,9 @@
         </tr>
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">4.5</span></strong></td>
           <td style="width: 93%;">
-            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Provide the IP address for the host <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>ftp.ccac.edu</strong></span>.</span></p>
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Provide the IP address for the host <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>my.ccac.edu</strong></span>.</span></p>
           </td>
         </tr>
       </tbody>
@@ -591,53 +717,58 @@
 </ol>
 
 <!-- REFERENCES -->
-<p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><span style="text-decoration: underline;"><strong>REFERENCES</strong></span></span></p>
-<ul>
-  <li><span style="color: #ba372a;"><a href="https://github.com/aboul3la/Sublist3r" target="_blank" rel="noopener" style="color: #ba372a;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">GitHub Sublist3r Developer Site</span></a></span></li>
-  <li><span style="color: #ba372a;"><a href="https://www.kali.org/tools/sublist3r/" target="_blank" rel="noopener" style="color: #ba372a;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Kali Sublist3r Documentation</span></a></span></li>
-</ul>
+<blockquote>
+  <p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><span style="text-decoration: underline;"><strong>REFERENCES</strong></span></span></p>
+  <ul>
+    <li><span style="color: #ba372a;"><a href="https://github.com/aboul3la/Sublist3r" target="_blank" rel="noopener" style="color: #ba372a;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">GitHub Sublist3r Developer Site</span></a></span></li>
+    <li><span style="color: #ba372a;"><a href="https://www.kali.org/tools/sublist3r/" target="_blank" rel="noopener" style="color: #ba372a;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Kali Sublist3r Documentation</span></a></span></li>
+  </ul>
+</blockquote>
+
 
 
 <!-- PART 5 -->
-<a href="##top" style="color: #ba372a;">[TOP]</a>
+<a href="##top1" style="color: #ba372a;">[TOP]</a>
 <hr />
 <p id="#ssl"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 5: SSL Certificates</strong></span></p>
 
-<p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">SSL certificates can be a valuable source of hostnames that may be of interest in a penetration test.</span></p>
-<ol start="1">
+<blockquote>
+  <p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://en.wikipedia.org/wiki/Subject_Alternative_Name" target="_blank" rel="noopener"><span style="color: #ba372a;"><strong>SSL</strong></span></a> certificates can be a valuable source of hostnames that may be of interest in a penetration test. Some certificates have a Subject Alternative Name (SAN), which is an extension to X.509 that allows various values to be associated with a security certificate using a subjectAltName field.</span></p>
+</blockquote>
 
-  <!-- 1 -->
+<!-- 5.1 -->
+<ol start="1">
   <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">You can inspect SSL certificates manually in your web browser or by using various online resources, such as:</span></p>
     <ul>
       <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt; color: #ba372a;"><a href="https://andrewmohawk.com/SSLAssociated/index.php" style="color: #ba372a;">https://andrewmohawk.com/SSLAssociated/index.php</a></span></li>
       <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt; color: #ba372a;"><a href="https://www.ssllabs.com/ssltest/" style="color: #ba372a;">https://www.ssllabs.com/ssltest/</a></span></li>
     </ul>
+    <p></p>
+
+    <!-- 5.1 DELIVERABLE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">5.1</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">For the hostname <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>www.ccac.edu</strong></span>, what are the "alternative names" or "DNS Names" listed in the SSL certificate? This would be a list of other hostnames signed/secured by the same certificate. You can check this in your web browser or for one of the online query tools listed.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
   </li>
 </ol>
 
-<!-- DELIVERABLE BLACK -->
-<table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
-  <tbody>
-    <tr>
-      <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-      <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
-        <p style="margin: 0; padding: 0;">
-          <img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
-          <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></td>
-    </tr>
-    <tr>
-      <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-      <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">&#x25CF;</span></strong></td>
-      <td style="width: 93%;">
-        <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">For the hostname <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>www.ccac.edu</strong></span>, what are the "alternative names" or "DNS Names" listed in the SSL certificate? This would be a list of other hostnames signed/secured by the same certificate. You can check this in your web browser or for one of the online query tools listed.</span></p>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<p></p>
-
-
 <!-- COPYRIGHT -->
-<a href="##top" style="color: #ba372a;">[TOP]</a>
+<a href="##top1" style="color: #ba372a;">[TOP]</a>
 <hr />
 <p style="text-align: center;">Copyright &copy; 2022-2024 Dr. Matthew Kisow. All Rights Reserved</p>
