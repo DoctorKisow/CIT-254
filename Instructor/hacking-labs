@@ -395,6 +395,9 @@ function update ()
     info "UPDATE: You are running the current version of this script.\n\n"
   fi
 
+  if [ ! -f /lab/LAB7/ccaclogo.jpg ]; then
+    wget --directory-prefix=/lab/LAB7/
+
   rm -f "$l_TMP_FILE"
 }
 
