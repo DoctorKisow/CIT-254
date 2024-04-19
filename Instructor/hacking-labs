@@ -66,7 +66,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.40"
+g_VERSION="0.0.41"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://raw.githubusercontent.com/DoctorKisow/CIT-254/main/Instructor/hacking-labs"
@@ -480,7 +480,10 @@ function install ()
 
   # Loop through each lab, setting up a directory for each.
   for i in {1..8}; do
-    mkdir "$g_LAB_SYMLINK/$g_LAB_PREFIX$i"
+    if ! [ -d "$g_LAB_SYMLINK/$g_LAB_PREFIX$i" ]; then
+      info "    Creating $g_LAB_SYMLINK/$g_LAB_PREFIX$i"
+      mkdir "$g_LAB_SYMLINK/$g_LAB_PREFIX$i"
+    fi
   done
 
   if ! [[ -f /labs/LAB7/ccaclogo.jpg ]]; then
