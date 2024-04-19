@@ -66,7 +66,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.37"
+g_VERSION="0.0.38"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://raw.githubusercontent.com/DoctorKisow/CIT-254/main/Instructor/hacking-labs"
@@ -90,6 +90,11 @@ if [[ -v TERM && -n "${TERM}" && "${TERM}" != "dumb" ]]; then
   g_RESET_ATTS="$(tput sgr0)"
   g_ALERT_TEXT="$(tput bel)"
 fi
+
+# (g_LAB_PATH) - Strings that hold the location to the lab files.
+g_LAB_PATH="/Lab Files"
+g_LAB_SYMLINK="/labs"
+g_LAB_PREFIX="LAB"
 
 # (g_PREFIXSTRING) - String value used to indicate what is appended to the output at the beginning of screen output during script execution.
 g_PREFIXSTRING="*  "
@@ -233,7 +238,7 @@ function process_command_line_options ()
 
   # Error trapping is turned off because we want to handle errors.
   set +e
-    l_TEMP="$(getopt -o hi:uv --long iprng:update -n "${g_PROGNAME}" -- "${@}")"
+    l_TEMP="$(getopt -o hi:Iuv --long iprng:,update,install -n "${g_PROGNAME}" -- "${@}")"
     l_RC="${?}"
   set -e
 
@@ -254,6 +259,7 @@ function process_command_line_options ()
     case "$arg" in
       --iprng)     set -- "$@" '-i' ;;
       --update)    set -- "$@" '-u' ;;
+      --install)   set -- "$@" '-I' ;;
       *)           set -- "$@" "$arg" ;;
     esac
   done
@@ -266,6 +272,7 @@ function process_command_line_options ()
     case "${1}" in
       -h) display_usage_message_and_bail_out ;;
       -i) g_ARG_SETIP=1; g_ARG_IPRNG=${2}; validip "$g_ARG_IPRNG"; shift 2 ;;
+      -I) g_ARG_INSTALL=1; shift ;;
       -u) g_ARG_UPDATE=1; shift ;;
       -v) print_version >&2; cleanup_and_exit_with_code 1 ;;
       --) shift; break ;;
@@ -395,9 +402,6 @@ function update ()
     info "UPDATE: You are running the current version of this script.\n\n"
   fi
 
-  if [ ! -f /lab/LAB7/ccaclogo.jpg ]; then
-    wget --directory-prefix=/lab/LAB7/
-
   rm -f "$l_TMP_FILE"
 }
 
@@ -449,6 +453,34 @@ function increment_ip ()
 
 	# Return value to calling function.
 	echo "$l_UPDATED_IP"
+}
+
+# (install_package) - Install the lab enviornment.
+function install ()
+{
+  # CREATE DIRECTORY
+  info "  Creating the lab directories and symlink."
+  if ! [ -d "$g_LAB_PATH" ]; then
+    mkdir "$g_LAB_PATH"
+  fi
+
+  # CREATE SYMLINK
+  if ! [[ -h "$g_LAB_SYMLINK" ]]; then
+    ln -s "$g_LAB_PATH" "$g_LAB_SYMLINK"
+  fi
+
+  # Loop through each lab, setting up a directory for each.
+  for i in {1..8}; do
+    mkdir "$g_LAB_SYMLINK/$g_LAB_PREFIX$i"
+  done
+
+  if [ ! -f /labs/LAB7/ccaclogo.jpg ]; then
+    wget https://raw.githubusercontent.com/DoctorKisow/CIT-254/main/Instructor/labs/LAB7/ccaclogo.jpg --directory-prefix=/lab/LAB7/
+  fi
+
+  if [ ! -f /labs/LAB7/drkisow-message.jpg ]; then
+    wget https://raw.githubusercontent.com/DoctorKisow/CIT-254/main/Instructor/labs/LAB7/drkisow-message.jpg --directory-prefix=/lab/LAB7/
+  fi
 }
 
 # (install_package) - Install software packages. Passed arguements ($1) package name.
@@ -816,6 +848,11 @@ else
   if ! ((g_ARG_FINISH_INSTALL==1)); then
     clear
     script_banner
+  fi
+
+  # INSTALL LAB ENVIORNMENT
+  if ((g_ARG_INSTALL==1)); then
+    install
   fi
 
   # SET TCP/IP OF LAB ENVIORNMENT
