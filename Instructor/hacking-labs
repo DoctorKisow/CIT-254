@@ -66,7 +66,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.41"
+g_VERSION="0.0.42"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://raw.githubusercontent.com/DoctorKisow/CIT-254/main/Instructor/hacking-labs"
@@ -110,6 +110,7 @@ g_SCRIPT_PATH="`( cd \"$g_SCRIPT_PATH\" && pwd )`"
 # WARNING: DO NOT MODIFY THESE VALUE(S)!
 declare -i g_ARG_INSTALL=0
 declare -i g_ARG_FINISH_INSTALL=0
+declare -i g_ARG_RESET=0
 declare -i g_ARG_SETIP=0
 declare -i g_ARG_UPDATE=0
 
@@ -183,21 +184,28 @@ function internal_consistency_option_checks ()
   while true ; do
     case "$g_FIRST_TOKEN" in
       -i)
-        if ((g_ARG_UPDATE || g_ARG_INSTALL)); then
+        if ((g_ARG_UPDATE || g_ARG_INSTALL || g_ARG_RESET)); then
           warning "You cannot set the TCP/IP addresses of the lab enviornment with any other options set."
           cleanup_and_exit_with_code 1
         fi
         break
         ;;
       -I)
-        if ((g_ARG_SETIP || g_ARG_UPDATE)); then
-          warning "You cannot update this script with any other options set."
+        if ((g_ARG_SETIP || g_ARG_UPDATE || g_ARG_RESET)); then
+          warning "You cannot install the enviornment this script with any other options set."
+          cleanup_and_exit_with_code 1
+        fi
+        break
+        ;;
+      -r)
+        if ((g_ARG_UPDATE || g_ARG_INSTALL | g_ARG_SETIP)); then
+          warning "You cannot reset your enviornment with any other options set."
           cleanup_and_exit_with_code 1
         fi
         break
         ;;
       -u)
-        if ((g_ARG_SETIP || g_ARG_INSTALL)); then
+        if ((g_ARG_SETIP || g_ARG_INSTALL || g_ARG_RESET)); then
           warning "You cannot update this script with any other options set."
           cleanup_and_exit_with_code 1
         fi
@@ -221,6 +229,7 @@ function print_usage ()
      -h                     show this help message
      -i --iprng             set TCP/IP network number of the lab enviornment
      -I --install           install the lab environment
+     -r --reset             reset TCP/IP configuration to default
      -u --update            update the ${g_PROGNAME} script
      -v                     display the version number of ${g_PROGNAME} and
                             exit
@@ -247,7 +256,7 @@ function process_command_line_options ()
 
   # Error trapping is turned off because we want to handle errors.
   set +e
-    l_TEMP="$(getopt -o hi:Iuv --long iprng:,update,install -n "${g_PROGNAME}" -- "${@}")"
+    l_TEMP="$(getopt -o hi:Iuv --long install,iprng:,reset,update -n "${g_PROGNAME}" -- "${@}")"
     l_RC="${?}"
   set -e
 
@@ -266,9 +275,10 @@ function process_command_line_options ()
   for arg in "${@}"; do
     shift
     case "$arg" in
-      --iprng)     set -- "$@" '-i' ;;
-      --update)    set -- "$@" '-u' ;;
       --install)   set -- "$@" '-I' ;;
+      --iprng)     set -- "$@" '-i' ;;
+      --reset)     set -- "$@" '-r' ;;
+      --update)    set -- "$@" '-u' ;;
       *)           set -- "$@" "$arg" ;;
     esac
   done
@@ -282,6 +292,7 @@ function process_command_line_options ()
       -h) display_usage_message_and_bail_out ;;
       -i) g_ARG_SETIP=1; g_ARG_IPRNG=${2}; validip "$g_ARG_IPRNG"; shift 2 ;;
       -I) g_ARG_INSTALL=1; shift ;;
+      -r) g_ARG_RESET=1; shift ;;
       -u) g_ARG_UPDATE=1; shift ;;
       -v) print_version >&2; cleanup_and_exit_with_code 1 ;;
       --) shift; break ;;
@@ -462,6 +473,12 @@ function increment_ip ()
 
 	# Return value to calling function.
 	echo "$l_UPDATED_IP"
+}
+
+# (reset) - Reset the entire lab enviornment vAPP back to the default TCP/IP addresses.
+function reset()
+{
+  info "Resetting lab entire lab enviornment vAPP back to the default TCP/IP addresses."
 }
 
 # (install_package) - Install the lab enviornment.
@@ -868,6 +885,11 @@ else
   # INSTALL LAB ENVIORNMENT
   if ((g_ARG_INSTALL==1)); then
     install
+  fi
+
+  # INSTALL LAB ENVIORNMENT
+  if ((g_ARG_RESET==1)); then
+    reset
   fi
 
   # SET TCP/IP OF LAB ENVIORNMENT
