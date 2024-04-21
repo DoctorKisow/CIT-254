@@ -66,7 +66,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.42"
+g_VERSION="0.0.43"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://raw.githubusercontent.com/DoctorKisow/CIT-254/main/Instructor/hacking-labs"
@@ -223,7 +223,8 @@ function print_usage ()
 
   cat << EOF
 
-  Usage: ${g_PROGNAME} [-h] [-i|--iprng <a.b.c.d>] [-u|--update] [-v]
+  Usage: ${g_PROGNAME} [-h] [-i|--iprng <a.b.c.d>] [-I|--install]
+                      [-r|--reset <a.b.c.d>] [-u|--update] [-v]
 
   Options:
      -h                     show this help message
@@ -256,7 +257,7 @@ function process_command_line_options ()
 
   # Error trapping is turned off because we want to handle errors.
   set +e
-    l_TEMP="$(getopt -o hi:Iuv --long install,iprng:,reset,update -n "${g_PROGNAME}" -- "${@}")"
+    l_TEMP="$(getopt -o hi:Ir:uv --long install,iprng:,reset:,update -n "${g_PROGNAME}" -- "${@}")"
     l_RC="${?}"
   set -e
 
@@ -292,7 +293,7 @@ function process_command_line_options ()
       -h) display_usage_message_and_bail_out ;;
       -i) g_ARG_SETIP=1; g_ARG_IPRNG=${2}; validip "$g_ARG_IPRNG"; shift 2 ;;
       -I) g_ARG_INSTALL=1; shift ;;
-      -r) g_ARG_RESET=1; shift ;;
+      -r) g_ARG_RESET=1; g_ARG_IPRNG=${2}; validip "$g_ARG_IPRNG"; shift 2 ;;
       -u) g_ARG_UPDATE=1; shift ;;
       -v) print_version >&2; cleanup_and_exit_with_code 1 ;;
       --) shift; break ;;
@@ -478,7 +479,268 @@ function increment_ip ()
 # (reset) - Reset the entire lab enviornment vAPP back to the default TCP/IP addresses.
 function reset()
 {
-  info "Resetting lab entire lab enviornment vAPP back to the default TCP/IP addresses."
+  ## CURRENT IP ADDRESSES FOR LAB ENVIORNMENT
+  local l_KALI_CURIP=$(increment_ip $g_CALC_NETNUM 1)
+  local l_WIN2K8_CURIP=$(increment_ip $g_CALC_NETNUM 2)
+  local l_LIN1404_CURIP=$(increment_ip $g_CALC_NETNUM 3)
+  local l_LIN0804_CURIP=$(increment_ip $g_CALC_NETNUM 4)
+
+  local $l_KALI_ETH0=""
+  local $l_KALI_ETH1=""
+  local l_KALI_RESP=""
+  local l_WIN2K8_RESP=""
+  local l_LIN1404_RESP=""
+  local l_LIN0804_RESP=""
+
+  info "RESETTING: Resetting the TCPIP addresses for the private network lab enviornment back to installation baseline."
+
+  echo "KALI: "            $l_KALI_CURIP
+  echo "Windows 2K8: "     $l_WIN2K8_CURIP
+  echo "Metasploitable3: " $l_LIN1404_CURIP
+  echo "Metasploitable2: " $l_LIN0804_CURIP
+  cleanup_and_exit_with_code 1
+
+  ## PRE-ENVIRONMENT CHECK
+    # Cleanup cloned environment.
+    info "  Resetting the cloned environment..."
+
+    set +e
+    nmcli connection | grep -q 'Wired connection 1'
+    if [ $? == 0 ]; then
+      info "    Removing cloned eth0 network adapter..."
+      nmcli connection delete "Wired connection 1" &>/dev/null
+    fi
+
+    nmcli connection | grep -q 'Wired connection 2'
+    if [ $? == 0 ]; then
+      info "    Removing cloned eth1 network adapter..."
+      nmcli connection delete "Wired connection 2" &>/dev/null
+    fi
+
+    nmcli connection | grep -q 'CIT-GUESTS'
+    if [ $? == 0 ]; then
+      info "    Removing the orphaned eth0 network adapter..."
+      nmcli connection delete "CIT-GUESTS" &>/dev/null
+
+      info "    Creating new 'CIT-GUESTS' adapter on eth0..."
+      nmcli connection add con-name "CIT-GUESTS" type ethernet ifname eth0 ipv4.method auto &>/dev/null
+      nmcli connection up id "CIT-GUESTS" &>/dev/null
+    fi
+
+    info "  Ensuring each lab host is up and running."
+    if [[ "$l_KALI_ETH1" == "$l_KALI_CURIP" ]]; then
+      # Check WIN2K8 is available.
+      l_WIN2K8_RESP=$(ping_and_report $l_WIN2K8_CURIP)
+      if [[ $l_WIN2K8_RESP -ne 0 ]]; then
+        warning "    The Metasploitable3 (Windows 2008R2) VM is not responding."
+      else
+        info "   The Metasploitable3 (Windows 2008R2) VM is responding."
+      fi
+
+      # Check Metasploitable3 (Linux) is available.
+      l_LIN1404_RESP=$(ping_and_report $l_LIN1404_CURIP)
+      if [[ $l_LIN1404_RESP -ne 0 ]]; then
+        warning "    The Metasploitable3 (Ubuntu 14.04) VM is not responding."
+      else
+        info "    The Metasploitable3 (Ubuntu 14.04) VM is responding."
+      fi
+
+      # Check Metaspliotable2 (Linux) is available.
+      l_LIN0804_RESP=$(ping_and_report $l_LIN0804_CURIP)
+      if [[ $l_LIN0804_RESP -ne 0 ]]; then
+        warning "    The Metasploitable2 (Ubuntu 08.04) VM is not responding."
+      else
+        info "    The Metasploitable2 (Ubuntu 08.04) VM is responding."
+      fi
+
+      # Any host that is unavailable will cause script to fail, exit with error.
+      if [[ $l_WIN2K8_RESP -ne 0 ]] || [[ $l_LIN1404_RESP -ne 0 ]] || [[ $l_LIN0804_RESP -ne 0 ]]; then
+        error "    One or more of the hosts in the lab enviornment are unresponsive. Please ensure each host is up prior to running this script again."
+      else
+        info "    The lab host enviornment is up and ready to configure."
+      fi
+    fi
+  ## PRE-ENVIORNMENT CHECK
+
+  ## Metasploitable3 (Microsoft Windows)
+    info "  Updating the Metasploitable3 (Microsoft Windows) VM networking."
+    sleep 5s
+
+    info "    Running TCPIP update script on Metasploitable3 (Microsoft Windows)."
+    sshpass -pvagrant ssh -f -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" vagrant@$l_WIN2K8_CURIP 'netsh interface ip set address name="CIT-254-ISOLATED" static '"$g_WIN2K8_DEFIP"' 255.255.255.248'
+  ## Metasploitable3 (Microsoft Windows)
+
+  ## Metasploitable3 (Linux)
+    info "  Updating the Metasploitable3 (Linux) VM networking."
+    sleep 5s
+
+    # Cleanup incase of a borked run.
+    if [[ -f "${g_SCRIPT_PATH}/bootstrap_lin1404.sh" ]]; then
+      info "    Cleaning up messy environment, removing bootstrap_lin1404.sh script."
+      rm "${g_SCRIPT_PATH}/bootstrap_lin1404.sh"
+    fi
+
+    # Cleanup incase of a borked run.
+    if [[ -f "${g_SCRIPT_PATH}/updater_lin1404.sh" ]]; then
+      info "    Cleaning up messy environment, removing updater_lin1404.sh script."
+      rm "${g_SCRIPT_PATH}/updater_lin1404.sh"
+    fi
+
+    # Create bootstrap script that will call the updater script.
+    info "    Creating bootstrap script."
+    printf '#!/bin/bash\n\n' >> bootstrap_lin1404.sh
+    printf "echo vagrant | sudo -S nohup /home/vagrant/updater.sh &\n" >> bootstrap_lin1404.sh
+    printf "rm /home/vagrant/bootstrap.sh\n" >> bootstrap_lin1404.sh
+    chmod +x bootstrap_lin1404.sh
+
+    # Create the updater script based on default ip address and new onr entered.
+    info "    Creating TCPIP address updater script."
+    printf '#!/bin/bash\n\n' >> updater_lin1404.sh
+    printf "sleep 10s\n\n" >> updater_lin1404.sh
+    printf "sed -i -e 's/$l_LIN1404_CURIP/$g_LIN1404_DEFIP/' /etc/network/interfaces\n" >> updater_lin1404.sh
+    printf "ifdown eth0 && ifup eth0\n" >> updater_lin1404.sh
+    printf "rm /home/vagrant/updater.sh\n" >> updater_lin1404.sh
+    chmod +x updater_lin1404.sh
+
+    # Copy scripts to the Metasploitable3 (Linux) VM.
+    sshpass -pvagrant scp -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" updater_lin1404.sh vagrant@$l_LIN1404_CURIP:/home/vagrant/updater.sh
+    sshpass -pvagrant scp -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" bootstrap_lin1404.sh vagrant@$l_LIN1404_CURIP:/home/vagrant/bootstrap.sh
+
+    # Run the SSH script
+    info "    Running TCPIP update script on Metasploitable3 (Linux)."
+    sshpass -pvagrant ssh -f -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" vagrant@$g_LIN1404_CURIP '/bin/bash /home/vagrant/bootstrap.sh'
+    if [ $? -eq 0 ]; then
+      info "    TCPIP address updater script ran successfully."
+    fi
+
+    # Cleanup after run.
+    if [[ -f "${g_SCRIPT_PATH}/bootstrap_lin1404.sh" ]]; then
+      info "    Cleaning up removing bootstrap_lin1404.sh script."
+      rm "${g_SCRIPT_PATH}/bootstrap_lin1404.sh"
+    fi
+
+    if [[ -f "${g_SCRIPT_PATH}/updater_lin1404.sh" ]]; then
+      info "    Cleaning up removing updater_lin1404.sh script."
+      rm "${g_SCRIPT_PATH}/updater_lin1404.sh"
+    fi
+  ## Metasploitable3 (Linux)
+
+  ## Metasploitable2 (Linux)
+    info "  Updating the Metasploitable2 VM networking."
+    sleep 5s
+
+    # Cleanup incase of a borked run.
+    if [[ -f "${g_SCRIPT_PATH}/bootstrap_lin0804.sh" ]]; then
+      info "    Cleaning up messy environment, removing bootstrap_lin0804.sh script."
+      rm "${g_SCRIPT_PATH}/bootstrap_lin0804.sh"
+    fi
+
+    # Cleanup incase of a borked run.
+    if [[ -f "${g_SCRIPT_PATH}/updater_lin0804.sh" ]]; then
+      info "    Cleaning up messy environment, removing updater_lin0804.sh script."
+      rm "${g_SCRIPT_PATH}/updater_lin0804.sh"
+    fi
+
+    # Create bootstrap script that will call the updater script.
+    info "    Creating bootstrap script."
+    printf '#!/bin/bash\n\n' >> bootstrap_lin0804.sh
+    printf "echo msfadmin | sudo -S nohup /home/msfadmin/updater.sh &\n" >> bootstrap_lin0804.sh
+    printf "rm /home/msfadmin/bootstrap.sh\n" >> bootstrap_lin0804.sh
+    chmod +x bootstrap_lin0804.sh
+
+    # Create the updater script based on default ip address and new onr entered.
+    info "    Creating TCPIP address updater script."
+    printf '#!/bin/bash\n\n' >> updater_lin0804.sh
+    printf "sleep 10s\n\n" >> updater_lin0804.sh
+    printf "sed -i -e 's/$l_LIN0804_CURIP/$g_LIN0804_DEFIP/' /etc/network/interfaces\n" >> updater_lin0804.sh
+    printf "ifdown eth0 && ifup eth0\n" >> updater_lin0804.sh
+    printf "rm /home/msfadmin/updater.sh\n" >> updater_lin0804.sh
+    chmod +x updater_lin0804.sh
+
+    # Copy scripts to the Metasploitable2 VM.
+    sshpass -pmsfadmin scp -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" updater_lin0804.sh msfadmin@$l_LIN0804_CURIP:/home/msfadmin/updater.sh
+    sshpass -pmsfadmin scp -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" bootstrap_lin0804.sh msfadmin@$l_LIN0804_CURIP:/home/msfadmin/bootstrap.sh
+
+    # Run the SSH script
+    info "    Running TCPIP update script on Metasploitable2."
+    sshpass -pmsfadmin ssh -f -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" msfadmin@$l_LIN0804_CURIP '/bin/bash /home/msfadmin/bootstrap.sh'
+    if [ $? -eq 0 ]; then
+      info "    TCPIP address updater script ran successfully."
+    fi
+
+    # Cleanup after run.
+    if [[ -f "${g_SCRIPT_PATH}/bootstrap_lin0804.sh" ]]; then
+      info "    Cleaning up removing bootstrap_lin0804.sh script."
+      rm "${g_SCRIPT_PATH}/bootstrap_lin0804.sh"
+    fi
+
+    if [[ -f "${g_SCRIPT_PATH}/updater_lin0804.sh" ]]; then
+      info "    Cleaning up removing updater_lin0804.sh script."
+      rm "${g_SCRIPT_PATH}/updater_lin0804.sh"
+    fi
+  ## Metasploitable2 (Linux)
+
+  ## KALI
+    info "  Updating Kali Linux (eth1) VM networking."
+    nmcli connection down "CIT-254-ISOLATED" > /dev/nul
+    nmcli connection modify "CIT-254-ISOLATED" ipv4.addresses $g_KALI_DEFIP/29
+    nmcli connection up "CIT-254-ISOLATED" > /dev/nul
+  ## KALI
+
+  ## POST-ENVIORNMENT CHECK
+    # Check KALI is available.
+    l_KALI_RESP=$(ping_and_report $g_KALI_DEFIP)
+    if [[ $l_KALI_RESP -ne 0 ]]; then
+      warning "    The Kali Linux VM is not responding to its default IP address."
+    else
+      info "    The Kali Linux VM is responding to its default IP address."
+    fi
+
+    # Check Metasploitable3 (Windows 2008R2) is available.
+    l_WIN2K8_RESP=$(ping_and_report $g_WIN2K8_DEFIP)
+    if [[ $l_WIN2K8_RESP -ne 0 ]]; then
+      warning "    The Metasploitable3 (Windows 2008R2) is not responding to its default IP address."
+    else
+      info "    The Metasploitable3 (Windows 2008R2) is responding to its default IP address."
+    fi
+
+    # Check Metasploitable3 (Ubuntu 14.04) is available.
+    l_LIN1404_RESP=$(ping_and_report $g_LIN1404_DEFIP)
+    if [[ $l_LIN1404_RESP -ne 0 ]]; then
+      warning "    The Metasploitable3 (Ubuntu 14.04) is not responding to its default IP address."
+    else
+      info "    The Metasploitable3 (Ubuntu 14.04) is responding to its default IP address."
+    fi
+
+    # Check Metaspliotable2 (Linux) is available.
+    l_LIN0804_RESP=$(ping_and_report $g_LIN0804_DEFIP)
+    if [[ $l_LIN0804_RESP -ne 0 ]]; then
+      warning "    The Metasploitable2 (Ubuntu 08.04) is not responding to its default IP address."
+    else
+      info "    The Metasploitable2 (Ubuntu 08.04) is responding to its default IP address."
+    fi
+
+    # Any host that is unavailable will cause script to fail, exit with error.
+    if [[ $l_KALI_RESP -ne 0 ]] || [[ $l_WIN2K8_RESP -ne 0 ]] || [[ $l_LIN1404_RESP -ne 0 ]] || [[ $l_LIN0804_RESP -ne 0 ]]; then
+      warning "    One or more of the hosts in the lab enviornment are unresponsive to their default ip addresses."
+    else
+      info "    The lab host enviornment has successfully been reconfigured back to it's installed configuration."
+    fi
+  ## POST-ENVIORNMENT CHECK
+
+  ## CLEANUP SSH HASHES.
+    if [[ -f ~/.ssh ]]; then
+      info "    Cleaning up saved ssh information."
+      rm -R ~/.ssh
+    fi
+  ## CLEANUP SSH HASHES
+
+  ## REMOVE LAB FILE
+    if [[ -f /home/labuser/Desktop/Lab-Readme.txt ]]; then
+      info "    Cleaning up saved lab readme file."
+      rm /home/labuser/Desktop/Lab-Readme.txt
+    fi
+  ## REMOVE LAB FILE
 }
 
 # (install_package) - Install the lab enviornment.
@@ -584,15 +846,14 @@ function validip ()
 # (settcpip) - Function for shelling into each vm changing then applying the new ip addresses.
 function settcpip ()
 {
-  local l_KALI_ETH0=""
-  local l_KALI_ETH1=""
-
   ## NEW IP ADDRESSES FOR LAB ENVIORNMENT
   local l_KALI_NEWIP=$(increment_ip $g_CALC_NETNUM 1)
   local l_WIN2K8_NEWIP=$(increment_ip $g_CALC_NETNUM 2)
   local l_LIN1404_NEWIP=$(increment_ip $g_CALC_NETNUM 3)
   local l_LIN0804_NEWIP=$(increment_ip $g_CALC_NETNUM 4)
 
+  local $l_KALI_ETH0=""
+  local $l_KALI_ETH1=""
   local l_KALI_RESP=""
   local l_WIN2K8_RESP=""
   local l_LIN1404_RESP=""
@@ -617,14 +878,14 @@ function settcpip ()
       nmcli connection delete "Wired connection 2" &>/dev/null
     fi
 
-    nmcli connection | grep -q 'Public Network'
+    nmcli connection | grep -q 'CIT-GUESTS'
     if [ $? == 0 ]; then
       info "    Removing the orphaned eth0 network adapter..."
-      nmcli connection delete "Public Network" &>/dev/null
+      nmcli connection delete "CIT-GUESTS" &>/dev/null
 
-      info "    Creating new 'Public Network' adapter on eth0..."
-      nmcli connection add con-name "Public Network" type ethernet ifname eth0 ipv4.method auto &>/dev/null
-      nmcli connection up id "Public Network" &>/dev/null
+      info "    Creating new 'CIT-GUESTS' adapter on eth0..."
+      nmcli connection add con-name "CIT-GUESTS" type ethernet ifname eth0 ipv4.method auto &>/dev/null
+      nmcli connection up id "CIT-GUESTS" &>/dev/null
     fi
 
     nmcli connection | grep -q 'CIT-254-ISOLATED'
@@ -632,7 +893,7 @@ function settcpip ()
       info "    Removing the orphaned eth1 network adapter..."
       nmcli connection delete "CIT-254-ISOLATED" &>/dev/null
 
-      info "    Creating new 'Public Network' adapter on eth0..."
+      info "    Creating new 'CIT-254-ISOLATED' adapter on eth1..."
       nmcli con add con-name "CIT-254-ISOLATED" type ethernet ifname eth1 ipv4.method manual ipv4.address 192.168.1.1/29 &>/dev/null
       nmcli connection up id "CIT-254-ISOLATED" &>/dev/null
     fi
@@ -665,7 +926,7 @@ function settcpip ()
 
       # Any host that is unavailable will cause script to fail, exit with error.
       if [[ $l_WIN2K8_RESP -ne 0 ]] || [[ $l_LIN1404_RESP -ne 0 ]] || [[ $l_LIN0804_RESP -ne 0 ]]; then
-        error "    One or more of the josts in the lab enviornment are unresponsive. Please ensure each host is up prior to running this script."
+        error "    One or more of the hosts in the lab enviornment are unresponsive. Please ensure each host is up prior to running this script again."
       else
         info "    The lab host enviornment is up and ready to configure."
       fi
