@@ -66,7 +66,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.49"
+g_VERSION="0.0.50"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://raw.githubusercontent.com/DoctorKisow/CIT-254/main/hacking-labs"
@@ -771,15 +771,27 @@ function install ()
     fi
   done
 
+  # SET SECURITY
+  info "  Setting the ownership and permissions for the lab enviornment."
+  chown -R root:labuser "$g_LAB_PATH"
+  chmod -R 02755 "$g_LAB_PATH"
+
+  chown mkisowa:root "$g_LAB_PATH/$g_PROGNAME"
+  chmod 550 "$g_LAB_PATH/$g_PROGNAME"
+
   if ! [[ -f /labs/LAB7/ccaclogo.jpg ]]; then
     info "    Installing ccaclogo.jpg"
     wget https://raw.githubusercontent.com/DoctorKisow/CIT-254/main/Student/LAB7/ccaclogo.jpg --directory-prefix=/labs/LAB7/ --quiet
+    chmod 660 /labs/LAB7/ccaclogo.jpg
   fi
 
   if ! [[ -f /labs/LAB7/drkisow-message.jpg ]]; then
     info "    Installing drkisow-message.jpg"
     wget https://raw.githubusercontent.com/DoctorKisow/CIT-254/main/Student/LAB7/drkisow-message.jpg --directory-prefix=/labs/LAB7/ --quiet
+    chmod 660 /labs/LAB7/drkisow-message.jpg
   fi
+
+
 }
 
 # (install_package) - Install software packages. Passed arguements ($1) package name.
