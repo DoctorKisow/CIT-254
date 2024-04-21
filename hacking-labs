@@ -66,7 +66,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.50"
+g_VERSION="0.0.51"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://raw.githubusercontent.com/DoctorKisow/CIT-254/main/hacking-labs"
@@ -110,6 +110,7 @@ g_SCRIPT_PATH="`( cd \"$g_SCRIPT_PATH\" && pwd )`"
 # WARNING: DO NOT MODIFY THESE VALUE(S)!
 declare -i g_ARG_INSTALL=0
 declare -i g_ARG_FINISH_INSTALL=0
+declare -i g_ARG_PURGEDB=0
 declare -i g_ARG_RESET=0
 declare -i g_ARG_SETIP=0
 declare -i g_ARG_UPDATE=0
@@ -190,28 +191,35 @@ function internal_consistency_option_checks ()
   while true ; do
     case "$g_FIRST_TOKEN" in
       -i)
-        if ((g_ARG_UPDATE || g_ARG_INSTALL || g_ARG_RESET)); then
+        if ((g_ARG_UPDATE || g_ARG_INSTALL || g_ARG_RESET || g_ARG_PURGEDB)); then
           warning "You cannot set the TCP/IP addresses of the lab enviornment with any other options set."
           cleanup_and_exit_with_code 1
         fi
         break
         ;;
       -I)
-        if ((g_ARG_SETIP || g_ARG_UPDATE || g_ARG_RESET)); then
+        if ((g_ARG_SETIP || g_ARG_UPDATE || g_ARG_RESET || g_ARG_PURGEDB)); then
           warning "You cannot install the enviornment this script with any other options set."
           cleanup_and_exit_with_code 1
         fi
         break
         ;;
+      -p)
+        if ((g_ARG_UPDATE || g_ARG_INSTALL || g_ARG_RESET || g_ARG_SETIP)); then
+          warning "You cannot purge and reset the PostGreSQL database with any other options set."
+          cleanup_and_exit_with_code 1
+        fi
+        break
+        ;;
       -r)
-        if ((g_ARG_UPDATE || g_ARG_INSTALL | g_ARG_SETIP)); then
+        if ((g_ARG_UPDATE || g_ARG_INSTALL || g_ARG_PURGEDB || g_ARG_SETIP)); then
           warning "You cannot reset your enviornment with any other options set."
           cleanup_and_exit_with_code 1
         fi
         break
         ;;
       -u)
-        if ((g_ARG_SETIP || g_ARG_INSTALL || g_ARG_RESET)); then
+        if ((g_ARG_SETIP || g_ARG_INSTALL || g_ARG_SETIP || g_ARG_RESET)); then
           warning "You cannot update this script with any other options set."
           cleanup_and_exit_with_code 1
         fi
@@ -236,6 +244,7 @@ function print_usage ()
      -h                     show this help message
      -i --iprng             set TCP/IP network number of the lab enviornment
      -I --install           install the lab environment
+     -p                     purge abd reset PostgreSQL database
      -r --reset             reset TCP/IP configuration to default
      -u --update            update the ${g_PROGNAME} script
      -v                     display the version number of ${g_PROGNAME} and
@@ -263,7 +272,7 @@ function process_command_line_options ()
 
   # Error trapping is turned off because we want to handle errors.
   set +e
-    l_TEMP="$(getopt -o hi:Ir:uv --long install,iprng:,reset:,update -n "${g_PROGNAME}" -- "${@}")"
+    l_TEMP="$(getopt -o hi:Ipr:uv --long install,iprng:,reset:,update -n "${g_PROGNAME}" -- "${@}")"
     l_RC="${?}"
   set -e
 
@@ -299,6 +308,7 @@ function process_command_line_options ()
       -h) display_usage_message_and_bail_out ;;
       -i) g_ARG_SETIP=1; g_ARG_IPRNG=${2}; validip "$g_ARG_IPRNG"; shift 2 ;;
       -I) g_ARG_INSTALL=1; shift ;;
+      -p) g_ARG_PURGEDB=1; shift ;;
       -r) g_ARG_RESET=1; g_ARG_IPRNG=${2}; validip "$g_ARG_IPRNG"; shift 2 ;;
       -u) g_ARG_UPDATE=1; shift ;;
       -v) print_version >&2; cleanup_and_exit_with_code 1 ;;
@@ -479,6 +489,24 @@ function increment_ip ()
 
 	# Return value to calling function.
 	echo "$l_UPDATED_IP"
+}
+
+# (purgedb) - Purge and reset the PostGreSQL database.
+function purgedb()
+{
+  info "Purging and resetting the PostGreSQL database."
+
+  pg_lsclusters
+  pg_dropcluster --stop 16 main
+  pg_createcluster 16 main
+  pg_ctlcluster start 16 main
+
+  apt purge gvm*
+  apt purge nessus*
+
+  rm -r /opt/nessus
+
+  apt autoremove
 }
 
 # (reset) - Reset the entire lab enviornment vAPP back to the default TCP/IP addresses.
@@ -1165,6 +1193,11 @@ else
   # INSTALL LAB ENVIORNMENT
   if ((g_ARG_INSTALL==1)); then
     install
+  fi
+
+  # PURGE POSTGRESQL DATABASE
+  if ((g_ARG_PURGEDB==1)); then
+    purgedb
   fi
 
   # INSTALL LAB ENVIORNMENT
