@@ -66,7 +66,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.52"
+g_VERSION="0.0.53"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://raw.githubusercontent.com/DoctorKisow/CIT-254/main/hacking-labs"
@@ -532,7 +532,6 @@ function reset()
   echo "Windows 2K8:     " $l_WIN2K8_CURIP
   echo "Metasploitable3: " $l_LIN1404_CURIP
   echo "Metasploitable2: " $l_LIN0804_CURIP
-  cleanup_and_exit_with_code 1
 
   ## PRE-ENVIRONMENT CHECK
     # Cleanup cloned environment.
@@ -642,7 +641,7 @@ function reset()
 
     # Run the SSH script
     info "    Running TCPIP update script on Metasploitable3 (Linux)."
-    sshpass -pvagrant ssh -f -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" vagrant@$g_LIN1404_CURIP '/bin/bash /home/vagrant/bootstrap.sh'
+    sshpass -pvagrant ssh -f -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" vagrant@$l_LIN1404_CURIP '/bin/bash /home/vagrant/bootstrap.sh'
     if [ $? -eq 0 ]; then
       info "    TCPIP address updater script ran successfully."
     fi
