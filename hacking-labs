@@ -66,7 +66,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.51"
+g_VERSION="0.0.52"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://raw.githubusercontent.com/DoctorKisow/CIT-254/main/hacking-labs"
@@ -452,7 +452,7 @@ function warning ()
 # (create_labuser) - A Function to setup the labuser account for this lab environment.
 function create_labuser ()
 {
-  gorupadd -g 1001 labuser
+  groupadd -g 1001 labuser
 
   useradd --comment "Lab User" --uid 1001 --create-home --no-user-group --gid 1001 --groups adm,dialout,cdrom,floppy,sudo,audio,dip,video,plugdev,users,netdev,wireshark,bluetooth,scanner,kaboxer,labuser --shell /usr/bin/zsh labuser
   echo 'labuser:P@$$w0rd' | chpasswd
@@ -1163,7 +1163,6 @@ function settcpip ()
 # *************************** begin of script proper ***************************
 process_command_line_options "${@}"
 internal_consistency_option_checks
-echo $g_ARG_INSTALL
 
 # ROOT FUNCTION, ARE WE ROOT?
 if [ $EUID -ne 0 ]; then
@@ -1192,6 +1191,9 @@ else
 
   # INSTALL LAB ENVIORNMENT
   if ((g_ARG_INSTALL==1)); then
+    if id -u labuser >/dev/null 2>&1; then
+      create_labuser
+    fi
     install
   fi
 
@@ -1207,9 +1209,6 @@ else
 
   # SET TCP/IP OF LAB ENVIORNMENT
   if ((g_ARG_SETIP==1)); then
-    if id -u labuser >/dev/null 2>&1; then
-      create_labuser
-    fi
     settcpip
   fi
 
