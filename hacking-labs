@@ -16,7 +16,7 @@
 
 # ##############################################################################
 # CIT-254 Ethical Hacking Lab Enviornment
-# Copyright (c) 2022-2024 Dr. Matthew Kisow. All rights reserved.
+# Copyright (c) 2022-2025 Dr. Matthew Kisow. All rights reserved.
 #
 # The usage of Metasploit and the Metasploitable framework is governed by the copyrights held by Rapid7.
 #
@@ -53,11 +53,11 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.56"
+g_VERSION="0.0.57"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://raw.githubusercontent.com/DoctorKisow/CIT-254/main/hacking-labs"
-g_COPYRIGHT_TEXT="Copyright (c) 2022-2024 Dr. Matthew Kisow. All rights reserved."
+g_COPYRIGHT_TEXT="Copyright (c) 2022-2025 Dr. Matthew Kisow. All rights reserved."
 g_AUTHOR_TEXT="Dr. Matthew Kisow"
 g_AUTHOR_EMAIL="mkisow@ccac.edu"
 
@@ -582,12 +582,12 @@ function reset()
     chmod +x updater_lin0804.sh
 
     # Copy scripts to the Metasploitable2 VM.
-    sshpass -pmsfadmin scp -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" updater_lin0804.sh msfadmin@$l_LIN0804_CURIP:/home/msfadmin/updater.sh
-    sshpass -pmsfadmin scp -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" bootstrap_lin0804.sh msfadmin@$l_LIN0804_CURIP:/home/msfadmin/bootstrap.sh
+    sshpass -pmsfadmin scp -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-rsa" updater_lin0804.sh msfadmin@$l_LIN0804_CURIP:/home/msfadmin/updater.sh
+    sshpass -pmsfadmin scp -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-rsa" bootstrap_lin0804.sh msfadmin@$l_LIN0804_CURIP:/home/msfadmin/bootstrap.sh
 
     # Run the SSH script
     info "    Running TCPIP update script on Metasploitable2."
-    sshpass -pmsfadmin ssh -f -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-dss" msfadmin@$l_LIN0804_CURIP '/bin/bash /home/msfadmin/bootstrap.sh'
+    sshpass -pmsfadmin ssh -f -o "StrictHostKeyChecking no" -o "HostKeyAlgorithms=+ssh-rsa" msfadmin@$l_LIN0804_CURIP '/bin/bash /home/msfadmin/bootstrap.sh'
     if [ $? -eq 0 ]; then
       info "    TCPIP address updater script ran successfully."
     fi
