@@ -569,6 +569,7 @@ function reset()
     info "    Creating bootstrap script."
     printf '#!/bin/bash\n\n' >> bootstrap_lin0804.sh
     printf "echo msfadmin | sudo -S nohup /home/msfadmin/updater.sh &\n" >> bootstrap_lin0804.sh
+    printf "sleep 20s\n\n"  >> bootstrap_lin0804.sh
     printf "rm /home/msfadmin/bootstrap.sh\n" >> bootstrap_lin0804.sh
     chmod +x bootstrap_lin0804.sh
 
