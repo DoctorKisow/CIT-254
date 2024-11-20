@@ -1,7 +1,7 @@
-# Copyright (c) 2022-2024 Dr. Matthew Kisow. All rights reserved.
+# Copyright (c) 2022-2025 Dr. Matthew Kisow. All rights reserved.
 # Dr. Matthew Kisow <mkisow@ccac.edu>
 
-For access to the instructor resources, please contact the author. 
+To access the instructor resources, please get in touch with the author. 
 
 Please include the following information:
 
