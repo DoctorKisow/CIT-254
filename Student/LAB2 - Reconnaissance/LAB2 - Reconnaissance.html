@@ -1,16 +1,15 @@
 <!-- LAB HEADER / TOC -->
-<p id="#lab2"></p>
 <table border="0" style="border-collapse: collapse; width: 99%; border-style: none; height: 300px;">
   <tbody>
     <tr style="height: 102px;">
-      <td colspan="2" style="width: 100%; text-align: center; vertical-align: top;"><img src="https://courses.ccac.edu/bbcswebdav/pid-11603983-dt-content-rid-48750046_1/xid-48750046_1" style="border: 0px solid #000000;" width="311" height="100" alt="ccac-logo"/></td>
+      <td colspan="2" style="width: 100%; text-align: center; vertical-align: top;"><img src="https://web.acd.ccac.edu/~mkisow/assets/ccac-logo.png" style="border: 0px solid #000000;" width="311" height="100" alt="ccac-logo"/></td>
     </tr>
     <tr style="height: 30px;">
-      <td colspan="2" style="width: 100%; text-align: center; vertical-align: top;"><span style="font-size: 24pt;"><strong>LAB 2: RECONNAISSANCE</strong></span></td>
+      <td colspan="2" style="font-family: arial, helvetica, sans-serif; font-size: 24pt; width: 100%; text-align: center; vertical-align: top;"><strong>LAB 2: RECONNAISSANCE</strong></td>
     </tr>
     
     <tr style="height: 22.5px;">
-      <td style="width: 72%; height: 22.50px;"><span style="color: #ba372a; font-size: 12pt;"><strong>INSTRUCTIONS</strong></span></td>
+      <!-- <td style="width: 72%; height: 22.50px;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt; color: #ba372a;"><strong>INSTRUCTIONS</strong></span></td>
       <td rowspan="6" style="width: 28%; height: 175px;  vertical-align: top;">
         <table border="0" style="border-collapse: collapse; width: 350px; background-color: #ecf0f1; border-style: none; float: right; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
           <tbody>
@@ -35,26 +34,26 @@
           </tbody>
         </table>
       </td>
+    </tr> -->
+    <tr>
+      <td style="width: 72%; vertical-align: top; height: 75px; text-align: justify;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">The reconnaissance lab is an immersive and hands-on experience designed to introduce aspiring ethical hackers to the essential reconnaissance techniques in cybersecurity. Reconnaissance plays a critical role in fortifying the digital defenses of organizations. This lab is meticulously crafted to provide students at our esteemed community college with a practical understanding of Autonomous Systems, Shodan, WHOIS, sublist3r, and the intricacies of sourcing SSL certificates for host names.<br /></span><br /><p style="font-family: arial, helvetica, sans-serif; color: #ba372a; font-size: 12pt; text-align: center; margin: 0; padding: 0;"><strong><em>Upload your answers and DNS Dumpster screenshot to this lab.</em></strong></p></td>
     </tr>
     <tr>
-      <td style="width: 72%; vertical-align: top; height: 75px; text-align: justify;"><span style="font-size: 12pt;">The reconnaissance lab is an immersive and hands-on experience designed to introduce aspiring ethical hackers to the essential reconnaissance techniques in cybersecurity. Reconnaissance plays a critical role in fortifying the digital defenses of organizations. This lab is meticulously crafted to provide students at our esteemed community college with a practical understanding of Autonomous Systems, Shodan, WHOIS, sublist3r, and the intricacies of sourcing SSL certificates for host names.<br /></span><br /><p style="font-family: arial, helvetica, sans-serif; color: #ba372a; font-size: 12pt; text-align: center; margin: 0; padding: 0;"><strong><em>Upload your answers and DNS Dumpster screenshot to this lab.</em></strong></p></pUpload></td>
+      <td style="width: 72%; height: 22.50px; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt; color: #ba372a;"><strong>OBJECTIVE</strong></span></td>
     </tr>
     <tr>
-      <td style="width: 72%; height: 22.50px; vertical-align: top;"><span style="font-size: 12pt; color: #ba372a;"><strong>OBJECTIVE</strong></span></td>
+      <td style="width: 72%; vertical-align: top; height: 75px; text-align: justify;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">The primary objective of this lab is to empower students with the skills and knowledge required to conduct ethical and responsible reconnaissance activities. By utilizing publicly available websites and open-source software tools, students will explore the fascinating realm of network exploration, gaining insights into potential vulnerabilities within the college network and systems.</span></td>
     </tr>
     <tr>
-      <td style="width: 72%; vertical-align: top; height: 75px; text-align: justify;"><span style="font-size: 12pt;">The primary objective of this lab is to empower students with the skills and knowledge required to conduct ethical and responsible reconnaissance activities. By utilizing publicly available websites and open-source software tools, students will explore the fascinating realm of network exploration, gaining insights into potential vulnerabilities within the college network and systems.</span></td>
-    </tr>
-    <tr>
-      <td style="width: 72%; height: 22.50px; vertical-align: top;"><span style="font-size: 12pt; color: #ba372a;"><strong>RESOURCES USED AND CREDENTIALS</strong></span></td>
+      <td style="width: 72%; height: 22.50px; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt; color: #ba372a;"><strong>RESOURCES USED AND CREDENTIALS</strong></span></td>
     </tr>
     <tr>
       <td style="width: 72%; vertical-align: top; height: 75px; text-align: justify;">
-        <p><span style="font-size: 12pt;">Begin by logging into the Academic vSphere Portal using your student credentials. Once logged in, navigate to your assigned Virtual Application (VApp) within the portal. This lab will use the following VM's within your VApp with the following credentials.</span></p>
+        <p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Begin by logging into the Academic vSphere Portal using your student credentials. Once logged in, navigate to your assigned Virtual Application (VApp) within the portal. This lab will use the following VM's within your VApp with the following credentials.</span></p>
         <blockquote>
-          <p style="margin: 0; padding: 0;"><span style="font-size: 12pt;"><strong>Kali Linux</strong></span></p>
-          <p style="margin: 0; padding: 0;"><span style="font-size: 12pt;">&emsp;<strong>Username</strong>: labuser</span></p>
-          <p style="margin: 0; padding: 0;"><span style="font-size: 12pt;">&emsp;<strong>Password</strong>: P@$$w0rd</span></p>
+          <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><strong>Kali Linux</strong></span></p>
+          <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">&emsp;<strong>Username</strong>: labuser</span></p>
+          <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">&emsp;<strong>Password</strong>: P@$$w0rd</span></p>
         </blockquote>
       </td>
     </tr>
@@ -62,9 +61,8 @@
 </table>
 
 <!-- VERSION/REVISION -->
-<p style="text-align: center; margin: 0; padding: 0; color: #ced4d9">VERSION 2</p>
-<p style="text-align: center; margin: 0; padding: 0; color: #ced4d9">REVISED 13-NOV-2024</p>
-<p id="#top2"></p>
+<p style="font-family: arial, helvetica, sans-serif; font-size: 12pt; text-align: center; margin: 0; padding: 0; color: #ced4d9">VERSION 2</p>
+<p style="font-family: arial, helvetica, sans-serif; font-size: 12pt; text-align: center; margin: 0; padding: 0; color: #ced4d9">REVISED 13-NOV-2024</p>
 
 <!-- PART 1 -->
 <hr />
@@ -75,11 +73,11 @@
 </blockquote>
 
 <!-- 1.1 -->
-<ol start="1">
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="1">
   <li>
     <p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">The Community College of Allegheny County (CCAC) is no different; they use Autonomous System Numbers to route traffic between different services.</span></p>
 
-    <ol style="list-style-type: lower-alpha;" start="a">
+    <ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt; list-style-type: lower-alpha;" start="a">
       <!-- A -->
       <li>
         <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Many online tools allow you to look up Autonomous System Numbers (ASN) information for a given organization name or domain name, such as:</span>
@@ -93,7 +91,7 @@
                 <tr>
                   <td style="width: 2%; background-color: #169179;">&nbsp;</td>
                   <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
-                    <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48837982_1"  width="16" height="22" style="border: 0px solid #000000;" alt="tip"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 14pt;">TIP</span></strong></p>
+                    <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/green-tip-16x22.svg"  width="16" height="22" style="border: 0px solid #000000;" alt="tip"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 14pt;">TIP</span></strong></p>
                   </td>
                 </tr>
                 <tr>
@@ -120,7 +118,7 @@
                 <tr>
                   <td style="width: 2%; background-color: #169179;">&nbsp;</td>
                   <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
-                    <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48837982_1"  width="16" height="22" style="border: 0px solid #000000;" alt="tip"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 14pt;">TIP</span></strong></p>
+                    <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/green-tip-16x22.svg"  width="16" height="22" style="border: 0px solid #000000;" alt="tip"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 14pt;">TIP</span></strong></p>
                   </td>
                 </tr>
                 <tr>
@@ -142,7 +140,7 @@
             <tr>
               <td style="width: 2%; background-color: #000000;">&nbsp;</td>
               <td colspan="5" style="width: 98%; text-align: left; vertical-align: top;">
-                <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
+                <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/black-deliverable-24x24.svg"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
               </td>
             </tr>
             <tr>
@@ -165,7 +163,7 @@
 </blockquote>
 
 <!-- 1.2 -->
-<ol start="2">
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="2">
   <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">The CIDR entry <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>18.5.27.0/24</strong></span> means that the upper 24 bits of the address (<span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>18.5.27</strong></span>) stay constant, and the lower 8 bits are variable and represent computers within the subnet. <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>18.5.27.0</strong></span> is the first address, and <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>18.5.27.255</strong></span> is the last address for 256 possible addresses in that range.</span></p>
     <!-- NOTE BLUE -->
     <blockquote>
@@ -174,7 +172,7 @@
           <tr>
             <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
             <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
-              <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48837980_1"  width="22" height="22" style="border: 0px solid #000000;" alt="note"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 14pt;">NOTE</span></strong></p>
+              <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/black-deliverable-24x24.svg"  width="22" height="22" style="border: 0px solid #000000;" alt="note"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 14pt;">NOTE</span></strong></p>
             </td>
           </tr>
           <tr>
@@ -194,7 +192,7 @@
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
           <td colspan="5" style="width: 98%; text-align: left; vertical-align: top;">
-            <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
+            <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/black-deliverable-24x24.svg"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
           </td>
         </tr>
         <tr>
@@ -221,7 +219,7 @@
 
 
 <!-- PART 2 -->
-<a href="##top2" style="color: #ba372a;">[TOP]</a>
+<!-- <a href="##top2" style="color: #ba372a;">[TOP]</a> -->
 <hr />
 <p id="#shodan"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 2: Shodan</strong></span></p>
 
@@ -230,7 +228,7 @@
 </blockquote>
 
 <!-- 2.1 -->
-<ol start="1">
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="1">
   <li>
     <p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://www.shodan.io/dashboard" target="_blank" rel="noopener"><span style="color: #ba372a;"><strong>Create a Shodan Login</strong></span></a> (required to use most site features), then answer the deliverable questions for part two. To get the most out of Shodan, please refer to the references section at the end of part two.</span></p>
 
@@ -240,7 +238,7 @@
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
           <td colspan="5" style="width: 98%; text-align: left; vertical-align: top;">
-            <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
+            <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/black-deliverable-24x24.svg"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
           </td>
         </tr>
         <tr>
@@ -267,7 +265,7 @@
           <tr>
             <td style="width: 2%; background-color: #169179;">&nbsp;</td>
             <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
-              <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48837982_1"  width="16" height="22" style="border: 0px solid #000000;" alt="tip"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 14pt;">TIP</span></strong></p>
+              <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/green-tip-16x22.svg"  width="16" height="22" style="border: 0px solid #000000;" alt="tip"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 14pt;">TIP</span></strong></p>
             </td>
           </tr>
           <tr>
@@ -288,7 +286,7 @@
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
           <td colspan="5" style="width: 98%; text-align: left; vertical-align: top;">
-            <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
+            <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/black-deliverable-24x24.svg"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
           </td>
         </tr>
         <tr>
@@ -343,7 +341,7 @@
           <tr>
             <td style="width: 2%; background-color: #169179;">&nbsp;</td>
             <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
-              <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48837982_1"  width="16" height="22" style="border: 0px solid #000000;" alt="tip"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 14pt;">TIP</span></strong></p>
+              <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/green-tip-16x22.svg"  width="16" height="22" style="border: 0px solid #000000;" alt="tip"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 14pt;">TIP</span></strong></p>
             </td>
           </tr>
           <tr>
@@ -378,7 +376,7 @@
           <tr>
             <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
             <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
-              <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48837980_1"  width="22" height="22" style="border: 0px solid #000000;" alt="note"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 14pt;">NOTE</span></strong></p>
+              <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/blue-note-22x22.svg"  width="22" height="22" style="border: 0px solid #000000;" alt="note"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 14pt;">NOTE</span></strong></p>
             </td>
           </tr>
           <tr>
@@ -399,7 +397,7 @@
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
           <td colspan="5" style="width: 98%; text-align: left; vertical-align: top;">
-            <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
+            <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/black-deliverable-24x24.svg"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
           </td>
         </tr>
         <tr>
@@ -433,7 +431,7 @@
           <tr>
             <td style="width: 2%; background-color: #169179;">&nbsp;</td>
             <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
-              <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48837982_1"  width="16" height="22" style="border: 0px solid #000000;" alt="tip"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 14pt;">TIP</span></strong></p>
+              <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/green-tip-16x22.svg"  width="16" height="22" style="border: 0px solid #000000;" alt="tip"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 14pt;">TIP</span></strong></p>
             </td>
           </tr>
           <tr>
@@ -461,7 +459,7 @@
 
 
 <!-- PART 3 -->
-<a href="##top2" style="color: #ba372a;">[TOP]</a>
+<!-- <a href="##top2" style="color: #ba372a;">[TOP]</a> -->
 <hr />
 <p id="#whois"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 3: Whois</strong></span></p>
 
@@ -470,15 +468,15 @@
 </blockquote>
 
 <!-- 3.1 -->
-<ol start="1">
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="1">
   <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Using <em>whois</em> on your <strong><em>Kali Linux VM</em></strong>; find information on the domain name "ccac.edu."</span></p>
     <!-- CODE -->
     <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
       <tbody>
         <tr style="background-color: #ced4e9;">
-          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
-          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
-          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
           <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"></span><strong>CODE</strong></td>
         </tr>
         <tr>
@@ -498,7 +496,7 @@
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
           <td colspan="5" style="width: 98%; text-align: left; vertical-align: top;">
-            <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
+            <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/black-deliverable-24x24.svg"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
           </td>
         </tr>
         <tr>
@@ -529,7 +527,7 @@
 
 
 <!-- PART 4 -->
-<a href="##top2" style="color: #ba372a;">[TOP]</a>
+<!-- <a href="##top2" style="color: #ba372a;">[TOP]</a> -->
 <hr />
 <p id="#dns"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 4: DNS</strong></span></p>
 
@@ -538,20 +536,20 @@
 </blockquote>
 
 <!-- 4.1 -->
-<ol start="1">
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="1">
   <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Sign up for a <span style="color: #ba372a;"><a href="https://www.virustotal.com/gui/join-us" target="_blank" rel="noopener" style="color: #ba372a;"><strong>free account at VirusTotal</strong></a></span>. After registering and logging in, copy the <strong>API key</strong> from your profile.</span></p></li>
 </ol>
 
 <!-- 4.2 -->
-<ol start="2">
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="2">
   <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Install sublist3r on your <strong><em>Kali Linux VM</em></strong>; and as of <strong>2023</strong> the code patch to fix integration with VirusTotal.</span></p>
     <!-- CODE -->
     <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
       <tbody>
         <tr style="background-color: #ced4e9;">
-          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
-          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
-          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
           <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"></span><strong>CODE</strong></td>
         </tr>
         <tr>
@@ -575,15 +573,15 @@
 </ol>
 
 <!-- 4.3 -->
-<ol start="3">
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="3">
   <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Using sublist3r, obtain an incomplete but lengthy list of subdomains for the domain name "ccac.edu."</span></p>
     <!-- CODE -->
     <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
       <tbody>
         <tr style="background-color: #ced4e9;">
-          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
-          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
-          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
           <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"></span><strong>CODE</strong></td>
         </tr>
         <tr>
@@ -604,7 +602,7 @@
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
           <td colspan="5" style="width: 98%; text-align: left; vertical-align: top;">
-            <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
+            <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/black-deliverable-24x24.svg"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
           </td>
         </tr>
         <tr>
@@ -625,9 +623,9 @@
 </blockquote>
 
 <!-- 4.4 -->
-<ol start="4">
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="4">
   <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Use the DNS Dumpster to obtain a list of subdomains for the domain name <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>ccac.edu</strong></span>.</span></p>
-    <p><img src="https://courses.ccac.edu/bbcswebdav/pid-11603983-dt-content-rid-48734220_1/xid-48734220_1"  style="border: 0px solid #000000;" /><br />&nbsp;</p>
+    <p><img src="https://web.acd.ccac.edu/~mkisow/assets/lab2-dns-dumpster.png"  style="border: 0px solid #000000;" /><br />&nbsp;</p>
 
     <!-- 4.4 DELIVERABLE -->
     <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
@@ -635,7 +633,7 @@
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
           <td colspan="5" style="width: 98%; text-align: left; vertical-align: top;">
-            <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
+            <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/black-deliverable-24x24.svg"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
           </td>
         </tr>
         <tr>
@@ -656,15 +654,15 @@
 </blockquote>
 
 <!-- 4.5 -->
-<ol start="5">
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="5">
   <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Use Fierce (in your Kali VM) to do a DNS scan:</span></p>
     <!-- CODE -->
     <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
       <tbody>
         <tr style="background-color: #ced4e9;">
-          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">⬤</span></td>
-          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">⬤</span></td>
-          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">⬤</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
           <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"></span><strong>CODE</strong></td>
         </tr>
         <tr>
@@ -684,7 +682,7 @@
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
           <td colspan="5" style="width: 98%; text-align: left; vertical-align: top;">
-            <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
+            <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/black-deliverable-24x24.svg"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
           </td>
         </tr>
         <tr>
@@ -711,7 +709,7 @@
 
 
 <!-- PART 5 -->
-<a href="##top2" style="color: #ba372a;">[TOP]</a>
+<!-- <a href="##top2" style="color: #ba372a;">[TOP]</a> -->
 <hr />
 <p id="#ssl"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 5: SSL Certificates</strong></span></p>
 
@@ -720,7 +718,7 @@
 </blockquote>
 
 <!-- 5.1 -->
-<ol start="1">
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="1">
   <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">You can inspect SSL certificates manually in your web browser or by using various online resources, such as:</span></p>
     <ul>
       <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt; color: #ba372a;"><a href="https://andrewmohawk.com/SSLAssociated/index.php" style="color: #ba372a;">https://andrewmohawk.com/SSLAssociated/index.php</a></span></li>
@@ -734,7 +732,7 @@
         <tr>
           <td style="width: 2%; background-color: #000000;">&nbsp;</td>
           <td colspan="5" style="width: 98%; text-align: left; vertical-align: top;">
-            <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/xid-48856563_1"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
+            <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/black-deliverable-24x24.svg"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong></p>
           </td>
         </tr>
         <tr>
@@ -751,6 +749,6 @@
 </ol>
 
 <!-- COPYRIGHT -->
-<a href="##top2" style="color: #ba372a;">[TOP]</a>
+<!-- <a href="##top2" style="color: #ba372a;">[TOP]</a> -->
 <hr />
-<p style="text-align: center;">Copyright &copy; 2022-2024 Dr. Matthew Kisow. All Rights Reserved</p>
+<p style="font-family: arial, helvetica, sans-serif; font-size: 12pt; text-align: center; color: #000000;">Copyright &copy; 2022-2024 Dr. Matthew Kisow. All Rights Reserved</p>
