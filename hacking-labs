@@ -105,6 +105,7 @@ declare -i g_ARG_UPDATE=0
 # Lab enviornment default IP addresses. DO NOT MODIFY!
 declare g_KALI_DEFIP="192.168.1.1"
 declare g_LIN0804_DEFIP="192.168.1.2"
+declare g_ZGT_DEFIP="192.168.1.3"
 
 declare g_CALC_NETNUM=""
 
@@ -443,11 +444,11 @@ function create_labuser ()
   echo 'labuser:P@$$w0rd' | chpasswd
 }
 
-# (increment_ip) - A function that will increment the network number passed ($1) by the second arguement ($2). Based on a /30, "2" valid hosts.
+# (increment_ip) - A function that will increment the network number passed ($1) by the second arguement ($2). Based on a /29, "6" valid hosts.
 function increment_ip ()
 {
-  l_RNG='^[1-2]+$'
-  if ! [[ $2 =~ $l_RNG ]]; then
+  l_RNG='^[1-6]+$'
+  if ! [[ $6 =~ $l_RNG ]]; then
     error "Function: increment_ip was passed a value that is out of bounds."
   fi
 
@@ -500,12 +501,14 @@ function reset()
   ## CURRENT IP ADDRESSES FOR LAB ENVIORNMENT
   local l_KALI_CURIP=$(increment_ip $g_CALC_NETNUM 1)
   local l_LIN0804_CURIP=$(increment_ip $g_CALC_NETNUM 2)
+  local l_ZGT_CURIP=$(increment_ip $g_CALC_NETNUM 3)
 
   local l_KALI_ETH0=
   local l_KALI_ETH1=
 
   local l_KALI_RESP=""
   local l_LIN0804_RESP=""
+  local l_ZGT_RESP=""
 
   info "RESETTING: Resetting the TCPIP addresses for the private network lab enviornment back to installation baseline."
 
@@ -657,10 +660,11 @@ function install ()
   # CREATE SYMLINK
   if ! [[ -h "$g_LAB_SYMLINK" ]]; then
     ln -s "$g_LAB_PATH" "$g_LAB_SYMLINK"
+    chown -R mkisowa:labuser "$g_LAB_PATH" "$g_LAB_SYMLINK"
   fi
 
   # Loop through each lab, setting up a directory for each.
-  for i in {1..8}; do
+  for i in {1..12}; do
     if ! [ -d "$g_LAB_SYMLINK/$g_LAB_PREFIX$i" ]; then
       info "    Creating $g_LAB_SYMLINK/$g_LAB_PREFIX$i"
       mkdir "$g_LAB_SYMLINK/$g_LAB_PREFIX$i"
@@ -669,25 +673,11 @@ function install ()
 
   # SET SECURITY
   info "  Setting the ownership and permissions for the lab enviornment."
-  chown -R root:labuser "$g_LAB_PATH"
+  chown -R mkisowa:labuser "$g_LAB_PATH"
   chmod -R 02755 "$g_LAB_PATH"
 
   chown mkisowa:root "$g_LAB_PATH/$g_PROGNAME"
   chmod 550 "$g_LAB_PATH/$g_PROGNAME"
-
-  if ! [[ -f /labs/LAB9/ccaclogo.jpg ]]; then
-    info "    Installing ccaclogo.jpg"
-    wget https://raw.githubusercontent.com/DoctorKisow/CIT-254/main/Student/LAB9/ccaclogo.jpg --directory-prefix=/labs/LAB9/ --quiet
-    chmod 660 /labs/LAB9/ccaclogo.jpg
-  fi
-
-  if ! [[ -f /labs/LAB9/drkisow-message.jpg ]]; then
-    info "    Installing drkisow-message.jpg"
-    wget https://raw.githubusercontent.com/DoctorKisow/CIT-254/main/Student/LAB9/drkisow-message.jpg --directory-prefix=/labs/LAB9/ --quiet
-    chmod 660 /labs/LAB9/drkisow-message.jpg
-  fi
-
-
 }
 
 # (install_package) - Install software packages. Passed arguements ($1) package name.
@@ -719,7 +709,7 @@ function ping_and_report ()
 function validip ()
 {
   local l_IPADDRESS="$1"
-  local l_NETWORK="/30"
+  local l_NETWORK="/29"
   local l_CALC_NETRNG=""
 
   # Strip CIDR notation if present.
@@ -763,12 +753,14 @@ function settcpip ()
   ## NEW IP ADDRESSES FOR LAB ENVIORNMENT
   local l_KALI_NEWIP=$(increment_ip $g_CALC_NETNUM 1)
   local l_LIN0804_NEWIP=$(increment_ip $g_CALC_NETNUM 2)
+  local l_ZGT_NEWIP=$(increment_ip $g_CALC_NETNUM 3)
 
   local l_KALI_ETH0=
   local l_KALI_ETH1=
 
   local l_KALI_RESP=""
   local l_LIN0804_RESP=""
+  local l_ZGT_RESP=""
 
   info "SETTING: Setting the TCPIP addresses for the private network lab enviornment."
 
@@ -877,10 +869,66 @@ function settcpip ()
     fi
   ## Metasploitable2 (Linux)
 
+  ## ZGT-OPENGATE (Linux)
+    info "  Updating the zgt-opengate VM networking."
+    sleep 5s
+
+    # Cleanup incase of a borked run.
+    if [[ -f "${g_SCRIPT_PATH}/bootstrap_zgt.sh" ]]; then
+      info "    Cleaning up messy environment, removing bootstrap_zgt.sh script."
+      rm "${g_SCRIPT_PATH}/bootstrap_zgt.sh"
+    fi
+
+    # Cleanup incase of a borked run.
+    if [[ -f "${g_SCRIPT_PATH}/updater_zgt.sh" ]]; then
+      info "    Cleaning up messy environment, removing updater_zgt.sh script."
+      rm "${g_SCRIPT_PATH}/updater_zgt.sh"
+    fi
+
+    # Create bootstrap script that will call the updater script.
+    info "    Creating bootstrap script."
+    printf '#!/bin/bash\n\n' >> bootstrap_zgt.sh
+    printf "echo zgtadmin | sudo -S nohup /home/zgtadmin/updater.sh &\n" >> bootstrap_zgt.sh
+    printf "sleep 20s\n\n"  >> bootstrap_zgt.sh
+    printf "rm /home/zgtadmin/bootstrap.sh\n" >> bootstrap_zgt.sh
+    chmod +x bootstrap_zgt.sh
+
+    # Create the updater script based on default ip address and new onr entered.
+    info "    Creating TCPIP address updater script."
+    printf '#!/bin/bash\n\n' >> updater_zgt.sh
+    printf "sleep 10s\n\n" >> updater_zgt.sh
+    printf "sed -i -e 's/$g_ZGT_DEFIP/$l_ZGT_NEWIP/' /etc/netplan/00-installer-config.yaml\n" >> updater_zgt.sh
+    printf "netplan apply\n" >> updater_zgt.sh
+    printf "rm /home/zgtadmin/updater.sh\n" >> updater_zgt.sh
+    chmod +x updater_zgt.sh
+
+    # Copy scripts to the ZGT-OPENGATE server.
+    sshpass -pW$E3y&h$Tp#8 scp -o "StrictHostKeyChecking no" -o "LogLevel=ERROR" updater_zgt.sh zgtadmin@$g_ZGT_DEFIP:/home/zgtadmin/updater.sh
+    sshpass -pW$E3y&h$Tp#8 scp -o "StrictHostKeyChecking no" -o "LogLevel=ERROR" bootstrap_zgt.sh zgtadmin@$g_ZGT_DEFIP:/home/zgtadmin/bootstrap.sh
+
+    # Run the SSH script
+    info "    Running TCPIP update script on zgt-opengate."
+    sshpass -pW$E3y&h$Tp#8 ssh -f -o "StrictHostKeyChecking no" -o "LogLevel=ERROR" zgtadmin@$g_ZGT_DEFIP '/bin/bash /home/zgtadmin/bootstrap.sh'
+    if [ $? -eq 0 ]; then
+      info "    TCPIP address updater script ran successfully."
+    fi
+
+    # Cleanup after run.
+    if [[ -f "${g_SCRIPT_PATH}/bootstrap_zgt.sh" ]]; then
+      info "    Cleaning up removing bootstrap_zgt.sh script."
+      rm "${g_SCRIPT_PATH}/bootstrap_zgt.sh"
+    fi
+
+    if [[ -f "${g_SCRIPT_PATH}/updater_zgt.sh" ]]; then
+      info "    Cleaning up removing updater_zgt.sh script."
+      rm "${g_SCRIPT_PATH}/updater_zgt.sh"
+    fi
+  ## ZGT-OPENGATE (Linux)
+
   ## KALI
    info "  Updating Kali Linux (eth1) VM networking."
    nmcli connection down "CIT-254-ISOLATED" > /dev/nul
-   nmcli connection modify "CIT-254-ISOLATED" ipv4.addresses $l_KALI_NEWIP/30
+   nmcli connection modify "CIT-254-ISOLATED" ipv4.addresses $l_KALI_NEWIP/29
    nmcli connection up "CIT-254-ISOLATED" > /dev/nul
   ## KALI
 
@@ -901,6 +949,13 @@ function settcpip ()
       info "    The Metasploitable2 (Ubuntu 08.04) is responding to its new IP address."
     fi
 
+    # Check Metaspliotable2 (Linux) is available.
+    l_ZGT_RESP=$(ping_and_report $l_ZGT_NEWIP)
+    if [[ $l_ZGT_RESP -ne 0 ]]; then
+      error "    The ZGT-OpenGate is not responding to its new IP address."
+    else
+      info "    The ZGT-OpenGate is responding to its new IP address."
+    fi
 
   ## POST-ENVIORNMENT CHECK
 
@@ -911,6 +966,7 @@ function settcpip ()
     printf "  Kali Linux (2024.3) (This VM)      eth0: DHCP\n"                  >> /home/labuser/Desktop/Lab-Readme.txt
     printf "                                     eth1: $l_KALI_NEWIP/30\n\n"    >> /home/labuser/Desktop/Lab-Readme.txt
     printf "  Metasploitable 2 (Ubuntu 08.04)    eth0: $l_LIN0804_NEWIP/30\n"   >> /home/labuser/Desktop/Lab-Readme.txt
+    printf "  ZGT-OpenGate (Final Project)      ens18: $l_ZGT_NEWIP/30\n"   >> /home/labuser/Desktop/Lab-Readme.txt
   ## WRITE LAB FILE
 }
 # ************************* end script specific functions **********************
