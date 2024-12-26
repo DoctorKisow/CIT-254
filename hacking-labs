@@ -67,7 +67,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.62"
+g_VERSION="0.0.63"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://raw.githubusercontent.com/DoctorKisow/CIT-254/main/hacking-labs"
@@ -662,8 +662,8 @@ function reset()
     chmod +x updater_zgt.sh
 
     # Copy scripts to the ZGT-OPENGATE server.
-    sshpass -pW\$E3y\&h\$Tp#8 scp -o "StrictHostKeyChecking no" -o "LogLevel=ERROR" updater_zgt.sh zgtadmin@$l_ZGT_CURIP:/home/zgtadmin/updater.sh
-    sshpass -pW\$E3y\&h\$Tp#8 scp -o "StrictHostKeyChecking no" -o "LogLevel=ERROR" bootstrap_zgt.sh zgtadmin@$l_ZGT_CURIP:/home/zgtadmin/bootstrap.sh
+    sshpass -pW\$E3y\&h\$Tp#8 scp -O -o "StrictHostKeyChecking no" -o "LogLevel=ERROR" updater_zgt.sh zgtadmin@$l_ZGT_CURIP:/home/zgtadmin/updater.sh
+    sshpass -pW\$E3y\&h\$Tp#8 scp -O -o "StrictHostKeyChecking no" -o "LogLevel=ERROR" bootstrap_zgt.sh zgtadmin@$l_ZGT_CURIP:/home/zgtadmin/bootstrap.sh
 
     # Run the SSH script
     info "    Running TCPIP update script on zgt-opengate."
@@ -706,6 +706,14 @@ function reset()
       error "    The Metasploitable2 (Ubuntu 08.04) is not responding to its default IP address."
     else
       info "    The Metasploitable2 (Ubuntu 08.04) is responding to its default IP address."
+    fi
+
+    # Check zgt-opengate (Linux) is available.
+    l_ZGT_RESP=$(ping_and_report $l_ZGT_NEWIP)
+    if [[ $l_ZGT_RESP -ne 0 ]]; then
+      error "    The ZGT-OpenGate is not responding to its new IP address."
+    else
+      info "    The ZGT-OpenGate is responding to its new IP address."
     fi
   ## POST-ENVIORNMENT CHECK
 
@@ -1036,14 +1044,13 @@ function settcpip ()
       info "    The Metasploitable2 (Ubuntu 08.04) is responding to its new IP address."
     fi
 
-    # Check Metaspliotable2 (Linux) is available.
+    # Check zgt-opengate (Linux) is available.
     l_ZGT_RESP=$(ping_and_report $l_ZGT_NEWIP)
     if [[ $l_ZGT_RESP -ne 0 ]]; then
       error "    The ZGT-OpenGate is not responding to its new IP address."
     else
       info "    The ZGT-OpenGate is responding to its new IP address."
     fi
-
   ## POST-ENVIORNMENT CHECK
 
   ## WRITE LAB FILE
