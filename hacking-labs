@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # hacking-labs - A script used to change the TCP/IP addresses in the CIT-254 lab enviornment for my CIT-254 Ethical Hacking classes.
-# Copyright (c) 2022-2024 Dr. Matthew Kisow. All rights reserved.
+# Copyright (c) 2022-2025 Dr. Matthew Kisow. All rights reserved.
 # Dr. Matthew Kisow <mkisow@ccac.edu>
 
 # License (CC-BY-ND)
@@ -16,28 +16,42 @@
 
 # ##############################################################################
 # CIT-254 Ethical Hacking Lab Enviornment
-# Copyright (c) 2022-2025 Dr. Matthew Kisow. All rights reserved.
+# 
+# Copyright Notice
+# © Dr. Matthew Kisow, 2022-2025. All Rights Reserved.
+# The Zylex GlobalTech name, logo, and all associated characters are the intellectual property of
+# Dr. Matthew Kisow. Unauthorized use, reproduction, or distribution of this material is strictly prohibited.
 #
-# The usage of Metasploit and the Metasploitable framework is governed by the copyrights held by Rapid7.
+# Disclaimer
+# The individuals, roles, and events depicted within the Zylex GlobalTech storyline are entirely fictitious.
+# Any similarities to actual persons, living or deceased, companies, or events are purely coincidental and
+# unintentional.
 #
-# Microsoft Server is a copyrighted product of Microsoft Corporation. All rights reserved.
+# Copyright Notice
+# The usage of Metasploit and the Metasploitable2 framework is governed by the copyrights held by Rapid7.
 #
 #
 #  CIT-254 Lab vAPP
-#  ├─Kali Linux
+#  ├─KaliLinux
 #  ├─metasploitable2 (Ubuntu 08.04)
+#  ├─zgt-opengate (Ubuntu 20.04.06)
 #
-#  Kali Linux
+#  KaliLinux
 #  - hostname: cit-254
 #  - eth0:     dhcp
-#  - eth1:     192.168.1.1/30
-#  - admin:    mkisowa/Ch354vk!0010
+#  - eth1:     192.168.1.1/29
+#  - admin:    mkisowa/xxxxxxxxxxxx
 #  - labuser:  labuser/P@$$w0rd!
 #
 #  metasploitable2 (Ubuntu 08.04)
 #  - hostname: metasploitable
-#  - eth0:     192.168.1.2/30
+#  - eth0:     192.168.1.2/29
 #  - user:     msfadmin/msfadmin
+#
+#  zgt-opengate (Ubuntu 20.04.06)
+#  - hostname: zgt-opengate
+#  - eth0:     192.168.1.3/29
+#  - user:     zgtadmin/xxxxxxxxxxxx
 # ##############################################################################
 
 
@@ -53,7 +67,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.58"
+g_VERSION="0.0.59"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://raw.githubusercontent.com/DoctorKisow/CIT-254/main/hacking-labs"
@@ -608,10 +622,66 @@ function reset()
     fi
   ## Metasploitable2 (Linux)
 
+  ## ZGT-OPENGATE (Linux)
+    info "  Updating the zgt-opengate VM networking."
+    sleep 5s
+
+    # Cleanup incase of a borked run.
+    if [[ -f "${g_SCRIPT_PATH}/bootstrap_zgt.sh" ]]; then
+      info "    Cleaning up messy environment, removing bootstrap_zgt.sh script."
+      rm "${g_SCRIPT_PATH}/bootstrap_zgt.sh"
+    fi
+
+    # Cleanup incase of a borked run.
+    if [[ -f "${g_SCRIPT_PATH}/updater_zgt.sh" ]]; then
+      info "    Cleaning up messy environment, removing updater_zgt.sh script."
+      rm "${g_SCRIPT_PATH}/updater_zgt.sh"
+    fi
+
+    # Create bootstrap script that will call the updater script.
+    info "    Creating bootstrap script."
+    printf '#!/bin/bash\n\n' >> bootstrap_zgt.sh
+    printf "echo zgtadmin | sudo -S nohup /home/zgtadmin/updater.sh &\n" >> bootstrap_zgt.sh
+    printf "sleep 20s\n\n"  >> bootstrap_zgt.sh
+    printf "rm /home/zgtadmin/bootstrap.sh\n" >> bootstrap_zgt.sh
+    chmod +x bootstrap_zgt.sh
+
+    # Create the updater script based on default ip address and new onr entered.
+    info "    Creating TCPIP address updater script."
+    printf '#!/bin/bash\n\n' >> updater_zgt.sh
+    printf "sleep 10s\n\n" >> updater_zgt.sh
+    printf "sed -i -e 's/$g_ZGT_CURIP/$l_ZGT_DEFIP/' /etc/netplan/00-installer-config.yaml\n" >> updater_zgt.sh
+    printf "netplan apply\n" >> updater_zgt.sh
+    printf "rm /home/zgtadmin/updater.sh\n" >> updater_zgt.sh
+    chmod +x updater_zgt.sh
+
+    # Copy scripts to the ZGT-OPENGATE server.
+    sshpass -pW$E3y&h$Tp#8 scp -o "StrictHostKeyChecking no" -o "LogLevel=ERROR" updater_zgt.sh zgtadmin@$g_ZGT_CURIP:/home/zgtadmin/updater.sh
+    sshpass -pW$E3y&h$Tp#8 scp -o "StrictHostKeyChecking no" -o "LogLevel=ERROR" bootstrap_zgt.sh zgtadmin@$g_ZGT_CURIP:/home/zgtadmin/bootstrap.sh
+
+    # Run the SSH script
+    info "    Running TCPIP update script on zgt-opengate."
+    sshpass -pW$E3y&h$Tp#8 ssh -f -o "StrictHostKeyChecking no" -o "LogLevel=ERROR" zgtadmin@$g_ZGT_CURIP '/bin/bash /home/zgtadmin/bootstrap.sh'
+    if [ $? -eq 0 ]; then
+      info "    TCPIP address updater script ran successfully."
+    fi
+
+    # Cleanup after run.
+    if [[ -f "${g_SCRIPT_PATH}/bootstrap_zgt.sh" ]]; then
+      info "    Cleaning up removing bootstrap_zgt.sh script."
+      rm "${g_SCRIPT_PATH}/bootstrap_zgt.sh"
+    fi
+
+    if [[ -f "${g_SCRIPT_PATH}/updater_zgt.sh" ]]; then
+      info "    Cleaning up removing updater_zgt.sh script."
+      rm "${g_SCRIPT_PATH}/updater_zgt.sh"
+    fi
+  ## ZGT-OPENGATE (Linux)
+
   ## KALI
     info "  Updating Kali Linux (eth1) VM networking."
     nmcli connection down "CIT-254-ISOLATED" > /dev/nul
-    nmcli connection modify "CIT-254-ISOLATED" ipv4.addresses $g_KALI_DEFIP/30
+    nmcli connection modify "CIT-254-ISOLATED" ipv4.addresses $g_KALI_DEFIP/29
     nmcli connection up "CIT-254-ISOLATED" > /dev/nul
   ## KALI
 
@@ -962,11 +1032,11 @@ function settcpip ()
   ## WRITE LAB FILE
     printf "This is Kali Linux\n\nThis virtual machine (VM) is part of a lab environment that includes three isolated virtual machines that are vulnerable and designed to teach you the tools used to attack and defend networks. Using this VM, you can conduct security training, test security tools, and practice standard penetration testing techniques.\n\n" >> /home/labuser/Desktop/Lab-Readme.txt
     printf "This lab enviornment is setup with the following IP addresses:\n\n" >> /home/labuser/Desktop/Lab-Readme.txt
-    printf "  Lab Enviornment Subnet (Network Number): $g_ARG_IPRNG/30\n\n"     >> /home/labuser/Desktop/Lab-Readme.txt
+    printf "  Lab Enviornment Subnet (Network Number): $g_ARG_IPRNG/29\n\n"     >> /home/labuser/Desktop/Lab-Readme.txt
     printf "  Kali Linux (2024.3) (This VM)      eth0: DHCP\n"                  >> /home/labuser/Desktop/Lab-Readme.txt
-    printf "                                     eth1: $l_KALI_NEWIP/30\n\n"    >> /home/labuser/Desktop/Lab-Readme.txt
-    printf "  Metasploitable 2 (Ubuntu 08.04)    eth0: $l_LIN0804_NEWIP/30\n"   >> /home/labuser/Desktop/Lab-Readme.txt
-    printf "  ZGT-OpenGate (Final Project)      ens18: $l_ZGT_NEWIP/30\n"   >> /home/labuser/Desktop/Lab-Readme.txt
+    printf "                                     eth1: $l_KALI_NEWIP/29\n\n"    >> /home/labuser/Desktop/Lab-Readme.txt
+    printf "  Metasploitable 2 (Ubuntu 08.04)    eth0: $l_LIN0804_NEWIP/29\n"   >> /home/labuser/Desktop/Lab-Readme.txt
+    printf "  ZGT-OpenGate (Final Project)      ens18: $l_ZGT_NEWIP/29\n"   >> /home/labuser/Desktop/Lab-Readme.txt
   ## WRITE LAB FILE
 }
 # ************************* end script specific functions **********************
