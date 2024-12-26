@@ -67,7 +67,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.59"
+g_VERSION="0.0.62"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://raw.githubusercontent.com/DoctorKisow/CIT-254/main/hacking-labs"
@@ -452,17 +452,23 @@ function warning ()
 # (create_labuser) - A Function to setup the labuser account for this lab environment.
 function create_labuser ()
 {
-  groupadd -g 1001 labuser
+  if ! [ $(getent group labuser) ]; then 
+    info "  Creating labuser's group."
+    groupadd -g 1001 labuser
+  fi
 
-  useradd --comment "Lab User" --uid 1001 --create-home --no-user-group --gid 1001 --groups adm,dialout,cdrom,floppy,sudo,audio,dip,video,plugdev,users,netdev,wireshark,bluetooth,scanner,kaboxer,labuser --shell /usr/bin/zsh labuser
-  echo 'labuser:P@$$w0rd' | chpasswd
+  if ! id labuser >/dev/null 2>&1; then 
+    info "  Creating labuser account."
+    useradd --comment "Lab User" --uid 1001 --create-home --no-user-group --gid 1001 --groups adm,dialout,cdrom,floppy,sudo,audio,dip,video,plugdev,users,netdev,wireshark,bluetooth,scanner,kaboxer,labuser --shell /usr/bin/zsh labuser
+    echo 'labuser:P@$$w0rd' | chpasswd
+  fi 
 }
 
 # (increment_ip) - A function that will increment the network number passed ($1) by the second arguement ($2). Based on a /29, "6" valid hosts.
 function increment_ip ()
 {
   l_RNG='^[1-6]+$'
-  if ! [[ $6 =~ $l_RNG ]]; then
+  if ! [[ $2 =~ $l_RNG ]]; then
     error "Function: increment_ip was passed a value that is out of bounds."
   fi
 
@@ -650,18 +656,18 @@ function reset()
     info "    Creating TCPIP address updater script."
     printf '#!/bin/bash\n\n' >> updater_zgt.sh
     printf "sleep 10s\n\n" >> updater_zgt.sh
-    printf "sed -i -e 's/$g_ZGT_CURIP/$l_ZGT_DEFIP/' /etc/netplan/00-installer-config.yaml\n" >> updater_zgt.sh
+    printf "sed -i -e 's/$l_ZGT_CURIP/$g_ZGT_DEFIP/' /etc/netplan/00-installer-config.yaml\n" >> updater_zgt.sh
     printf "netplan apply\n" >> updater_zgt.sh
     printf "rm /home/zgtadmin/updater.sh\n" >> updater_zgt.sh
     chmod +x updater_zgt.sh
 
     # Copy scripts to the ZGT-OPENGATE server.
-    sshpass -pW$E3y&h$Tp#8 scp -o "StrictHostKeyChecking no" -o "LogLevel=ERROR" updater_zgt.sh zgtadmin@$g_ZGT_CURIP:/home/zgtadmin/updater.sh
-    sshpass -pW$E3y&h$Tp#8 scp -o "StrictHostKeyChecking no" -o "LogLevel=ERROR" bootstrap_zgt.sh zgtadmin@$g_ZGT_CURIP:/home/zgtadmin/bootstrap.sh
+    sshpass -pW\$E3y\&h\$Tp#8 scp -o "StrictHostKeyChecking no" -o "LogLevel=ERROR" updater_zgt.sh zgtadmin@$l_ZGT_CURIP:/home/zgtadmin/updater.sh
+    sshpass -pW\$E3y\&h\$Tp#8 scp -o "StrictHostKeyChecking no" -o "LogLevel=ERROR" bootstrap_zgt.sh zgtadmin@$l_ZGT_CURIP:/home/zgtadmin/bootstrap.sh
 
     # Run the SSH script
     info "    Running TCPIP update script on zgt-opengate."
-    sshpass -pW$E3y&h$Tp#8 ssh -f -o "StrictHostKeyChecking no" -o "LogLevel=ERROR" zgtadmin@$g_ZGT_CURIP '/bin/bash /home/zgtadmin/bootstrap.sh'
+    sshpass -pW\$E3y\&h\$Tp#8 ssh -f -o "StrictHostKeyChecking no" -o "LogLevel=ERROR" zgtadmin@$l_ZGT_CURIP '/bin/bash /home/zgtadmin/bootstrap.sh'
     if [ $? -eq 0 ]; then
       info "    TCPIP address updater script ran successfully."
     fi
@@ -734,20 +740,31 @@ function install ()
   fi
 
   # Loop through each lab, setting up a directory for each.
-  for i in {1..12}; do
+  for i in 0{1..9} {10..12} ; do
     if ! [ -d "$g_LAB_SYMLINK/$g_LAB_PREFIX$i" ]; then
-      info "    Creating $g_LAB_SYMLINK/$g_LAB_PREFIX$i"
-      mkdir "$g_LAB_SYMLINK/$g_LAB_PREFIX$i"
+      info "    Creating $g_LAB_SYMLINK/$g_LAB_PREFIX${i}"
+      mkdir "$g_LAB_SYMLINK/$g_LAB_PREFIX${i}"
     fi
   done
 
   # SET SECURITY
-  info "  Setting the ownership and permissions for the lab enviornment."
-  chown -R mkisowa:labuser "$g_LAB_PATH"
-  chmod -R 02755 "$g_LAB_PATH"
 
-  chown mkisowa:root "$g_LAB_PATH/$g_PROGNAME"
-  chmod 550 "$g_LAB_PATH/$g_PROGNAME"
+  info "  Setting the ownership and permissions for the lab enviornment."
+  if id mkisowa >/dev/null 2>&1; then
+    chown -R mkisowa:labuser "$g_LAB_PATH"
+    chmod -R 02755 "$g_LAB_PATH"
+
+    chown mkisowa:root "$g_LAB_PATH/$g_PROGNAME"
+    chmod 550 "$g_LAB_PATH/$g_PROGNAME"
+  elif id mkisow >/dev/null 2>&1; then
+    chown -R mkisow:labuser "$g_LAB_PATH"
+    chmod -R 02755 "$g_LAB_PATH"
+
+    chown mkisow:root "$g_LAB_PATH/$g_PROGNAME"
+    chmod 550 "$g_LAB_PATH/$g_PROGNAME"
+  else
+    error "  Instructor user account is missing..."
+  fi
 }
 
 # (install_package) - Install software packages. Passed arguements ($1) package name.
@@ -904,7 +921,7 @@ function settcpip ()
     printf '#!/bin/bash\n\n' >> bootstrap_lin0804.sh
     printf "echo msfadmin | sudo -S nohup /home/msfadmin/updater.sh &\n" >> bootstrap_lin0804.sh
     printf "sleep 20s\n\n"  >> bootstrap_lin0804.sh
-    printf "rm /home/msfadmin/bootstrap.sh\n" >> bootstrap_lin0804.sh
+    printf "#rm /home/msfadmin/bootstrap.sh\n" >> bootstrap_lin0804.sh
     chmod +x bootstrap_lin0804.sh
 
     # Create the updater script based on default ip address and new onr entered.
@@ -913,7 +930,7 @@ function settcpip ()
     printf "sleep 10s\n\n" >> updater_lin0804.sh
     printf "sed -i -e 's/$g_LIN0804_DEFIP/$l_LIN0804_NEWIP/' /etc/network/interfaces\n" >> updater_lin0804.sh
     printf "ifdown eth0 && ifup eth0\n" >> updater_lin0804.sh
-    printf "rm /home/msfadmin/updater.sh\n" >> updater_lin0804.sh
+    printf "#rm /home/msfadmin/updater.sh\n" >> updater_lin0804.sh
     chmod +x updater_lin0804.sh
 
     # Copy scripts to the Metasploitable2 VM.
@@ -973,12 +990,12 @@ function settcpip ()
     chmod +x updater_zgt.sh
 
     # Copy scripts to the ZGT-OPENGATE server.
-    sshpass -pW$E3y&h$Tp#8 scp -o "StrictHostKeyChecking no" -o "LogLevel=ERROR" updater_zgt.sh zgtadmin@$g_ZGT_DEFIP:/home/zgtadmin/updater.sh
-    sshpass -pW$E3y&h$Tp#8 scp -o "StrictHostKeyChecking no" -o "LogLevel=ERROR" bootstrap_zgt.sh zgtadmin@$g_ZGT_DEFIP:/home/zgtadmin/bootstrap.sh
+    sshpass -pW\$E3y\&h\$Tp#8 scp -O -o "StrictHostKeyChecking no" -o "LogLevel=ERROR" updater_zgt.sh zgtadmin@$g_ZGT_DEFIP:/home/zgtadmin/updater.sh
+    sshpass -pW\$E3y\&h\$Tp#8 scp -O -o "StrictHostKeyChecking no" -o "LogLevel=ERROR" bootstrap_zgt.sh zgtadmin@$g_ZGT_DEFIP:/home/zgtadmin/bootstrap.sh
 
     # Run the SSH script
     info "    Running TCPIP update script on zgt-opengate."
-    sshpass -pW$E3y&h$Tp#8 ssh -f -o "StrictHostKeyChecking no" -o "LogLevel=ERROR" zgtadmin@$g_ZGT_DEFIP '/bin/bash /home/zgtadmin/bootstrap.sh'
+    sshpass -pW\$E3y\&h\$Tp#8 ssh -f -o "StrictHostKeyChecking no" -o "LogLevel=ERROR" zgtadmin@$g_ZGT_DEFIP '/bin/bash /home/zgtadmin/bootstrap.sh'
     if [ $? -eq 0 ]; then
       info "    TCPIP address updater script ran successfully."
     fi
@@ -1036,7 +1053,7 @@ function settcpip ()
     printf "  Kali Linux (2024.3) (This VM)      eth0: DHCP\n"                  >> /home/labuser/Desktop/Lab-Readme.txt
     printf "                                     eth1: $l_KALI_NEWIP/29\n\n"    >> /home/labuser/Desktop/Lab-Readme.txt
     printf "  Metasploitable 2 (Ubuntu 08.04)    eth0: $l_LIN0804_NEWIP/29\n"   >> /home/labuser/Desktop/Lab-Readme.txt
-    printf "  ZGT-OpenGate (Final Project)      ens18: $l_ZGT_NEWIP/29\n"   >> /home/labuser/Desktop/Lab-Readme.txt
+    printf "  ZGT-OpenGate (Final Project)      ens18: $l_ZGT_NEWIP/29\n"       >> /home/labuser/Desktop/Lab-Readme.txt
   ## WRITE LAB FILE
 }
 # ************************* end script specific functions **********************
