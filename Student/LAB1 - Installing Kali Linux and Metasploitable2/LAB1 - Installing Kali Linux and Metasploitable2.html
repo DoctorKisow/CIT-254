@@ -1,0 +1,80 @@
+<!-- LAB HEADER / TOC -->
+<p id="#lab1"></p>
+<table border="0" style="border-collapse: collapse; width: 99%; border-style: none; height: 300px;">
+  <tbody>
+    <tr style="height: 102px;">
+      <td colspan="2" style="width: 100%; text-align: center; vertical-align: top;"><img src="https://courses.ccac.edu/bbcswebdav/pid-11603983-dt-content-rid-48750046_1/xid-48750046_1" style="border: 0px solid #000000;" width="311" height="100" alt="ccac-logo"/></td>
+    </tr>
+    <tr style="height: 30px;">
+      <td colspan="2" style="width: 100%; text-align: center; vertical-align: top;"><span style="font-size: 24pt;"><strong>LAB 1: Installing Kali Linux and Metasploitable2</strong></span></td>
+    </tr>
+    
+    <tr style="height: 22.5px;">
+      <td style="width: 72%; height: 22.50px;"><span style="color: #ba372a; font-size: 12pt;"><strong>INSTRUCTIONS</strong></span></td>
+      <td rowspan="6" style="width: 28%; height: 175px;  vertical-align: top;">
+        <table border="0" style="border-collapse: collapse; width: 350px; background-color: #ecf0f1; border-style: none; float: right; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+          <tbody>
+            <tr>
+              <td style="width: 100%; height: 20px;"><strong><span style="font-family: arial, helvetica, sans-serif;">Table of Contents:</span></strong></td>
+            </tr>
+            <tr>
+              <td style="width: 100%; height: 20px;"><span style="font-family: arial, helvetica, sans-serif; color: #ba372a;">&nbsp; &nbsp; &raquo; <a href="##install-kali" style="color: #ba372a;">Part 1: Installing Kali Linux</a></span></td>
+            </tr>
+            <tr>
+              <td style="width: 100%; height: 20px;"><span style="font-family: arial, helvetica, sans-serif; color: #ba372a;">&nbsp; &nbsp; &raquo; <a href="##install-metasploitable" style="color: #ba372a;">Part 2: Installing Metasploitable2</a></span></td>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 72%; vertical-align: top; height: 75px; text-align: justify;"><span style="font-size: 12pt;">In this lab, you will install two virtual machines: one with Kali Linux and the other with Metasploitable2. This exploitation environment will offer you an immersive, hands-on exploration of offensive security techniques. By utilizing the tools installed on Kali Linux and targeting the intentionally vulnerable Metasploitable2 virtual machine, you will delve into the practical realm of vulnerability exploitation. Using Metasploit's extensive library of exploits, payloads, and auxiliary modules, you will practice identifying and exploiting vulnerabilities embedded within Metasploitable2. This experience provides insight into the methodologies of ethical hackers and builds essential skills in identifying, exploiting, and securing systems within the dynamic and challenging field of cybersecurity.<br /></span><br /><p style="font-family: arial, helvetica, sans-serif; color: #ba372a; font-size: 12pt; text-align: center; margin: 0; padding: 0;"><strong><em>Upload your answers to this lab.</em></strong></p></pUpload></td>
+    </tr>
+    <tr>
+      <td style="width: 72%; height: 22.50px; vertical-align: top;"><span style="font-size: 12pt; color: #ba372a;"><strong>OBJECTIVE</strong></span></td>
+    </tr>
+    <tr>
+      <td style="width: 72%; vertical-align: top; height: 75px; text-align: justify;"><span style="font-size: 12pt;">The primary objective of this lab is to empower students with the skills and knowledge required to conduct ethical and responsible penetration testing activities. By installing these tools in a virtual environment, students will gain insights into the linux operating system.</span></td>
+    </tr>
+    <tr>
+      <td style="width: 72%; vertical-align: top; height: 75px; text-align: justify;">
+        <p><span style="font-size: 12pt;">Begin by logging into the Academic vSphere Portal using your student credentials. Once logged in, navigate to your assigned Virtual Application (VApp) within the portal. There you will find two blank virtual machines, one labeled "Kali Linux", the other "metasploitable2." Follow the instructions carefully, you will set and/or use the following credentials within your lab environment.</span></p>
+        <blockquote>
+          <p style="margin: 0; padding: 0;"><span style="font-size: 12pt;"><strong>Kali Linux</strong></span></p>
+          <p style="margin: 0; padding: 0;"><span style="font-size: 12pt;">&emsp;<strong>Username</strong>: labuser</span></p>
+          <p style="margin: 0; padding: 0;"><span style="font-size: 12pt;">&emsp;<strong>Password</strong>: P@$$w0rd</span></p>
+          <br/><br/>
+          <p style="margin: 0; padding: 0;"><span style="font-size: 12pt;"><strong>Metasploitable2</strong></span></p>
+          <p style="margin: 0; padding: 0;"><span style="font-size: 12pt;">&emsp;<strong>Username</strong>: msfadmin</span></p>
+          <p style="margin: 0; padding: 0;"><span style="font-size: 12pt;">&emsp;<strong>Password</strong>: msfadmin</span></p>
+        </blockquote>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- VERSION/REVISION -->
+<p style="text-align: center; margin: 0; padding: 0; color: #ced4d9">VERSION 1.0</p>
+<p style="text-align: center; margin: 0; padding: 0; color: #ced4d9">REVISED 13-NOV-2024</p>
+<p id="#top1"></p>
+
+<!-- IMPORTANT PURPLE -->
+<blockquote>
+  <table border="0" style="border-collapse: collapse; width: 75%; background-color: #eccafa; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+    <tbody>
+      <tr>
+        <td style="width: 2%; background-color: #843fa1;">&nbsp;</td>
+        <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+          <p style="margin: 0; padding: 0;"><img src="https://courses.ccac.edu/bbcswebdav/pid-11629076-dt-content-rid-48837981_1/xid-48837981_1" width="24" height="21" style="border: 0px solid #000000;" alt="important"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #843fa1; font-size: 14pt;">IMPORTANT</span></strong>
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 2%; background-color: #843fa1;">&nbsp;</td>
+        <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #843fa1; font-size: 12pt;">&#x25CF;</span></strong></td>
+        <td style="width: 93%;">
+          <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #843fa1; font-size: 12pt;">Your lab environment has already been setup for you, please procede to <a href="##lab2" style="color: #ba372a;">LAB 2</a></span></p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</blockquote>
+<p></p>
