@@ -169,12 +169,7 @@
       <tr>
         <td style="width: 2%; background-color: #000000;">&nbsp;</td>
         <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">1.5</span></strong></td>
-        <td colspan="3" style="width: 93%;"></td>
-      </tr>
-      <tr>
-        <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-        <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>A.</strong></span></td>
-        <td colspan="2" style="width: 91%;">
+        <td style="width: 93%;">
           <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Write a Python3 program named <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>part1.py</strong></span> that reverses the one-time pad and prints the plaintext message to the screen.</span></p>
         </td>
       </tr>
@@ -313,12 +308,7 @@
       <tr>
         <td style="width: 2%; background-color: #000000;">&nbsp;</td>
         <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">2.5</span></strong></td>
-        <td colspan="3" style="width: 93%;"></td>
-      </tr>
-      <tr>
-        <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-        <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>A.</strong></span></td>
-        <td colspan="2" style="width: 91%;">
+        <td style="width: 93%;">
           <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Write a Python3 program named <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>part2.py</strong></span> that decrypts and prints the plaintext message to the screen.</span></p>
         </td>
       </tr>
@@ -336,7 +326,7 @@
     <ol style="list-style-type: lower-alpha;" start="a">
 
       <!-- A -->
-      <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Your program must transmit to the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>http://otp.kisow.org:12001/</strong></span> server the following payload in a “HTTP-like" format as an ASCII string:</span>
+      <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Your program must transmit to the <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>http://otp.kisow.org:12001/</strong></span> server the following payload in a "HTTP-like" format as an ASCII string:</span>
         <!-- CODE -->
         <blockquote>
           <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
@@ -483,6 +473,56 @@
       </tbody>
     </table>
     <p></p>
+
+    <!-- TIP GREEN -->
+    <table border="0" style="border-collapse: collapse; width: 75%; background-color: #bfedd2; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr>
+          <td style="width: 2%; background-color: #169179;">&nbsp;</td>
+          <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
+            <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/green-tip-16x22.svg"  width="16" height="22" style="border: 0px solid #000000;" alt="tip"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 14pt;">TIP</span></strong></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 2%; background-color: #169179;">&nbsp;</td>
+          <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">&#x25CF;</span></strong></td>
+          <td style="width: 93%;">
+            <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">Does the server "respond" with a message of length 0? That means that you sent an invalid request. Upon receiving an invalid request, the server closes the socket immediately, which you will notice as <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>recv() </strong></span>returning with a byte array of length 0.</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+
+    <!-- CODE -->
+    <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
+      <tbody>
+        <tr style="background-color: #ced4e9;">
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
+          <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>EXAMPLE REQUEST AND REPLY</strong></span></td>
+        </tr>
+        <tr>
+          <td colspan="4" style="width: 99%;">
+            <p style="margin: 0; padding: 0;">
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;CRYPTO 1.0 REQUEST</span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;Name: Any Student</span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;PublicKey: 245fb800e3ec462d84389b4e01074cb85e6f49e18df30002c2da69d9a853e507</span></strong><br />
+              <br/>
+              <br/>
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;CRYPTO 1.0 REQUEST</span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;Name: Dr. Matthew Kisow</span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;PublicKey: 245fb800e3ec462d84389b4e01074cb85e6f49e18df30002c2da69d9a853e507</span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;Ciphertext: B0B84DC3557E2595D2D8B5B30565281A93EA140CCF739EA3504B2147A1EBDA63</span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A2FF14E4E61A5F0384342E7E118D644B85152E6A1F95AD42165A62D46E204D23</span></strong><br />
+              <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;27CAEE995BF2A9DEE291868B20971E26F02FF472CBE36F5D</span></strong><br />
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  <p></p>
   </li>
 </ol>
 
@@ -502,94 +542,13 @@
       <tr>
         <td style="width: 2%; background-color: #000000;">&nbsp;</td>
         <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">3.5</span></strong></td>
-        <td colspan="3" style="width: 93%;"></td>
-      </tr>
-      <tr>
-        <td style="width: 2%; background-color: #000000;">&nbsp;</td>
-        <td colspan="2" style="width: 7%; text-align: right; vertical-align: top;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;"><strong>A.</strong></span></td>
-        <td colspan="2" style="width: 91%;">
+        <td style="width: 93%;">
           <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 12pt;">Write a Python3 program named <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>part3.py</strong></span> that communicates with the server, receives the ciphertext, and prints the plaintext message to the screen.</span></p>
         </td>
       </tr>
     </tbody>
   </table>
 </blockquote>
-
-<!-- TIP GREEN -->
-<blockquote>
-  <table border="0" style="border-collapse: collapse; width: 75%; background-color: #bfedd2; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
-    <tbody>
-      <tr>
-        <td style="width: 2%; background-color: #169179;">&nbsp;</td>
-        <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
-          <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/green-tip-16x22.svg"  width="16" height="22" style="border: 0px solid #000000;" alt="tip"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 14pt;">TIP</span></strong></p>
-        </td>
-      </tr>
-      <tr>
-        <td style="width: 2%; background-color: #169179;">&nbsp;</td>
-        <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">&#x25CF;</span></strong></td>
-        <td style="width: 93%;">
-          <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">Does the server "respond" with a message of length 0? That means that you sent an invalid request. Upon receiving an invalid request, the server closes the socket immediately, which you will notice as <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>recv() </strong></span>returning with a byte array of length 0.</span></p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</blockquote>
-<p></p>
-
-<!-- TIP GREEN -->
-<blockquote>
-  <table border="0" style="border-collapse: collapse; width: 75%; background-color: #bfedd2; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
-    <tbody>
-      <tr>
-        <td style="width: 2%; background-color: #169179;">&nbsp;</td>
-        <td colspan="2" style="width: 98%; text-align: left; vertical-align: top;">
-          <p style="margin: 0; padding: 0;"><img src="https://web.acd.ccac.edu/~mkisow/assets/green-tip-16x22.svg"  width="16" height="22" style="border: 0px solid #000000;" alt="tip"/><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 14pt;">TIP</span></strong></p>
-        </td>
-      </tr>
-      <tr>
-        <td style="width: 2%; background-color: #169179;">&nbsp;</td>
-        <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">&#x25CF;</span></strong></td>
-        <td style="width: 93%;">
-          <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">Example Request and Reply:</span></p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</blockquote>
-<p></p>
-
-<!-- CODE -->
-<blockquote>
-  <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
-    <tbody>
-      <tr style="background-color: #ced4e9;">
-        <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #f44336; font-size: 12pt;">&#11044;</span></td>
-        <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #ffee58; font-size: 12pt;">&#11044;</span></td>
-        <td style="width: 2%; text-align: center; vertical-align: middle;"><span style="font-family: arial, helvetica, sans-serif; color: #66bb6a; font-size: 12pt;">&#11044;</span></td>
-        <td style="width: 94%; text-align: center;"><span style="font-family: arial, helvetica, sans-serif; color: #000000; font-size: 14pt;"><strong>CODE</strong></span></td>
-      </tr>
-      <tr>
-        <td colspan="4" style="width: 99%;">
-          <p style="margin: 0; padding: 0;">
-            <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;CRYPTO 1.0 REQUEST</span></strong><br />
-            <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;Name: Any Student</span></strong><br />
-            <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;PublicKey: 245fb800e3ec462d84389b4e01074cb85e6f49e18df30002c2da69d9a853e507</span></strong><br />
-            <br/>
-            <br/>
-            <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;CRYPTO 1.0 REQUEST</span></strong><br />
-            <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;Name: Dr. Matthew Kisow</span></strong><br />
-            <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;PublicKey: 245fb800e3ec462d84389b4e01074cb85e6f49e18df30002c2da69d9a853e507</span></strong><br />
-            <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;Ciphertext: B0B84DC3557E2595D2D8B5B30565281A93EA140CCF739EA3504B2147A1EBDA63</span></strong><br />
-            <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A2FF14E4E61A5F0384342E7E118D644B85152E6A1F95AD42165A62D46E204D23</span></strong><br />
-            <strong><span style="font-family: 'courier new', courier, monospace; font-size: 12pt; color: #236fa1;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;27CAEE995BF2A9DEE291868B20971E26F02FF472CBE36F5D</span></strong><br />
-          </p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</blockquote>
-<p></p>
 
 
 <!-- PART 4 -->
@@ -609,7 +568,7 @@
 </ol>
 
 <ol style="font-family: arial, helvetica, sans-serif; font-size: 12pt;" start="2">
-  <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><p>One file is provided: part4.ciphertext.bin. This encrypted file has been saved to disk in the following format:</span></p>
+  <li><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;"><p>One file is provided: <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>part4.ciphertext.bin.</strong></span> This encrypted file has been saved to disk in the following format:</span></p>
     <ol style="list-style-type: lower-alpha;" start="a">
 
       <!-- A -->
@@ -634,7 +593,7 @@
         <td style="width: 2%; background-color: #236fa1;">&nbsp;</td>
         <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">&#x25CF;</span></strong></td>
         <td style="width: 93%;">
-          <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">This secret payload is NOT ASCII text. Rather, it is mystery data and you should discover what it is using any available tools at your disposal.</span></p>
+          <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #236fa1; font-size: 12pt;">This secret payload is <em>NOT</em> ASCII text. Rather, it is mystery data and you should discover what it is using any available tools at your disposal.</span></p>
         </td>
       </tr>
     </tbody>
@@ -710,7 +669,7 @@
     </table>
     <p></p>
   </li>
-  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Test your script by invoking python3 part3.py.</span></p>
+  <li><p><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Test your script by invoking python3 part4.py.</span></p>
     <!-- CODE -->
     <table border="0" style="border-collapse: collapse; width: 85%; background-color: #000000; font-family: 'courier new', courier, monospace; border-style: none; border-radius: 5px; box-shadow: 5px 5px 1px 0px rgba(50, 50, 50, 0.75); overflow: hidden;">
       <tbody>
@@ -837,7 +796,7 @@
         <td style="width: 2%; background-color: #169179;">&nbsp;</td>
         <td style="width: 5%; text-align: right; vertical-align: top;"><strong><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">&#x25CF;</span></strong></td>
         <td style="width: 93%;">
-          <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">Unsure if your <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>part4_pw_change.py </strong></span>script is working correctly? You can test it by temporarily making the following changes to your <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>part4.py </strong></span>script:<br/><br/>(1) Change the input filename to <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>part4.ciphertext-new.bin </strong></span>, and<br/>(2) Change the password to "ethical-hacking". If you get the same secret payload as before, then you know your password change script works! Be sure to restore the original functionality of <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>part4.py </strong></span>before turning it in.</span></p>
+          <p style="margin: 0; padding: 0;"><span style="font-family: arial, helvetica, sans-serif; color: #169179; font-size: 12pt;">Unsure if your <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>part4_pw_change.py</strong></span> script is working correctly? You can test it by temporarily making the following changes to your <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>part4.py</strong></span> script:<br/><br/>(1) Change the input filename to <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>part4.ciphertext-new.bin</strong></span>, and<br/>(2) Change the password to "ethical-hacking". If you get the same secret payload as before, then you know your password change script works! Be sure to restore the original functionality of <span style="font-family: 'courier new', courier, monospace; background-color: #ecdbdb; color: #ba372a;"><strong>part4.py </strong></span>before turning it in.</span></p>
         </td>
       </tr>
     </tbody>
@@ -847,4 +806,4 @@
 
 <!-- COPYRIGHT -->
 <hr />
-<p style="font-family: arial, helvetica, sans-serif; font-size: 12pt; text-align: center; color: #000000;">Copyright &copy; 2022-2024 Dr. Matthew Kisow. All Rights Reserved</p>
+<p style="font-family: arial, helvetica, sans-serif; font-size: 12pt; text-align: center; color: #000000;">Copyright &copy; 2022-2025 Dr. Matthew Kisow. All Rights Reserved</p>
