@@ -710,7 +710,7 @@ function reset()
     fi
 
     # Check zgt-opengate (Linux) is available.
-    l_ZGT_RESP=$(ping_and_report $l_ZGT_DEFIP)
+    l_ZGT_RESP=$(ping_and_report $g_ZGT_DEFIP)
     if [[ $l_ZGT_RESP -ne 0 ]]; then
       error "    The ZGT-OpenGate is not responding to its new IP address."
     else
