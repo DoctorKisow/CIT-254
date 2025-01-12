@@ -67,7 +67,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.67"
+g_VERSION="0.0.68"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://raw.githubusercontent.com/DoctorKisow/CIT-254/main/hacking-labs"
@@ -117,7 +117,6 @@ declare -i g_ARG_SETIP=0
 declare -i g_ARG_UPDATE=0
 
 # Lab enviornment default IP addresses. DO NOT MODIFY!
-declare g_NETNUM_DEFIP="192.168.1.0"
 declare g_KALI_DEFIP="192.168.1.1"
 declare g_LIN0804_DEFIP="192.168.1.2"
 declare g_ZGT_DEFIP="192.168.1.3"
@@ -239,7 +238,7 @@ function print_usage ()
   cat << EOF
 
   Usage: ${g_PROGNAME} [-h] [-i|--iprng <a.b.c.d>] [-I|--install]
-                      [-r|--reset ] [-u|--update] [-v]
+                      [-r|--reset <a.b.c.d>] [-u|--update] [-v]
 
   Options:
      -h                     show this help message
@@ -310,7 +309,7 @@ function process_command_line_options ()
       -i) g_ARG_SETIP=1; g_ARG_IPRNG=${2}; validip "$g_ARG_IPRNG"; shift 2 ;;
       -I) g_ARG_INSTALL=1; shift ;;
       -p) g_ARG_PURGEDB=1; shift ;;
-      -r) g_ARG_RESET=1; shift ;;
+      -r) g_ARG_RESET=1; g_ARG_IPRNG=${2}; validip "$g_ARG_IPRNG"; shift 2 ;;
       -u) g_ARG_UPDATE=1; shift ;;
       -v) print_version >&2; cleanup_and_exit_with_code 1 ;;
       --) shift; break ;;
@@ -520,9 +519,9 @@ function purgedb()
 function reset()
 {
   ## CURRENT IP ADDRESSES FOR LAB ENVIORNMENT
-  local l_KALI_CURIP=$(increment_ip $g_NETNUM_DEFIP 1)
-  local l_LIN0804_CURIP=$(increment_ip $g_NETNUM_DEFIP 2)
-  local l_ZGT_CURIP=$(increment_ip $g_NETNUM_DEFIP 3)
+  local l_KALI_CURIP=$(increment_ip $g_ARG_IPRNG 1)
+  local l_LIN0804_CURIP=$(increment_ip $g_ARG_IPRNG 2)
+  local l_ZGT_CURIP=$(increment_ip $g_ARG_IPRNG 3)
 
   local l_KALI_ETH0=
   local l_KALI_ETH1=
