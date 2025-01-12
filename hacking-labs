@@ -67,7 +67,7 @@ shopt -s nullglob
 
 # ************************* global variable definitions ************************
 g_PROGNAME="$(basename "${0}")"
-g_VERSION="0.0.63"
+g_VERSION="0.0.64"
 g_PROGRAM_NAME="hacking-labs"
 g_PROGRAM_DESCRIPTION="A script used to change the TCP/IP addresses of the isolated machines in the CIT-254 lab enviornment."
 g_SCRIPT_URL="https://raw.githubusercontent.com/DoctorKisow/CIT-254/main/hacking-labs"
@@ -730,6 +730,8 @@ function reset()
       rm /home/labuser/Desktop/Lab-Readme.txt
     fi
   ## REMOVE LAB FILE
+
+  sed -i "/^$l_ZGT_CURIP www.zylex-globaltech.com zylex-globaltech.com$/d" /etc/hosts
 }
 
 # (install_package) - Install the lab enviornment.
@@ -1062,6 +1064,8 @@ function settcpip ()
     printf "  Metasploitable 2 (Ubuntu 08.04)    eth0: $l_LIN0804_NEWIP/29\n"   >> /home/labuser/Desktop/Lab-Readme.txt
     printf "  ZGT-OpenGate (Final Project)      ens18: $l_ZGT_NEWIP/29\n"       >> /home/labuser/Desktop/Lab-Readme.txt
   ## WRITE LAB FILE
+
+  sed -i '/^127\.0\.0\.1/{n;a\'"$l_ZGT_NEWIP www.zylex-globaltech.com zylex-globaltech.com" /etc/hosts
 }
 # ************************* end script specific functions **********************
 
